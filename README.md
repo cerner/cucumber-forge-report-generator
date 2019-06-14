@@ -8,6 +8,7 @@
 
 [![Cerner OSS](https://badgen.net/badge/Cerner/OSS/blue)](http://engineering.cerner.com/2014/01/cerner-and-open-source/)
 [![License](https://badgen.net/badge/license/Apache-2.0/blue)](https://github.com/cerner/cucumber-forge-report-generator/blob/master/LICENSE)
+[![Build Status](https://travis-ci.com/cerner/cucumber-forge-report-generator.svg?branch=master)](https://travis-ci.com/cerner/cucumber-forge-report-generator)
 
 # _About_
 _Note: this repository contains the library for generating Cucumber reports. [Cucumber Forge Desktop](https://github.com/cerner/cucumber-forge-desktop) is a user-friendly desktop application for creating reports with cucumber-forge-report-generator._
