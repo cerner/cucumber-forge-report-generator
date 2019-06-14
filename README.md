@@ -24,13 +24,13 @@ const Generator = require('cucumber-forge-report-generator');
 const generator = new Generator();
 const htmlReportString = generator.generate([filePathString1, filePathString2], 'Project Name', 'TagFilter');
 ```
-Detailed usage documentation can be found [here](https://pages.github.com/cerner/cucumber-forge-report-generator/).
+Detailed usage documentation can be found [here](https://engineering.cerner.com/cucumber-forge-report-generator/).
 
 # _Availability_
 
 Artifacts can be downloaded from the [latest release](https://github.com/cerner/cucumber-forge-report-generator/releases).
 
-This library can be added as an NPM dependency via `npm install --save-dev git://github.com/cerner/cucumber-forge-report-generator.git#<release_tag>`
+This library can be added as an NPM dependency via `npm install cucumber-forge-report-generator`
 
 This project is built on [Travis](https://travis-ci.com/cerner/cucumber-forge-report-generator/).
 
