@@ -1,0 +1,12 @@
+{
+  "feature": "Feature:",
+  "background": "Background:",
+  "scenario_outline": "Scenario Outline:",
+  "scenario": "Scenario:",
+  "given": "Given",
+  "when": "When",
+  "then": "Then",
+  "and": "And",
+  "but": "But",
+  "examples": "Examples:"
+}

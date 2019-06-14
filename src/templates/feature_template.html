@@ -1,0 +1,84 @@
+
+      <div class="feature-wrapper" id={{featureWrapperId}}>
+        <a class="anchor" id="{{featureId}}"></a>
+        <h2>{{name}}</h2>
+        <div class="feature-body">
+          <div class="feature-description"><pre><i>{{description}}</i></pre></div>
+
+          <h3>{{this.background.name}}</h3>
+          <div class="scenario-body">
+            {{#if this.background.description}}
+              <div class="scenario-description"><pre><i>{{this.background.description}}</i></pre></div>
+            {{/if}}
+            {{#each this.background.steps}}
+              <p>{{this.name}}</p>
+              {{#if this.table.length}}
+                <table class="step-table">
+                  {{#each this.table}}
+                    <tr>
+                      {{#each this}}
+                      <td>{{this}}</td>
+                      {{/each}}
+                    </tr>
+                  {{/each}}
+                </table>
+              {{/if}}
+              {{#if this.docString}}
+                <div class="docstring"><pre>{{this.docString}}</pre></div>
+              {{/if}}
+            {{/each}}
+          </div>
+
+          {{#each scenarios}}
+            {{#unless @first}}
+              <hr class="scenario-divider">
+            {{/unless}}
+            <a class="anchor" id="{{scenarioId}}" scenario-button="{{scenarioButtonId}}"></a>
+            <h3>{{this.name}}</h3>
+            <div class="scenario-body">
+              {{#if this.description}}
+                <div class="scenario-description"><pre><i>{{this.description}}</i></pre></div>
+              {{/if}}
+              {{#each this.steps}}
+                <p>{{this.name}}</p>
+                {{#if this.table.length}}
+                <table class="step-table">
+                  {{#each this.table}}
+                    <tr>
+                      {{#each this}}
+                      <td>{{this}}</td>
+                      {{/each}}
+                    </tr>
+                  {{/each}}
+                </table>
+                {{/if}}
+                {{#if this.docString}}
+                  <div class="docstring"><pre>{{this.docString}}</pre></div>
+                {{/if}}
+              {{/each}}
+              {{#if this.examples}}
+                <p>{{this.examples.name}}</p>
+                {{#if this.examples.table.length}}
+                <table class="example-table">
+                  {{#each this.examples.table}}
+                    {{#if @first}}
+                    <tr>
+                      {{#each this}}
+                      <th>{{this}}</th>
+                      {{/each}}
+                    </tr>
+                    {{else}}
+                    <tr>
+                      {{#each this}}
+                      <td>{{this}}</td>
+                      {{/each}}
+                    </tr>
+                    {{/if}}
+                  {{/each}}
+                </table>
+                {{/if}}
+              {{/if}}
+            </div>
+          {{/each}}
+        </div>
+      </div>

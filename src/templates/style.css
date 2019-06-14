@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css?family=Lato|Roboto+Mono|Roboto+Slab');
+
+html {
+  scroll-behavior: smooth;
+  font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-size: medium;
+}
+body {
+  margin: 0px;
+  background-color: #fcfcfc;
+}
+pre {
+  overflow: visible;
+}
+a.anchor {
+  display: block;
+  position: relative;
+  top: -1.5em;
+}
+
+table {
+  border-collapse: collapse;
+  margin-left: 1em;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+.step-table td, .example-table td, .example-table th {
+  padding: 5px;
+}
+
+/* Sidebar Style */
+.sidenav {
+  width: 30vw;
+  height: 100%;
+  position: fixed;
+  z-index: 1;
+  background-color: #272525;
+  overflow-x: hidden;
+  color: #f1f1f1;
+  text-align: center;
+  /* Disable the scroll bar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+.sidenav::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+}
+.sidenav-body {
+  min-height: calc(100% - 2.5em);
+}
+#sidenavTitle {
+  background-color: #2980B9;
+  padding: 1em 0.01em 1em 0.01em;
+}
+#sidenavTitle h1 {
+  font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
+  font-weight: bold;
+  font-size: xx-large;
+  margin: 0em;
+}
+.sidenav-header {
+  color: #3a7ca8;
+  margin: 0.5em;
+  font-weight: bold;
+  line-height: 1.5em;
+}
+#sidenavFooter {
+  position: absolute;
+  width: 100%;
+}
+.feature-button {
+  font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
+  background-color: #404040;
+  color: #d9d9d9;
+  cursor: pointer;
+  padding: 0.75em;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  white-space: nowrap;
+}
+.feature-button.active, .feature-button:hover {
+  background-color: #fcfcfc;
+  font-weight: bold;
+  color: #404040;
+  border-bottom: solid 1px #c9c9c9;
+}
+.panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+.scenario-button {
+  font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
+  background-color: #e2e2e2;
+  color: #404040;
+  cursor: pointer;
+  padding: 0.5em;
+  width: 100%;
+  text-align: left;
+  outline: none;
+  white-space: nowrap;
+  border-top: none;
+  border-left: none;
+  border-bottom: none;
+  border-right: solid 1px #c9c9c9;
+}
+.scenario-button.active, .scenario-button:hover {
+  background-color: #ccc;
+}
+.scenario-button span {
+  margin-left: 1em;
+}
+
+/* Main Content Window Style */
+.main {
+  margin-left: 30vw;
+  margin-bottom: 75vh;
+  padding: 0px 10px;
+}
+.main h2 {
+  padding-top: 0.5em;
+  margin-top: 0em;
+  margin-bottom: 0.5em;
+  font-family: 'Roboto Slab', sans-serif;
+  font-weight: bold;
+  font-size: x-large;
+}
+.main h3 {
+  margin-top: 1em;
+  margin-bottom: 0em;
+  font-family: 'Roboto Slab', sans-serif;
+  font-weight: bold;
+  font-size: large;
+}
+.main pre, .main p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
+  font-size: medium;
+}
+.scenario-description {
+  margin-bottom: 1.5em;
+}
+.feature-wrapper {
+  display: none;
+}
+.feature-wrapper.active {
+  display: block;
+}
+.feature-body {
+  margin-left: 1em;
+}
+.scenario-body {
+  margin-left: 1em;
+}
+.docstring {
+  margin-left: 1em;
+}
+.docstring pre {
+  font-family: 'Roboto Mono', monospace;
+  font-size: small;
+}
+.scenario-divider {
+  margin-top: 1em;
+  border: 0;
+  border-bottom: 1px dashed #ccc;
+}

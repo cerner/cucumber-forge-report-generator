@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html class="outputHtml">
+  <head>
+    <meta charset="utf-8">
+    <title>{{projectName}} - {{creationdate}}</title>
+    <link rel="shortcut icon" type="image/png" href="data:image/png;base64,{{{logo}}}"/>
+    <style type="text/css">
+      {{{cssStyles}}}
+    </style>
+  </head>
+  <body>
+    <div class="sidenav">
+      <div class="sidenav-body">
+        <div id="sidenavTitle"><h1>{{reportName}}</h1></div>
+        <div class="sidenav-header">
+          <div id="headerTitle">{{projectName}}</div>
+          <div id="authorAside">{{author}} - {{creationdate}}</div>
+        </div>
+        {{#each featureButtons}}
+          <button id="{{this.id}}" scroll-to-id="{{this.featureId}}" feature-wrapper-id="{{this.featureWrapperId}}" class="feature-button" title="{{this.title}}">
+            {{this.title}}
+          </button>
+          <div class="panel">
+            {{#each this.scenarioButtons}}
+              <button id="{{this.id}}" scroll-to-id="{{this.scenarioId}}" class="scenario-button" title="{{this.title}}">
+                <span>{{this.title}}</span>
+              </button>
+            {{/each}}
+          </div>
+        {{/each}}
+      </div>
+      <a href="https://github.com/cerner/cucumber-forge-desktop" target="_blank" rel="noopener">
+        <div id="sidenavFooter" class="sidenav-header">Cucumber Forge</div>
+      </a>
+    </div>
+    <div class="main">
+      {{{featuresHtml}}}
+    </div>
+  </body>
+  <script>
+    {{{scripts}}}
+  </script>
+</html>
