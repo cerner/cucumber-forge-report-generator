@@ -72,6 +72,9 @@ const getNewPhase = (line) => {
   if (line === '\'\'\'' || line === '"""') {
     return 'DOC_STRING_STARTED';
   }
+  if (line.startsWith('#')){
+      return 'COMMENT_STARTED';
+  } 
   return null;
 };
 
@@ -114,6 +117,10 @@ const parseFeatureFile = async (featureFilename) => {
           break;
         case 'EXAMPLES_STARTED':
           scenario.examples = createExamples(line);
+          break;
+        case 'COMMENT_STARTED':
+          // Gherkin comments start with '#' and are required to take an entire line.
+          // We want to skip any comment lines.
           break;
         default:
       }

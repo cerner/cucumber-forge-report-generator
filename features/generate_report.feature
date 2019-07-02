@@ -20,6 +20,7 @@ Feature: Report Generation
           When I give dog food to the dog
           Then the dog will eat it
 
+        # Do not need examples for left to right and right to left petting directions
         @petting
         Scenario Outline: Petting the Dog
           Dog's do not like to be pet in the wrong direction.
@@ -75,6 +76,7 @@ Feature: Report Generation
     And the report will contain 1 feature
     And the report will contain 2 scenarios
     And the report name on the sidebar will be "All Scenarios"
+    And the report will not contain gherkin comments
     And the project title on the sidebar will be "Feature documentation"
     And the header on the sidebar will be "{username} - {current_date}"
     And the footer on the sidebar will be "Cucumber Forge"
