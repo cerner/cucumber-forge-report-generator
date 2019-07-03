@@ -72,9 +72,6 @@ const getNewPhase = (line) => {
   if (line === '\'\'\'' || line === '"""') {
     return 'DOC_STRING_STARTED';
   }
-  if (line.startsWith('#')){
-      return 'COMMENT_STARTED';
-  } 
   return null;
 };
 
@@ -118,15 +115,14 @@ const parseFeatureFile = async (featureFilename) => {
         case 'EXAMPLES_STARTED':
           scenario.examples = createExamples(line);
           break;
-        case 'COMMENT_STARTED':
-          // Gherkin comments start with '#' and are required to take an entire line.
-          // We want to skip any comment lines.
-          break;
         default:
       }
     } else if (line.startsWith('@')) {
       // Scenario tags
       tags = line.split(' ');
+    } else if (line.startsWith('#')) {
+          // Gherkin comments start with '#' and are required to take an entire line.
+          // We want to skip any comment lines.
     } else if (line.startsWith('|')) {
       const step = scenario.steps[scenario.steps.length - 1];
       const lines = line.split('|').filter(entry => entry).map(entry => entry.trim());
