@@ -86,6 +86,15 @@ Then('the report will contain {int} scenario(s)', function (scenarioCount) {
   expect(scenarioDividers.length).to.eql(scenarioCount - featureCount);
 });
 
+Then('the report will not contain gherkin comments', function() {
+    const commentPattern = new RegExp('^#.*');
+    let comments = Array.from(this.outputHTML.getElementsByTagName('*'))
+        .filter(function(obj) {
+            return commentPattern.test(obj.innerHTML);
+        });
+    expect(comments.length).to.eql(0);
+});
+
 Then('the sidebar will contain {int} feature button(s)', function (featureButtonCount) {
   const featureButtons = this.outputHTML.getElementsByClassName('feature-button');
   expect(featureButtons.length).to.eql(featureButtonCount);
