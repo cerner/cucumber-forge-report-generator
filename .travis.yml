@@ -1,10 +1,32 @@
 language: node_js
-os: 
-  - windows
-  - osx
-  - linux
 node_js:
   - "lts/*"
 notifications:
   email: false
-  
+
+# Default phases (can be overridden in jobs)
+install: npm ci
+script:
+  - npm run lint
+  - npm test
+
+stages:
+  - name: test
+  - name: publish
+    if: tag IS present
+
+jobs:
+  include:
+    - name: "Test on Linux"
+      stage: test
+      os: linux
+    - name: "Test on OSX"
+      stage: test
+      os: osx
+    - name: "Test on Windows"
+      stage: test
+      os: windows
+    - name: "Publish to NPM"
+      stage: publish
+      os: linux
+      script: npm publish
