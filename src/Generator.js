@@ -215,7 +215,7 @@ const getFeatureButtons = (features) => {
       const scenarioButton = {};
       scenarioButton.id = scenario.scenarioButtonId;
       scenarioButton.scenarioId = scenario.scenarioId;
-      scenarioButton.title = `- ${trimCucumberKeywords(scenario.name, 'scenario', 'scenario_outline')}`;
+      scenarioButton.title = trimCucumberKeywords(scenario.name, 'scenario', 'scenario_outline');
       featureButton.scenarioButtons.push(scenarioButton);
     });
     featureButtons.push(featureButton);
