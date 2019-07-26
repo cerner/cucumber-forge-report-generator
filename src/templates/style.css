@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Lato|Roboto+Mono|Roboto+Slab');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css');
 
 html {
   scroll-behavior: smooth;
@@ -91,6 +92,9 @@ table, th, td {
   font-weight: bold;
   color: #404040;
   border-bottom: solid 1px #c9c9c9;
+}
+i.fa-angle-right, i.fa-angle-down { 
+  width: 0.6em; 
 }
 .panel {
   max-height: 0;

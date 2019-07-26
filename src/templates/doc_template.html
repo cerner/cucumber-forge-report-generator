@@ -18,7 +18,7 @@
         </div>
         {{#each featureButtons}}
           <button id="{{this.id}}" scroll-to-id="{{this.featureId}}" feature-wrapper-id="{{this.featureWrapperId}}" class="feature-button" title="{{this.title}}">
-            {{this.title}}
+            <i class="fas fa-angle-right"></i> {{this.title}}
           </button>
           <div class="panel">
             {{#each this.scenarioButtons}}

@@ -6,7 +6,7 @@ const { expect } = require('chai');
 
 const Generator = require('../../src/Generator');
 
-/* eslint-disable func-names */
+/* eslint-disable func-names,no-unused-expressions */
 Given('there is a report for the following feature files:', function (featureFilesTable) {
   const getPath = fileName => path.resolve(__dirname, fileName[0]);
   const filePaths = featureFilesTable.raw().map(getPath);
@@ -58,11 +58,9 @@ Then(/^the (first|second) feature (?:is|will be) displayed$/, function (featureI
   const index = featureIndex === 'first' ? 0 : 1;
   const featureWrappers = this.outputHTML.getElementsByClassName('feature-wrapper');
   const selectedFeatureWrapper = featureWrappers[index];
-  // eslint-disable-next-line no-unused-expressions
   expect(selectedFeatureWrapper.classList.contains('active')).to.be.true;
   Array.from(featureWrappers).forEach((featureWrapper) => {
     if (selectedFeatureWrapper !== featureWrapper) {
-      // eslint-disable-next-line no-unused-expressions
       expect(featureWrapper.classList.contains('active')).to.be.false;
     }
   });
@@ -72,18 +70,21 @@ Then(/^the scenario buttons for the (first|second) feature (?:are|will be) expan
   const index = featureIndex === 'first' ? 0 : 1;
   const featureButtons = this.outputHTML.getElementsByClassName('feature-button');
   const selectedFeatureButton = featureButtons[index];
-  // eslint-disable-next-line no-unused-expressions
   expect(selectedFeatureButton.classList.contains('active')).to.be.true;
   const scenarioPanel = selectedFeatureButton.nextElementSibling;
-  // eslint-disable-next-line no-unused-expressions
   expect(scenarioPanel.style.maxHeight).to.not.be.empty;
+  const selectedIcon = selectedFeatureButton.getElementsByTagName('i')[0];
+  expect(selectedIcon.classList.contains('fa-angle-down')).to.be.true;
+  expect(selectedIcon.classList.contains('fa-angle-right')).to.be.false;
+
   Array.from(featureButtons).forEach((featureButton) => {
     if (selectedFeatureButton !== featureButton) {
-      // eslint-disable-next-line no-unused-expressions
       expect(featureButton.classList.contains('active')).to.be.false;
       const panel = featureButton.nextElementSibling;
-      // eslint-disable-next-line no-unused-expressions
       expect(panel.style.maxHeight).to.be.empty;
+      const icon = featureButton.getElementsByTagName('i')[0];
+      expect(icon.classList.contains('fa-angle-down')).to.be.false;
+      expect(icon.classList.contains('fa-angle-right')).to.be.true;
     }
   });
 });
@@ -91,11 +92,9 @@ Then(/^the scenario buttons for the (first|second) feature (?:are|will be) expan
 Then(/^the (first|second) scenario button will be highlighted$/, function (scenarioIndex) {
   const index = scenarioIndex === 'first' ? 0 : 1;
   const selectedScenarioButton = this.getScenarioButtonByIndex(index);
-  // eslint-disable-next-line no-unused-expressions
   expect(selectedScenarioButton.classList.contains('active')).to.be.true;
   Array.from(this.outputHTML.getElementsByClassName('scenario-button')).forEach((scenarioButton) => {
     if (selectedScenarioButton !== scenarioButton) {
-      // eslint-disable-next-line no-unused-expressions
       expect(scenarioButton.classList.contains('active')).to.be.false;
     }
   });
