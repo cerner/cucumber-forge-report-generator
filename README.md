@@ -31,7 +31,7 @@ Detailed usage documentation can be found [here](https://engineering.cerner.com/
 
 Artifacts can be downloaded from the [latest release](https://github.com/cerner/cucumber-forge-report-generator/releases).
 
-This library can be added as an [NPM dependency](https://www.npmjs.com/package/cucumber-forge-report-generator) via `npm install cucumber-forge-report-generator`
+This library can be added as an [NPM dependency](https://www.npmjs.com/package/cucumber-forge-report-generator) via `npm i -S cucumber-forge-report-generator`
 
 This project is built on [Travis](https://travis-ci.com/cerner/cucumber-forge-report-generator/).
 
