@@ -53,7 +53,7 @@ table, th, td {
     height: 0;
 }
 .sidenav-body {
-  min-height: calc(100% - 2.5em);
+  min-height: 80%;
 }
 #sidenavTitle {
   background-color: #2980B9;
@@ -74,6 +74,8 @@ table, th, td {
 #sidenavFooter {
   position: absolute;
   width: 100%;
+  bottom: 0;
+  left: 0;
 }
 .feature-button {
   font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
@@ -101,13 +103,12 @@ i.fa-angle-right, i.fa-angle-down {
   overflow: hidden;
   transition: max-height 0.2s ease-out;
 }
-.scenario-button {
+[class*="scenario-button"] {
   font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
   background-color: #e2e2e2;
   color: #404040;
   cursor: pointer;
-  padding: 0.5em;
-  width: 100%;
+  padding: 0.5em 0 0.5em 0.5em;
   text-align: left;
   outline: none;
   white-space: nowrap;
@@ -115,6 +116,12 @@ i.fa-angle-right, i.fa-angle-down {
   border-left: none;
   border-bottom: none;
   border-right: solid 1px #c9c9c9;
+}
+.scenario-button {
+  width: 100%;
+}
+.scenario-button-review {
+  width: 95.5%;
 }
 .scenario-button.active, .scenario-button:hover {
   background-color: #ccc;
@@ -176,4 +183,78 @@ i.fa-angle-right, i.fa-angle-down {
   margin-top: 1em;
   border: 0;
   border-bottom: 1px dashed #ccc;
+}
+#menu-list {
+  visibility: hidden;
+  zindex: 1000000;
+  width: 100%;
+  background: #f1f1f1;
+  text-align: center;
+  font-size: 0.8em;
+}
+#menu-list ul {
+  margin: 0;
+  padding: 15px 0 15px 0;
+  style-type: none;
+  list-style-image: none;
+}
+#menu-list li {
+  display: block;
+  border-top: #dddddd 1px solid;
+  border-bottom: #dddddd 1px solid;
+  padding: 15px 0 15px 0;
+  text-decoration: none;
+  color: #666;
+  cursor: pointer;
+}
+#menu-list li:hover {
+  background: #ffffff;
+  padding: 15px 0 15px 0;
+}
+#gear {
+  background: none;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  display: block;
+  height: 1em;
+  width: 1em;
+  top: 0;
+  right: 0;
+  font-size: 1.4em;
+  font-weight: bold;
+  border: 0;
+  color: #999;
+  padding: 0px 0px 0px 0px;
+  z-index:10000000000000;
+}
+#cross {
+  display: none;
+  background: none;
+  position: relative;
+  top: 0;
+  left: 0;
+  align: left;
+  padding: 0px 0px 0px 0px;
+  color: #999;
+  border: 0;
+  height: 1em;
+  width: 1em;
+  font-size: 2em;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  z-index: 10000000000000;
+}
+.review-check {
+  padding: 0 0 0 0;
+  margin: 0;
+  z-index: 10000000000000;
+  display: inline-block;
+  width: 4.5%;
+}
+#settings {
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }

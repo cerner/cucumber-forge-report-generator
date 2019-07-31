@@ -63,6 +63,7 @@ const getVisibleAnchor = () => {
     }
     return false;
   });
+
   return visibleAnchor;
 };
 
@@ -96,6 +97,72 @@ const toggleDisplayedFeature = (element) => {
   });
 };
 
+
+/*
+ * Toggles the review mode on and off. Removes any added checks and
+ * strikethroughs when toggling off. Adds checkboxes and event listeners to
+ * toggle strikethroughs on scenario titles when toggling on.
+ */
+const toggleReviewMode = () => {
+  const checkmarks = Array.from(document.getElementsByClassName('review-check'));
+  if (checkmarks.length > 0) {
+    Array.from(document.getElementsByClassName('scenario-button-review'))
+      .forEach((scenarioButton) => {
+        scenarioButton.className = 'scenario-button';
+        scenarioButton.style.textDecoration = 'none';
+      });
+    checkmarks.forEach((check) => { check.remove(); });
+  } else {
+    Array.from(document.getElementsByClassName('scenario-button'))
+      .forEach((scenarioButton) => {
+        scenarioButton.className = 'scenario-button-review';
+        const btn = document.createElement('input');
+        btn.setAttribute('type', 'checkbox');
+        btn.setAttribute('class', 'review-check');
+        btn.addEventListener('click', () => {
+          if (!scenarioButton.style.textDecoration
+                       || scenarioButton.style.textDecoration === 'none') {
+            scenarioButton.style.textDecoration = 'line-through';
+          } else {
+            scenarioButton.style.textDecoration = 'none';
+          }
+        });
+        scenarioButton.insertAdjacentElement('beforebegin', btn);
+      });
+  }
+};
+
+/*
+ * Initialization for settings menu. Sets up event handlers for opening /
+ * closing the menu and alternating the icons.
+ */
+const initSettingsMenu = () => {
+  const gear = document.getElementById('gear');
+  if (gear) {
+    gear.addEventListener('click', function toggle() {
+      document.getElementById('cross').style.display = 'block';
+      document.getElementById('menu-list').style.visibility = 'visible';
+      this.style.display = 'none';
+    });
+  }
+
+  const cross = document.getElementById('cross');
+  if (cross) {
+    cross.addEventListener('click', function click() {
+      document.getElementById('gear').style.display = 'block';
+      document.getElementById('menu-list').style.visibility = 'hidden';
+      this.style.display = 'none';
+    });
+  }
+
+  const reviewMode = document.getElementById('review-mode');
+  if (reviewMode) {
+    reviewMode.addEventListener('click', () => {
+      toggleReviewMode();
+    });
+  }
+};
+
 const init = () => {
   // Add listeners for feature buttons
   Array.from(document.getElementsByClassName('feature-button')).forEach((featureButton) => {
@@ -123,6 +190,8 @@ const init = () => {
     toggleFunctionAccordion(firstFeatureButton);
     toggleDisplayedFeature(firstFeatureButton);
   }
+
+  initSettingsMenu();
 };
 
 init();

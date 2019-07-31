@@ -29,9 +29,20 @@
           </div>
         {{/each}}
       </div>
-      <a href="https://github.com/cerner/cucumber-forge-desktop" target="_blank" rel="noopener">
-        <div id="sidenavFooter" class="sidenav-header">Cucumber Forge</div>
-      </a>
+      <div id="holder">
+        <div id="menu-list">
+          <ul>
+            <li id="review-mode">Review mode</li>
+          </ul>
+        </div>
+        <a href="https://github.com/cerner/cucumber-forge-desktop" target="_blank" rel="noopener">
+          <div id="sidenavFooter" class="sidenav-header">Cucumber Forge</div>
+        </a>
+        <div id="settings" class="sidenav-header" align="left">
+          <button id="gear" >&#9881;</button>
+          <button id="cross" >&#735;</button>
+        </div>
+      </div>
     </div>
     <div class="main">
       {{{featuresHtml}}}
