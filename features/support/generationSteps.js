@@ -12,7 +12,6 @@ const FILE_ENCODING = 'utf-8';
 // eslint-disable-next-line no-unused-vars
 const Generator = require('../../src/Generator');
 
-/* eslint-disable func-names */
 Given('there is a file named {string} with the following contents:', function (fileName, contents) {
   const filePath = path.resolve(__dirname, fileName);
   this.featureFiles.push(filePath);
@@ -86,13 +85,11 @@ Then('the report will contain {int} scenario(s)', function (scenarioCount) {
   expect(scenarioDividers.length).to.eql(scenarioCount - featureCount);
 });
 
-Then('the report will not contain gherkin comments', function() {
-    const commentPattern = new RegExp('^#.*');
-    let comments = Array.from(this.outputHTML.getElementsByTagName('*'))
-        .filter(function(obj) {
-            return commentPattern.test(obj.innerHTML);
-        });
-    expect(comments.length).to.eql(0);
+Then('the report will not contain gherkin comments', function () {
+  const commentPattern = new RegExp('^#.*');
+  const comments = Array.from(this.outputHTML.getElementsByTagName('*'))
+    .filter(obj => commentPattern.test(obj.innerHTML));
+  expect(comments.length).to.eql(0);
 });
 
 Then('the sidebar will contain {int} feature button(s)', function (featureButtonCount) {

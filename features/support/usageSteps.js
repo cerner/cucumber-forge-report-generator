@@ -6,7 +6,6 @@ const { expect } = require('chai');
 
 const Generator = require('../../src/Generator');
 
-/* eslint-disable func-names,no-unused-expressions */
 Given('there is a report for the following feature files:', function (featureFilesTable) {
   const getPath = fileName => path.resolve(__dirname, fileName[0]);
   const filePaths = featureFilesTable.raw().map(getPath);

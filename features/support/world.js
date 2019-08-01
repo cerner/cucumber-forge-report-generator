@@ -30,7 +30,6 @@ class CustomWorld {
   }
 }
 
-/* eslint-disable func-names */
 After(function () {
 // Clean up any feature files that got written.
   return this.featureFiles.forEach(filePath => fs.unlinkSync(filePath));
