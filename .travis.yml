@@ -13,8 +13,7 @@ script:
 stages:
   - name: test
   - name: publish
-  # TODO IF branch is master
-    # if: tag IS present
+    if: branch = master
 
 jobs:
   include:
