@@ -13,7 +13,8 @@ script:
 stages:
   - name: test
   - name: publish
-    if: tag IS present
+  # TODO IF branch is master
+    # if: tag IS present
 
 jobs:
   include:
@@ -29,4 +30,4 @@ jobs:
     - name: "Publish to NPM"
       stage: publish
       os: linux
-      script: npm publish
+      script: npx semantic-release
