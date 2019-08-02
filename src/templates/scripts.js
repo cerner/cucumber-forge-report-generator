@@ -3,9 +3,12 @@ let pauseScrollActions = false;
 
 const toggleFunctionAccordion = (element) => {
   element.classList.toggle('active');
+  const icon = element.getElementsByTagName('i')[0];
   const panel = element.nextElementSibling;
   if (panel.style.maxHeight) {
     panel.style.maxHeight = null;
+    icon.classList.remove('fa-angle-down');
+    icon.classList.add('fa-angle-right');
   } else {
     panel.style.maxHeight = `${panel.scrollHeight}px`;
     // Close all the other panels
@@ -13,8 +16,13 @@ const toggleFunctionAccordion = (element) => {
       if (element !== featureButton) {
         featureButton.classList.remove('active');
         featureButton.nextElementSibling.style.maxHeight = null;
+        const iconToClose = featureButton.getElementsByTagName('i')[0];
+        iconToClose.classList.remove('fa-angle-down');
+        iconToClose.classList.add('fa-angle-right');
       }
     });
+    icon.classList.add('fa-angle-down');
+    icon.classList.remove('fa-angle-right');
   }
 };
 

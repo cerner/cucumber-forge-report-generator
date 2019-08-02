@@ -196,19 +196,26 @@ const populateHtmlIdentifiers = (features) => {
   });
 };
 
+const trimCucumberKeywords = (name, ...i18nkeys) => {
+  const keywords = i18nkeys.map(i18nkey => i18n.t(i18nkey));
+  const startingKeywords = keywords.filter(key => name.startsWith(key));
+  const charsToTrim = startingKeywords.length > 0 ? startingKeywords[0].length + 1 : 0;
+  return name.slice(charsToTrim).trim();
+};
+
 const getFeatureButtons = (features) => {
   const featureButtons = [];
   features.forEach((feature) => {
     const featureButton = {};
     featureButton.featureId = feature.featureId;
     featureButton.featureWrapperId = feature.featureWrapperId;
-    featureButton.title = feature.name;
+    featureButton.title = trimCucumberKeywords(feature.name, 'feature');
     featureButton.scenarioButtons = [];
     feature.scenarios.forEach((scenario) => {
       const scenarioButton = {};
       scenarioButton.id = scenario.scenarioButtonId;
       scenarioButton.scenarioId = scenario.scenarioId;
-      scenarioButton.title = scenario.name;
+      scenarioButton.title = trimCucumberKeywords(scenario.name, 'scenario', 'scenario_outline');
       featureButton.scenarioButtons.push(scenarioButton);
     });
     featureButtons.push(featureButton);
