@@ -1,10 +1,34 @@
 language: node_js
-os: 
-  - windows
-  - osx
-  - linux
 node_js:
   - "lts/*"
 notifications:
   email: false
-  
+
+stages:
+  - name: lint
+  - name: test
+  - name: publish
+    if: branch = master
+
+jobs:
+  include:
+    - name: "Check Linting"
+      stage: lint
+      os: linux
+      script: npm run lint
+    - name: "Test on Linux"
+      stage: test
+      os: linux
+      script: npm test
+    - name: "Test on OSX"
+      stage: test
+      os: osx
+      script: npm test
+    - name: "Test on Windows"
+      stage: test
+      os: windows
+      script: npm test
+    - name: "Publish to NPM"
+      stage: publish
+      os: linux
+      script: npx semantic-release
