@@ -102,6 +102,7 @@ i.fa-angle-right, i.fa-angle-down {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
+  background-color: #e2e2e2;
 }
 [class*="scenario-button"] {
   font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
