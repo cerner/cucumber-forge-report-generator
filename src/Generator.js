@@ -1,7 +1,7 @@
 const fs = require('fs');
 const handlebars = require('handlebars');
 const i18n = require('i18next');
-const i18nBackend = require("i18next-node-fs-backend");
+const i18nBackend = require('i18next-node-fs-backend');
 const linereader = require('line-reader');
 const moment = require('moment');
 const os = require('os');
@@ -28,7 +28,7 @@ let tagFilter = null;
 
 const lineStartsWithI18n = (line, i18nkey) => line.startsWith(i18n.t(i18nkey));
 
-const stepStarting = line => lineStartsWithI18n(line, 'given') || lineStartsWithI18n(line, 'when')
+const stepStarting = (line) => lineStartsWithI18n(line, 'given') || lineStartsWithI18n(line, 'when')
     || lineStartsWithI18n(line, 'then') || lineStartsWithI18n(line, 'and')
     || lineStartsWithI18n(line, 'but') || line.trim().startsWith('*');
 
@@ -128,7 +128,7 @@ const parseFeatureFile = async (featureFilename) => {
       // We want to skip any comment lines.
     } else if (line.startsWith('|')) {
       const step = scenario.steps[scenario.steps.length - 1];
-      const lines = line.split('|').filter(entry => entry).map(entry => entry.trim());
+      const lines = line.split('|').filter((entry) => entry).map((entry) => entry.trim());
       switch (currentPhase) {
         case 'EXAMPLES_STARTED':
           scenario.examples.table.push(lines);
@@ -155,12 +155,12 @@ const parseFeatureFile = async (featureFilename) => {
   return feature;
 };
 
-const getFilteredScenarios = scenarios => scenarios.map((scenario) => {
+const getFilteredScenarios = (scenarios) => scenarios.map((scenario) => {
   if (scenario.tags && scenario.tags.includes(tagFilter)) {
     return scenario;
   }
   return undefined;
-}).filter(scenario => scenario);
+}).filter((scenario) => scenario);
 
 const getFilteredFeatures = (features) => {
   const filteredFeatures = [];
@@ -196,8 +196,8 @@ const populateHtmlIdentifiers = (features) => {
 };
 
 const trimCucumberKeywords = (name, ...i18nkeys) => {
-  const keywords = i18nkeys.map(i18nkey => i18n.t(i18nkey));
-  const startingKeywords = keywords.filter(key => name.startsWith(key));
+  const keywords = i18nkeys.map((i18nkey) => i18n.t(i18nkey));
+  const startingKeywords = keywords.filter((key) => name.startsWith(key));
   const charsToTrim = startingKeywords.length > 0 ? startingKeywords[0].length + 1 : 0;
   return name.slice(charsToTrim).trim();
 };
