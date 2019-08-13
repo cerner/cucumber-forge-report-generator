@@ -1,11 +1,14 @@
 const fs = require('fs');
 const handlebars = require('handlebars');
 const i18n = require('i18next');
+const i18nBackend = require("i18next-node-fs-backend");
 const linereader = require('line-reader');
 const moment = require('moment');
 const os = require('os');
 const path = require('path');
 const util = require('util');
+
+const eachLine = util.promisify(linereader.eachLine);
 
 const FILE_ENCODING = 'utf-8';
 const LANGUAGE = 'en';
@@ -83,7 +86,7 @@ const parseFeatureFile = async (featureFilename) => {
   let tags = [];
 
   let currentPhase = null;
-  await linereader.eachLine(featureFilename, (nextLine) => {
+  await eachLine(featureFilename, (nextLine) => {
     const line = nextLine.trim();
     const newPhase = getNewPhase(line);
     if (currentPhase === 'DOC_STRING_STARTED') {
@@ -149,10 +152,6 @@ const parseFeatureFile = async (featureFilename) => {
       }
     }
   });
-  // Add last scenario, if exists
-  if (scenario && scenario.content) {
-    feature.scenarios.push(scenario);
-  }
   return feature;
 };
 
@@ -205,6 +204,7 @@ const trimCucumberKeywords = (name, ...i18nkeys) => {
 
 const getFeatureButtons = (features) => {
   const featureButtons = [];
+
   features.forEach((feature) => {
     const featureButton = {};
     featureButton.featureId = feature.featureId;
@@ -274,8 +274,13 @@ class Generator {
       tagFilter = null;
       reportName = DEFAULT_REPORT_NAME;
     }
-    const i18nit = util.promisify(i18n.init);
-    await i18nit({ lng: LANGUAGE, resGetPath: `${__dirname}/locales/__lng__/__ns__.json` });
+    i18n.use(i18nBackend);
+    await i18n.init({
+      lng: LANGUAGE,
+      backend: {
+        loadPath: `${__dirname}/locales/{{lng}}/{{ns}}.json`,
+      },
+    });
     return create(files);
   }
 }
