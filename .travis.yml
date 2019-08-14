@@ -8,7 +8,7 @@ stages:
   - name: lint
   - name: test
   - name: publish
-    if: branch = master
+    if: branch = master AND type != pull_request
 
 jobs:
   include:
