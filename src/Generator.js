@@ -81,6 +81,7 @@ const getNewPhase = (line) => {
 const parseFeatureFile = async (featureFilename) => {
   const feature = {};
   feature.scenarios = [];
+  feature.tags = [];
   feature.description = '';
   let scenario = null;
   let tags = [];
@@ -121,8 +122,11 @@ const parseFeatureFile = async (featureFilename) => {
         default:
       }
     } else if (line.startsWith('@')) {
-      // Scenario tags
       tags = line.split(' ');
+      if (!currentPhase) {
+        // Feature tags
+        feature.tags = tags;
+      }
     } else if (line.startsWith('#')) {
       // Gherkin comments start with '#' and are required to take an entire line.
       // We want to skip any comment lines.
@@ -195,6 +199,17 @@ const populateHtmlIdentifiers = (features) => {
   });
 };
 
+const populateTagStrings = (features) => {
+  features.forEach((feature) => {
+    feature.tagString = '';
+    feature.tags.forEach((tag) => feature.tagString += tag + ' ');
+    feature.scenarios.forEach((scenario) => {
+      scenario.tagString = '';
+      scenario.tags.forEach((tag) => scenario.tagString += tag + ' ');
+    });
+  });
+};
+
 const trimCucumberKeywords = (name, ...i18nkeys) => {
   const keywords = i18nkeys.map((i18nkey) => i18n.t(i18nkey));
   const startingKeywords = keywords.filter((key) => name.startsWith(key));
@@ -227,6 +242,7 @@ const create = async (files) => {
   const features = await parseFeatures(files);
   const filteredFeatures = tagFilter ? getFilteredFeatures(features) : features;
   populateHtmlIdentifiers(filteredFeatures);
+  populateTagStrings(filteredFeatures);
 
   let featuresHtml = '';
   filteredFeatures.forEach((filteredFeature) => {

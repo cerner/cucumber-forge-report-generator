@@ -32,8 +32,14 @@ Given(/^the username of the current user is \{username\}$/, function () {
 
 When('a report is generated with the code {string}', function (generationFunction) {
   // eslint-disable-next-line no-eval
+  // return eval(generationFunction)
+  //   .then(output => this.setOutput(output));
+
   return eval(generationFunction)
-    .then(output => this.setOutput(output));
+    .then((output) => {
+      this.setOutput(output);
+      fs.writeFileSync(path.resolve(__dirname, 'testReport.html'), output, FILE_ENCODING);
+    });
 });
 
 Then('the title on the report will be {string}', function (reportTitle) {
@@ -70,7 +76,7 @@ Then('the header on the sidebar will be {string}', function (header) {
 });
 
 Then('the footer on the sidebar will be {string}', function (footer) {
-  expect(this.outputHTML.getElementById('sidenavFooter').textContent).to.eql(footer);
+  expect(this.outputHTML.getElementById('sidenavFooter').textContent).to.contain(footer);
 });
 
 Then('the report will contain {int} feature(s)', function (featureCount) {

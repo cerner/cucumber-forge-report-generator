@@ -10,12 +10,14 @@
   </head>
   <body>
     <div class="sidenav">
-      <div class="sidenav-body">
+      <div id="sidenav-header">
         <div id="sidenavTitle"><h1>{{reportName}}</h1></div>
-        <div class="sidenav-header">
+        <div id="sidenav-subheader">
           <div id="headerTitle">{{projectName}}</div>
           <div id="authorAside">{{author}} - {{creationdate}}</div>
         </div>
+      </div>
+      <div class="sidenav-body">
         {{#each featureButtons}}
           <button id="{{this.id}}" scroll-to-id="{{this.featureId}}" feature-wrapper-id="{{this.featureWrapperId}}" class="feature-button" title="{{this.title}}">
             <i class="fas fa-angle-right"></i> {{this.title}}
@@ -29,9 +31,14 @@
           </div>
         {{/each}}
       </div>
-      <a href="https://github.com/cerner/cucumber-forge-desktop" target="_blank" rel="noopener">
-        <div id="sidenavFooter" class="sidenav-header">Cucumber Forge</div>
-      </a>
+      <div id="sidenavFooter">
+          <div id="settingsDrawer">
+              <input type="checkbox" id="tagsCheckbox">
+              <label for="tagsCheckbox">Show Tags</label>
+          </div>
+          <i id="settingsButton" class="fas fa-cog" onclick="toggleSettingsDrawer()"></i>
+          <a href="https://github.com/cerner/cucumber-forge-desktop" target="_blank" rel="noopener" class="sidenav-header">Cucumber Forge</a>
+      </div>
     </div>
     <div class="main">
       {{{featuresHtml}}}

@@ -1,5 +1,8 @@
 
       <div class="feature-wrapper" id={{featureWrapperId}}>
+        {{#if tagString}}
+          <div class="tags">{{tagString}}</div>
+        {{/if}}
         <a class="anchor" id="{{featureId}}"></a>
         <h2>{{name}}</h2>
         <div class="feature-body">
@@ -33,6 +36,9 @@
             {{#unless @first}}
               <hr class="scenario-divider">
             {{/unless}}
+            {{#if tagString}}
+              <div class="tags">{{tagString}}</div>
+            {{/if}}
             <a class="anchor" id="{{scenarioId}}" scenario-button="{{scenarioButtonId}}"></a>
             <h3>{{this.name}}</h3>
             <div class="scenario-body">

@@ -53,9 +53,19 @@ table, th, td {
     height: 0;
 }
 .sidenav-body {
-  min-height: calc(100% - 2.5em);
+  min-height: 100%;
+  margin-top: 7em;
+  margin-bottom: 2em;
+}
+#sidenav-header {
+  width: 30vw;
+  position: fixed;
+  color: #3a7ca8;
+  font-weight: bold;
+  line-height: 1.5em;
 }
 #sidenavTitle {
+  color: #f1f1f1;
   background-color: #2980B9;
   padding: 1em 0.01em 1em 0.01em;
 }
@@ -65,15 +75,32 @@ table, th, td {
   font-size: xx-large;
   margin: 0em;
 }
-.sidenav-header {
-  color: #3a7ca8;
-  margin: 0.5em;
-  font-weight: bold;
-  line-height: 1.5em;
+#sidenav-subheader {
+  background-color: #272525;  
+  padding: 0.25em 0em 0.25em 0em;
 }
 #sidenavFooter {
-  position: absolute;
-  width: 100%;
+  position: fixed;
+  bottom: 0;
+  width: 30vw;
+  text-align: left;
+  padding: 0.25em 0em 0.25em 0em;
+  background-color: #272525;
+}
+#settingsDrawer {
+  padding: 0.5em 0.5em 0.5em 0.5em;
+  display: none;
+}
+#settingsDrawer.active {
+  display: block;
+}
+#sidenavFooter i {
+  padding: 0.25em;
+  cursor: pointer;
+}
+#sidenavFooter a {
+  color: #3a7ca8;
+  margin-left: calc(15vw - 6em);
 }
 .feature-button {
   font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
@@ -176,4 +203,12 @@ i.fa-angle-right, i.fa-angle-down {
   margin-top: 1em;
   border: 0;
   border-bottom: 1px dashed #ccc;
+}
+.tags {
+  color: grey;
+  margin-bottom: -1em;
+  display: none;
+}
+.tags.active {
+  display: block;
 }
