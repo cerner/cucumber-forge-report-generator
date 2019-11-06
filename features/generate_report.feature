@@ -15,7 +15,7 @@ Feature: Report Generation
         Background:
           Given I have a dog
 
-        @feeding 
+        @feeding
         Scenario: Feeding the Dog
           Given the dog is hungery
           When I give dog food to the dog

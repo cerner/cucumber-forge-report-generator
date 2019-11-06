@@ -130,7 +130,7 @@ Then('the tags displayed for the feature will be {string}', function (expectedTa
   expect(actualTagString.trim()).to.eql(expectedTagString);
 });
 
-Then('the tags displayed for the {string} scenario will be {string}', function (scenarioIndex, expectedTagString) {
+Then('the tags displayed for the {word} scenario will be {string}', function (scenarioIndex, expectedTagString) {
   const activeFeature = this.outputHTML.getElementsByClassName('feature-wrapper active')[0].getElementsByClassName('feature-body')[0];
   const index = scenarioIndex === 'first' ? 0 : 1;
   const actualTagString = activeFeature.getElementsByClassName('tags')[index].textContent;  

@@ -106,4 +106,4 @@ Feature: Report Usage
     When the box is checked to show tags
     Then the tags displayed for the feature will be '@pet_care @dogs'
     Then the tags displayed for the first scenario will be '@feeding'
-    Then the tags displayed for the first scenario will be '@petting'
+    Then the tags displayed for the second scenario will be '@petting'
