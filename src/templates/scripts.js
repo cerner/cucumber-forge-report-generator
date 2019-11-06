@@ -2,14 +2,14 @@
 let pauseScrollActions = false;
 
 const toggleSettingsDrawer = () => {
-  document.getElementById('settingsDrawer').classList.toggle('active');  
-}
+  document.getElementById('settingsDrawer').classList.toggle('active');
+};
 
 const toggleTagDisplay = () => {
   Array.from(document.getElementsByClassName('tags')).forEach((tagBlock) => {
     tagBlock.classList.toggle('active');
   });
-}
+};
 
 const toggleFunctionAccordion = (element) => {
   element.classList.toggle('active');
@@ -128,9 +128,8 @@ const init = () => {
   window.addEventListener('scroll', updateActiveScenarioWhenScrolling, true);
 
   // Add listeners to settings controls
-  document.getElementById('tagsCheckbox').addEventListener('click', function click() {
-    toggleTagDisplay();
-  });
+  document.getElementById('settingsButton').addEventListener('click', toggleSettingsDrawer);
+  document.getElementById('tagsCheckbox').addEventListener('click', toggleTagDisplay);
 
   // Open the first feature.
   const firstFeatureButton = document.getElementsByClassName('feature-button')[0];

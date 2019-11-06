@@ -202,10 +202,10 @@ const populateHtmlIdentifiers = (features) => {
 const populateTagStrings = (features) => {
   features.forEach((feature) => {
     feature.tagString = '';
-    feature.tags.forEach((tag) => feature.tagString += tag + ' ');
+    feature.tags.forEach((tag) => { feature.tagString += `${tag} `; });
     feature.scenarios.forEach((scenario) => {
       scenario.tagString = '';
-      scenario.tags.forEach((tag) => scenario.tagString += tag + ' ');
+      scenario.tags.forEach((tag) => { scenario.tagString += `${tag} `; });
     });
   });
 };
