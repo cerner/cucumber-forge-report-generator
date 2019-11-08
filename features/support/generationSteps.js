@@ -70,7 +70,7 @@ Then('the header on the sidebar will be {string}', function (header) {
 });
 
 Then('the footer on the sidebar will be {string}', function (footer) {
-  expect(this.outputHTML.getElementById('sidenavFooter').textContent).to.eql(footer);
+  expect(this.outputHTML.getElementById('sidenavFooter').textContent).to.contain(footer);
 });
 
 Then('the report will contain {int} feature(s)', function (featureCount) {

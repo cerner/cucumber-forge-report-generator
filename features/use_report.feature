@@ -6,6 +6,7 @@ Feature: Report Usage
   Background:
     Given there is a file named 'dog_care.feature' with the following contents:
       """
+      @pet_care @dogs
       Feature: Dog Care
         <In order to> care for and enjoy my pet
         <As a> dog owner
@@ -14,12 +15,13 @@ Feature: Report Usage
         Background:
           Given I have a dog
 
-        @feeding
+        @feeding 
         Scenario: Feeding the Dog
           Given the dog is hungery
           When I give dog food to the dog
           Then the dog will eat it
 
+        # Do not need examples for left to right and right to left petting directions
         @petting
         Scenario Outline: Petting the Dog
           Dog's do not like to be pet in the wrong direction.
@@ -34,6 +36,7 @@ Feature: Report Usage
       """
     And there is a file named 'cat_care.feature' with the following contents:
       """
+      @pet_care @cats
       Feature: Cat Care
         <In order to> care for and enjoy my pet
         <As a> cat owner
@@ -63,11 +66,6 @@ Feature: Report Usage
             | forwards   |
       """
 
-  Scenario: Generating a report when no feature files are provided
-    When a report is generated with the code "new Generator().generate()"
-    Then the report will contain 0 features
-    And the sidebar will contain 0 feature buttons
-
   Scenario: Clicking the feature buttons
     Given there is a report for the following feature files:
       | dog_care.feature |
@@ -94,3 +92,18 @@ Feature: Report Usage
     Then the first scenario button will be highlighted
     When the second scenario is scrolled into view
     Then the second scenario button will be highlighted
+
+  Scenario: Opening the settings drawer
+    Given there is a report for the feature file 'dog_care.feature'
+    When the settings button is clicked
+    Then the settings drawer will be displayed
+    When the settings button is clicked
+    Then the settings drawer will be hidden
+    
+  Scenario: Showing the tags in the report
+    Given there is a report for the feature file 'dog_care.feature'
+    And the settings button is clicked
+    When the box is checked to show tags
+    Then the tags displayed for the feature will be '@pet_care @dogs'
+    Then the tags displayed for the first scenario will be '@feeding'
+    Then the tags displayed for the second scenario will be '@petting'

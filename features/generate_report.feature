@@ -6,6 +6,7 @@ Feature: Report Generation
   Background:
     Given there is a file named 'dog_care.feature' with the following contents:
       """
+      @pet_care @dogs
       Feature: Dog Care
         <In order to> care for and enjoy my pet
         <As a> dog owner
@@ -35,6 +36,7 @@ Feature: Report Generation
       """
     And there is a file named 'cat_care.feature' with the following contents:
       """
+      @pet_care @cats
       Feature: Cat Care
         <In order to> care for and enjoy my pet
         <As a> cat owner

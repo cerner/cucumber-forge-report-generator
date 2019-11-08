@@ -53,6 +53,14 @@ When(/^the (first|second) scenario is scrolled into view$/, function (scenarioIn
   this.outputHTML.body.dispatchEvent(scrollEvt);
 });
 
+When('the settings button is clicked', function () {
+  this.outputHTML.getElementById('settingsButton').click();
+});
+
+When('the box is checked to show tags', function () {
+  this.outputHTML.getElementById('tagsCheckbox').click();
+});
+
 Then(/^the (first|second) feature (?:is|will be) displayed$/, function (featureIndex) {
   const index = featureIndex === 'first' ? 0 : 1;
   const featureWrappers = this.outputHTML.getElementsByClassName('feature-wrapper');
@@ -104,4 +112,27 @@ Then(/^the (first|second) scenario will be scrolled into view$/, function (scena
   const activeFeature = this.outputHTML.getElementsByClassName('feature-wrapper active')[0];
   const scenarioAnchors = Array.from(activeFeature.getElementsByClassName('anchor')).filter(anchor => anchor.hasAttribute('scenario-button'));
   expect(this.scrolledIntoView).to.eql(scenarioAnchors[index]);
+});
+
+Then(/^the settings drawer will be (displayed|hidden)$/, function (visibility) {
+  const settingsDrawer = this.outputHTML.getElementById('settingsDrawer');
+  const visibilityStatus = settingsDrawer.classList.contains('active');
+  if('displayed' === visibility) {
+    expect(visibilityStatus).to.be.true;
+  } else {
+    expect(visibilityStatus).to.be.false;
+  }
+});
+
+Then('the tags displayed for the feature will be {string}', function (expectedTagString) {
+  const activeFeature = this.outputHTML.getElementsByClassName('feature-wrapper active')[0];
+  const actualTagString = activeFeature.getElementsByClassName('tags')[0].textContent;  
+  expect(actualTagString.trim()).to.eql(expectedTagString);
+});
+
+Then('the tags displayed for the {word} scenario will be {string}', function (scenarioIndex, expectedTagString) {
+  const activeFeature = this.outputHTML.getElementsByClassName('feature-wrapper active')[0].getElementsByClassName('feature-body')[0];
+  const index = scenarioIndex === 'first' ? 0 : 1;
+  const actualTagString = activeFeature.getElementsByClassName('tags')[index].textContent;  
+  expect(actualTagString.trim()).to.eql(expectedTagString);
 });
