@@ -94,13 +94,19 @@ table, th, td {
 #settingsDrawer.active {
   display: block;
 }
+#settingsDrawer p {
+  color: grey;
+}
+#settingsDrawer a {
+  color: grey;
+}
 #settingsButton {
   padding: 0.25em;
   margin-left: 0.25em;
   cursor: pointer;
   vertical-align: middle;
 }
-#sidenavFooter a {
+#footerTitle {
   color: #3a7ca8;
   margin-left: calc(15vw - 6.25em);
 }
