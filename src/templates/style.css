@@ -13,7 +13,7 @@ body {
   background-color: #fcfcfc;
 }
 pre {
-  overflow: visible;
+  overflow-x: auto;
 }
 a.anchor {
   display: block;
