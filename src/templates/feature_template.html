@@ -16,15 +16,17 @@
             {{#each this.background.steps}}
               <p>{{this.name}}</p>
               {{#if this.table.length}}
-                <table class="step-table">
-                  {{#each this.table}}
-                    <tr>
-                      {{#each this}}
-                      <td>{{this}}</td>
-                      {{/each}}
-                    </tr>
-                  {{/each}}
-                </table>
+                <div class="table-wrapper">
+                  <table class="step-table">
+                    {{#each this.table}}
+                      <tr>
+                        {{#each this}}
+                        <td>{{this}}</td>
+                        {{/each}}
+                      </tr>
+                    {{/each}}
+                  </table>
+                </div>
               {{/if}}
               {{#if this.docString}}
                 <div class="docstring"><pre>{{this.docString}}</pre></div>
@@ -48,15 +50,17 @@
               {{#each this.steps}}
                 <p>{{this.name}}</p>
                 {{#if this.table.length}}
-                <table class="step-table">
-                  {{#each this.table}}
-                    <tr>
-                      {{#each this}}
-                      <td>{{this}}</td>
-                      {{/each}}
-                    </tr>
-                  {{/each}}
-                </table>
+                <div class="table-wrapper">
+                  <table class="step-table">
+                    {{#each this.table}}
+                      <tr>
+                        {{#each this}}
+                        <td>{{this}}</td>
+                        {{/each}}
+                      </tr>
+                    {{/each}}
+                  </table>
+                </div>
                 {{/if}}
                 {{#if this.docString}}
                   <div class="docstring"><pre>{{this.docString}}</pre></div>
@@ -65,23 +69,25 @@
               {{#if this.examples}}
                 <p>{{this.examples.name}}</p>
                 {{#if this.examples.table.length}}
-                <table class="example-table">
-                  {{#each this.examples.table}}
-                    {{#if @first}}
-                    <tr>
-                      {{#each this}}
-                      <th>{{this}}</th>
-                      {{/each}}
-                    </tr>
-                    {{else}}
-                    <tr>
-                      {{#each this}}
-                      <td>{{this}}</td>
-                      {{/each}}
-                    </tr>
-                    {{/if}}
-                  {{/each}}
-                </table>
+                <div class="table-wrapper">
+                  <table class="example-table">
+                    {{#each this.examples.table}}
+                      {{#if @first}}
+                      <tr>
+                        {{#each this}}
+                        <th>{{this}}</th>
+                        {{/each}}
+                      </tr>
+                      {{else}}
+                      <tr>
+                        {{#each this}}
+                        <td>{{this}}</td>
+                        {{/each}}
+                      </tr>
+                      {{/if}}
+                    {{/each}}
+                  </table>
+                </div>
                 {{/if}}
               {{/if}}
             </div>

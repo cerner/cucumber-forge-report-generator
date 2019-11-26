@@ -21,15 +21,18 @@ a.anchor {
   top: -1.5em;
 }
 
+.table-wrapper {
+  width: calc(70vw - 4em);
+  overflow-x: auto;
+}
 table {
   border-collapse: collapse;
   margin-left: 1em;
+  white-space: nowrap;
 }
-
 table, th, td {
   border: 1px solid black;
 }
-
 .step-table td, .example-table td, .example-table th {
   padding: 5px;
 }
