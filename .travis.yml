@@ -10,6 +10,7 @@ stages:
   - name: publish
     if: branch = master AND type != pull_request
   - name: docs
+    if: branch = master AND type != pull_request
 
 jobs:
   include:
