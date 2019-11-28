@@ -36,4 +36,4 @@ jobs:
     - name: "Regenerate Documentation"
       stage: docs
       os: linux
-      script: node regenerateDocsReport.js
+      script: sh ./.travis/deployDocs.sh

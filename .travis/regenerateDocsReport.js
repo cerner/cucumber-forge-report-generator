@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
-const Generator = require('./src/Generator');
+const Generator = require('../src/Generator');
 
 const FILE_ENCODING = 'utf-8';
 
@@ -29,26 +29,26 @@ const getFeatureFiles = (directoryName) => {
 };
 
 /* eslint-disable no-console */
-async function sh(cmd) {
-  return new Promise(((resolve, reject) => {
-    exec(cmd, (err, stdout, stderr) => {
-      if (err) {
-        console.error(err);
-        reject(err);
-      } else {
-        console.log(stdout);
-        console.log(stderr);
-        resolve({ stdout, stderr });
-      }
-    });
-  }));
-}
+// async function sh(cmd) {
+//   return new Promise(((resolve, reject) => {
+//     exec(cmd, (err, stdout, stderr) => {
+//       if (err) {
+//         console.error(err);
+//         reject(err);
+//       } else {
+//         console.log(stdout);
+//         console.log(stderr);
+//         resolve({ stdout, stderr });
+//       }
+//     });
+//   }));
+// }
 
 const featureFiles = getFeatureFiles(__dirname);
 new Generator().generate(featureFiles, 'cucumber-forge-report-generator').then((result) => {
   fs.writeFileSync(path.resolve(__dirname, './docs/index.html'), result, FILE_ENCODING);
 });
 
-sh('git commit -a -m "Regenerate docs"').then(() => {
-  sh('git push origin');
-});
+// sh('git commit -a -m "Regenerate docs"').then(() => {
+//   sh('git push origin');
+// });
