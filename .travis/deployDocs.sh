@@ -6,4 +6,5 @@ git checkout ${TRAVIS_BRANCH}
 
 node ./.travis/regenerateDocsReport.js
 
-git push https://${GH_TOKEN}@github.com/cerner/cucumber-forge-report-generator.git
+git commit ./docs/index.html -m "chore(docs) Regenerate docs"
+git push https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git
