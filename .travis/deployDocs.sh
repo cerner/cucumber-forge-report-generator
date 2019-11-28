@@ -7,6 +7,6 @@ git config --global push.default current
 git checkout ${TRAVIS_BRANCH}
 # git stash pop
 
-node regenerateDocsReport.js
+node ./.travis/regenerateDocsReport.js
 
 git push https://${GH_TOKEN}@github.com/cerner/cucumber-forge-report-generator.git
