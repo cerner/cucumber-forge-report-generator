@@ -46,7 +46,7 @@ const getFeatureFiles = (directoryName) => {
 
 const featureFiles = getFeatureFiles(__dirname);
 new Generator().generate(featureFiles, 'cucumber-forge-report-generator').then((result) => {
-  fs.writeFileSync(path.resolve(__dirname, './docs/index.html'), result, FILE_ENCODING);
+  fs.writeFileSync(path.resolve(__dirname, '../docs/index.html'), result, FILE_ENCODING);
 });
 
 // sh('git commit -a -m "Regenerate docs"').then(() => {
