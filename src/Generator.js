@@ -21,6 +21,7 @@ let featureHbTemplate;
 let cssStyles;
 let scripts;
 let logo;
+let cog;
 
 let projectName = 'Feature documentation';
 let reportName = DEFAULT_REPORT_NAME;
@@ -253,6 +254,7 @@ const create = async (files) => {
   docData.cssStyles = cssStyles;
   docData.scripts = scripts;
   docData.logo = logo;
+  docData.cog = cog;
   docData.creationdate = moment().format('LL');
   docData.author = author;
   docData.reportName = reportName;
@@ -273,6 +275,7 @@ class Generator {
     cssStyles = fs.readFileSync(path.resolve(__dirname, TEMPLATESDIR, 'style.css'), FILE_ENCODING);
     scripts = fs.readFileSync(path.resolve(__dirname, TEMPLATESDIR, 'scripts.js'), FILE_ENCODING);
     logo = fs.readFileSync(path.resolve(__dirname, TEMPLATESDIR, 'logo.b64'), FILE_ENCODING);
+    cog = fs.readFileSync(path.resolve(__dirname, TEMPLATESDIR, 'cog.b64'), FILE_ENCODING);
   }
 
   // eslint-disable-next-line class-methods-use-this
