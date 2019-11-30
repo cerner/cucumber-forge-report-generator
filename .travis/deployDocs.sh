@@ -1,4 +1,5 @@
 #!/bin/sh
+git pull --tags
 git checkout ${TRAVIS_BRANCH}
 
 if [ $(git tag --points-at HEAD) ]
