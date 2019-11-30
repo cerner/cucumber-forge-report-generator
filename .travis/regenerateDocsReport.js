@@ -28,7 +28,7 @@ const getFeatureFiles = (directoryName) => {
   return featureFiles;
 };
 
-const featureFiles = getFeatureFiles(__dirname);
+const featureFiles = getFeatureFiles(path.resolve(__dirname, '../'));
 new Generator().generate(featureFiles, 'cucumber-forge-report-generator').then((result) => {
   fs.writeFileSync(path.resolve(__dirname, '../docs/index.html'), result, FILE_ENCODING);
 });
