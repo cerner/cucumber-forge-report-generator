@@ -240,10 +240,50 @@ i.fa-angle-right, i.fa-angle-down {
         <div id="sidenavTitle"><h1>All Scenarios</h1></div>
         <div id="sidenav-subheader">
           <div id="headerTitle">cucumber-forge-report-generator</div>
-          <div id="authorAside">travis - November 30, 2019</div>
+          <div id="authorAside">jlkuester7 - November 30, 2019</div>
         </div>
       </div>
       <div class="sidenav-body">
+          <button id="" scroll-to-id="feature0" feature-wrapper-id="featureWrapper0" class="feature-button" title="Report Generation">
+            <i class="fas fa-angle-right"></i> Report Generation
+          </button>
+          <div class="panel">
+              <button id="feature0ScenarioButton0" scroll-to-id="feature0Scenario0" class="scenario-button" title="Generating an HTML report for a feature file">
+                <span>- Generating an HTML report for a feature file</span>
+              </button>
+              <button id="feature0ScenarioButton1" scroll-to-id="feature0Scenario1" class="scenario-button" title="Generating an HTML report for multiple feature files">
+                <span>- Generating an HTML report for multiple feature files</span>
+              </button>
+              <button id="feature0ScenarioButton2" scroll-to-id="feature0Scenario2" class="scenario-button" title="Generating an HTML report when the project name is provided">
+                <span>- Generating an HTML report when the project name is provided</span>
+              </button>
+              <button id="feature0ScenarioButton3" scroll-to-id="feature0Scenario3" class="scenario-button" title="Generating an HTML report filtered by a tag">
+                <span>- Generating an HTML report filtered by a tag</span>
+              </button>
+              <button id="feature0ScenarioButton4" scroll-to-id="feature0Scenario4" class="scenario-button" title="Generating a report when no feature files are provided">
+                <span>- Generating a report when no feature files are provided</span>
+              </button>
+          </div>
+          <button id="" scroll-to-id="feature1" feature-wrapper-id="featureWrapper1" class="feature-button" title="Report Usage">
+            <i class="fas fa-angle-right"></i> Report Usage
+          </button>
+          <div class="panel">
+              <button id="feature1ScenarioButton0" scroll-to-id="feature1Scenario0" class="scenario-button" title="Clicking the feature buttons">
+                <span>- Clicking the feature buttons</span>
+              </button>
+              <button id="feature1ScenarioButton1" scroll-to-id="feature1Scenario1" class="scenario-button" title="Clicking the scenario buttons">
+                <span>- Clicking the scenario buttons</span>
+              </button>
+              <button id="feature1ScenarioButton2" scroll-to-id="feature1Scenario2" class="scenario-button" title="Scrolling through the scenarios in a feature">
+                <span>- Scrolling through the scenarios in a feature</span>
+              </button>
+              <button id="feature1ScenarioButton3" scroll-to-id="feature1Scenario3" class="scenario-button" title="Opening the settings drawer">
+                <span>- Opening the settings drawer</span>
+              </button>
+              <button id="feature1ScenarioButton4" scroll-to-id="feature1Scenario4" class="scenario-button" title="Showing the tags in the report">
+                <span>- Showing the tags in the report</span>
+              </button>
+          </div>
       </div>
       <div id="sidenavFooter">
         <div id="settingsDrawer">
@@ -257,6 +297,289 @@ i.fa-angle-right, i.fa-angle-down {
     </div>
     <div class="main">
       
+      <div class="feature-wrapper" id=featureWrapper0>
+        <a class="anchor" id="feature0"></a>
+        <h2>Feature: Report Generation</h2>
+        <div class="feature-body">
+          <div class="feature-description"><pre><i>&lt;In order to&gt; record or communicate feature documentation
+&lt;As a&gt; consumer of cucumber-forge-report-generator
+&lt;I want&gt; to generate HTML reports directly from feature files</i></pre></div>
+
+          <h3>Background:</h3>
+          <div class="scenario-body">
+              <p>Given there is a file named &#x27;dog_care.feature&#x27; with the following contents:</p>
+                <div class="docstring"><pre>      @pet_care @dogs
+      Feature: Dog Care
+        &lt;In order to&gt; care for and enjoy my pet
+        &lt;As a&gt; dog owner
+        &lt;I want&gt; interact with my dog
+
+        Background:
+          Given I have a dog
+
+        @feeding
+        Scenario: Feeding the Dog
+          Given the dog is hungery
+          When I give dog food to the dog
+          Then the dog will eat it
+
+        # Do not need examples for left to right and right to left petting directions
+        @petting
+        Scenario Outline: Petting the Dog
+          Dog&#x27;s do not like to be pet in the wrong direction.
+
+          When I pet the dog&#x27;s hair &lt;direction:&gt;
+          Then the dog will &lt;result&gt;
+
+          Examples:
+            | direction: | result       |
+            | backwards  | lick my hand |
+            | forwards   | growl        |</pre></div>
+              <p>And there is a file named &#x27;cat_care.feature&#x27; with the following contents:</p>
+                <div class="docstring"><pre>      @pet_care @cats
+      Feature: Cat Care
+        &lt;In order to&gt; care for and enjoy my pet
+        &lt;As a&gt; cat owner
+        &lt;I want&gt; interact with my cat
+
+        Background:
+          Given I have a cat
+
+        @feeding
+        Scenario: Feeding the Cat
+          Given the cat is hungery
+          When I give the following food to the cat:
+            | fish  |
+            | steak |
+          Then the cat will eat it
+
+        @petting
+        Scenario Outline: Petting the Cat
+          Cat&#x27;s do not like to be pet in the wrong direction.
+
+          When I pet the cat&#x27;s hair &lt;direction:&gt;
+          Then the cat will hiss
+
+          Examples:
+            | direction: |
+            | backwards  |
+            | forwards   |</pre></div>
+              <p>And the variable &#x27;dogCarePath&#x27; contains the path to &#x27;dog_care.feature&#x27;</p>
+              <p>And the variable &#x27;catCarePath&#x27; contains the path to &#x27;cat_care.feature&#x27;</p>
+          </div>
+
+            <a class="anchor" id="feature0Scenario0" scenario-button="feature0ScenarioButton0"></a>
+            <h3>Scenario: Generating an HTML report for a feature file</h3>
+            <div class="scenario-body">
+                <p>Given the current date is {current_date}</p>
+                <p>And the username of the current user is {username}</p>
+                <p>When a report is generated with the code &quot;new Generator().generate([this.dogCarePath])&quot;</p>
+                <p>Then the title on the report will be &quot;Feature documentation - {current_date}&quot;</p>
+                <p>And the report will inculude CSS styling</p>
+                <p>And the report will include a favicon</p>
+                <p>And the report will contain 1 feature</p>
+                <p>And the report will contain 2 scenarios</p>
+                <p>And the report name on the sidebar will be &quot;All Scenarios&quot;</p>
+                <p>And the report will not contain gherkin comments</p>
+                <p>And the project title on the sidebar will be &quot;Feature documentation&quot;</p>
+                <p>And the header on the sidebar will be &quot;{username} - {current_date}&quot;</p>
+                <p>And the footer on the sidebar will be &quot;Cucumber Forge&quot;</p>
+                <p>And the sidebar will contain 1 feature button</p>
+                <p>And the sidebar will contain 2 scenario buttons</p>
+            </div>
+              <hr class="scenario-divider">
+            <a class="anchor" id="feature0Scenario1" scenario-button="feature0ScenarioButton1"></a>
+            <h3>Scenario: Generating an HTML report for multiple feature files</h3>
+            <div class="scenario-body">
+                <p>When a report is generated with the code &quot;new Generator().generate([this.dogCarePath, this.catCarePath])&quot;</p>
+                <p>Then the report will contain 2 features</p>
+                <p>And the report will contain 4 scenarios</p>
+                <p>And the sidebar will contain 2 feature buttons</p>
+                <p>And the sidebar will contain 4 scenario buttons</p>
+            </div>
+              <hr class="scenario-divider">
+            <a class="anchor" id="feature0Scenario2" scenario-button="feature0ScenarioButton2"></a>
+            <h3>Scenario: Generating an HTML report when the project name is provided</h3>
+            <div class="scenario-body">
+                <p>Given the current date is {current_date}</p>
+                <p>When a report is generated with the code &quot;new Generator().generate([this.dogCarePath], &#x27;Pet Project&#x27;)&quot;</p>
+                <p>Then the title on the report will be &quot;Pet Project - {current_date}&quot;</p>
+                <p>And the project title on the sidebar will be &quot;Pet Project&quot;</p>
+            </div>
+              <hr class="scenario-divider">
+            <a class="anchor" id="feature0Scenario3" scenario-button="feature0ScenarioButton3"></a>
+            <h3>Scenario Outline: Generating an HTML report filtered by a tag</h3>
+            <div class="scenario-body">
+                <div class="scenario-description"><pre><i>The features and scenarios included in a report can be filtered based on their tags.
+The provided tag can optionally be prefixed with &#x27;@&#x27;.</i></pre></div>
+                <p>When a report is generated with the code &quot;new Generator().generate([this.dogCarePath, this.catCarePath], null, &lt;tag:&gt;)&quot;</p>
+                <p>Then the report will contain 2 features</p>
+                <p>And the report will contain 2 scenarios</p>
+                <p>And the report name on the sidebar will be &lt;tag:&gt;</p>
+                <p>And the sidebar will contain 2 feature buttons</p>
+                <p>And the sidebar will contain 2 scenario buttons</p>
+                <p>Examples:</p>
+                <div class="table-wrapper">
+                  <table class="example-table">
+                      <tr>
+                        <th>tag:</th>
+                      </tr>
+                      <tr>
+                        <td>&#x27;feeding&#x27;</td>
+                      </tr>
+                      <tr>
+                        <td>&#x27;@feeding&#x27;</td>
+                      </tr>
+                  </table>
+                </div>
+            </div>
+              <hr class="scenario-divider">
+            <a class="anchor" id="feature0Scenario4" scenario-button="feature0ScenarioButton4"></a>
+            <h3>Scenario: Generating a report when no feature files are provided</h3>
+            <div class="scenario-body">
+                <p>When a report is generated with the code &quot;new Generator().generate()&quot;</p>
+                <p>Then the report will contain 0 features</p>
+                <p>And the sidebar will contain 0 feature buttons</p>
+            </div>
+        </div>
+      </div>
+
+      <div class="feature-wrapper" id=featureWrapper1>
+        <a class="anchor" id="feature1"></a>
+        <h2>Feature: Report Usage</h2>
+        <div class="feature-body">
+          <div class="feature-description"><pre><i>&lt;In order to&gt; navigate the feature documentation report
+&lt;As a&gt; someone viewing the HTML report in a web browser
+&lt;I want&gt; to be able to navigate the report with the built-in functionality</i></pre></div>
+
+          <h3>Background:</h3>
+          <div class="scenario-body">
+              <p>Given there is a file named &#x27;dog_care.feature&#x27; with the following contents:</p>
+                <div class="docstring"><pre>      @pet_care @dogs
+      Feature: Dog Care
+        &lt;In order to&gt; care for and enjoy my pet
+        &lt;As a&gt; dog owner
+        &lt;I want&gt; interact with my dog
+
+        Background:
+          Given I have a dog
+
+        @feeding 
+        Scenario: Feeding the Dog
+          Given the dog is hungery
+          When I give dog food to the dog
+          Then the dog will eat it
+
+        # Do not need examples for left to right and right to left petting directions
+        @petting
+        Scenario Outline: Petting the Dog
+          Dog&#x27;s do not like to be pet in the wrong direction.
+
+          When I pet the dog&#x27;s hair &lt;direction:&gt;
+          Then the dog will &lt;result&gt;
+
+          Examples:
+            | direction: | result       |
+            | backwards  | lick my hand |
+            | forwards   | growl        |</pre></div>
+              <p>And there is a file named &#x27;cat_care.feature&#x27; with the following contents:</p>
+                <div class="docstring"><pre>      @pet_care @cats
+      Feature: Cat Care
+        &lt;In order to&gt; care for and enjoy my pet
+        &lt;As a&gt; cat owner
+        &lt;I want&gt; interact with my cat
+
+        Background:
+          Given I have a cat
+
+        @feeding
+        Scenario: Feeding the Cat
+          Given the cat is hungery
+          When I give the following food to the cat:
+            | fish  |
+            | steak |
+          Then the cat will eat it
+
+        @petting
+        Scenario Outline: Petting the Cat
+          Cat&#x27;s do not like to be pet in the wrong direction.
+
+          When I pet the cat&#x27;s hair &lt;direction:&gt;
+          Then the cat will hiss
+
+          Examples:
+            | direction: |
+            | backwards  |
+            | forwards   |</pre></div>
+          </div>
+
+            <a class="anchor" id="feature1Scenario0" scenario-button="feature1ScenarioButton0"></a>
+            <h3>Scenario: Clicking the feature buttons</h3>
+            <div class="scenario-body">
+                <p>Given there is a report for the following feature files:</p>
+                <div class="table-wrapper">
+                  <table class="step-table">
+                      <tr>
+                        <td>dog_care.feature</td>
+                      </tr>
+                      <tr>
+                        <td>cat_care.feature</td>
+                      </tr>
+                  </table>
+                </div>
+                <p>And the first feature is displayed</p>
+                <p>And the scenario buttons for the first feature are expanded in the sidebar</p>
+                <p>When the second feature button is clicked</p>
+                <p>Then the second feature will be displayed</p>
+                <p>And the scenario buttons for the second feature will be expanded in the sidebar</p>
+            </div>
+              <hr class="scenario-divider">
+            <a class="anchor" id="feature1Scenario1" scenario-button="feature1ScenarioButton1"></a>
+            <h3>Scenario: Clicking the scenario buttons</h3>
+            <div class="scenario-body">
+                <p>Given there is a report for the feature file &#x27;dog_care.feature&#x27;</p>
+                <p>And the report will contain 2 scenarios</p>
+                <p>When the first scenario button is clicked</p>
+                <p>Then the first scenario button will be highlighted</p>
+                <p>And the first scenario will be scrolled into view</p>
+                <p>When the second scenario button is clicked</p>
+                <p>Then the second scenario button will be highlighted</p>
+                <p>And the second scenario will be scrolled into view</p>
+            </div>
+              <hr class="scenario-divider">
+            <a class="anchor" id="feature1Scenario2" scenario-button="feature1ScenarioButton2"></a>
+            <h3>Scenario: Scrolling through the scenarios in a feature</h3>
+            <div class="scenario-body">
+                <p>Given there is a report for the feature file &#x27;dog_care.feature&#x27;</p>
+                <p>When the first scenario is scrolled into view</p>
+                <p>Then the first scenario button will be highlighted</p>
+                <p>When the second scenario is scrolled into view</p>
+                <p>Then the second scenario button will be highlighted</p>
+            </div>
+              <hr class="scenario-divider">
+            <a class="anchor" id="feature1Scenario3" scenario-button="feature1ScenarioButton3"></a>
+            <h3>Scenario: Opening the settings drawer</h3>
+            <div class="scenario-body">
+                <p>Given there is a report for the feature file &#x27;dog_care.feature&#x27;</p>
+                <p>When the settings button is clicked</p>
+                <p>Then the settings drawer will be displayed</p>
+                <p>When the settings button is clicked</p>
+                <p>Then the settings drawer will be hidden</p>
+            </div>
+              <hr class="scenario-divider">
+            <a class="anchor" id="feature1Scenario4" scenario-button="feature1ScenarioButton4"></a>
+            <h3>Scenario: Showing the tags in the report</h3>
+            <div class="scenario-body">
+                <p>Given there is a report for the feature file &#x27;dog_care.feature&#x27;</p>
+                <p>And the settings button is clicked</p>
+                <p>When the box is checked to show tags</p>
+                <p>Then the tags displayed for the feature will be &#x27;@pet_care @dogs&#x27;</p>
+                <p>Then the tags displayed for the first scenario will be &#x27;@feeding&#x27;</p>
+                <p>Then the tags displayed for the second scenario will be &#x27;@petting&#x27;</p>
+            </div>
+        </div>
+      </div>
+
     </div>
   </body>
   <script>
