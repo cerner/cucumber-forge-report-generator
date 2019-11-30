@@ -13,7 +13,7 @@ body {
   background-color: #fcfcfc;
 }
 pre {
-  overflow: visible;
+  overflow-x: auto;
 }
 a.anchor {
   display: block;
@@ -21,15 +21,18 @@ a.anchor {
   top: -1.5em;
 }
 
+.table-wrapper {
+  width: calc(70vw - 4em);
+  overflow-x: auto;
+}
 table {
   border-collapse: collapse;
   margin-left: 1em;
+  white-space: nowrap;
 }
-
 table, th, td {
   border: 1px solid black;
 }
-
 .step-table td, .example-table td, .example-table th {
   padding: 5px;
 }
@@ -94,13 +97,21 @@ table, th, td {
 #settingsDrawer.active {
   display: block;
 }
-#sidenavFooter i {
-  padding: 0.25em;
-  cursor: pointer;
+#settingsDrawer p {
+  color: grey;
 }
-#sidenavFooter a {
+#settingsDrawer a {
+  color: grey;
+}
+#settingsButton {
+  padding: 0.25em;
+  margin-left: 0.25em;
+  cursor: pointer;
+  vertical-align: middle;
+}
+#footerTitle {
   color: #3a7ca8;
-  margin-left: calc(15vw - 6em);
+  margin-left: calc(15vw - 6.25em);
 }
 .feature-button {
   font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
