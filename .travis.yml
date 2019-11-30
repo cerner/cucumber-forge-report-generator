@@ -9,6 +9,8 @@ stages:
   - name: test
   - name: publish
     if: branch = master AND type != pull_request
+  - name: docs
+    if: branch = master AND type != pull_request
 
 jobs:
   include:
@@ -32,3 +34,7 @@ jobs:
       stage: publish
       os: linux
       script: npx semantic-release
+    - name: "Regenerate Documentation"
+      stage: docs
+      os: linux
+      script: sh ./.travis/deployDocs.sh
