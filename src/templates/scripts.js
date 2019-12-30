@@ -128,8 +128,14 @@ const init = () => {
   window.addEventListener('scroll', updateActiveScenarioWhenScrolling, true);
 
   // Add listeners to settings controls
-  document.getElementById('settingsButton').addEventListener('click', toggleSettingsDrawer);
-  document.getElementById('tagsCheckbox').addEventListener('click', toggleTagDisplay);
+  const settingsButton = document.getElementById('settingsButton');
+  if (settingsButton) {
+    settingsButton.addEventListener('click', toggleSettingsDrawer);
+  }
+  const tagsCheckbox = document.getElementById('tagsCheckbox');
+  if (tagsCheckbox) {
+    tagsCheckbox.addEventListener('click', toggleTagDisplay);
+  }
 
   // Open the first feature.
   const firstFeatureButton = document.getElementsByClassName('feature-button')[0];
