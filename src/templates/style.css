@@ -113,6 +113,22 @@ table, th, td {
   color: #3a7ca8;
   margin-left: calc(15vw - 6.25em);
 }
+.directory-button {
+  font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
+  background-color: #404040;
+  /* background-color: #272525; */
+  color: #d9d9d9;
+  cursor: pointer;
+  padding: 0.75em;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  white-space: nowrap;
+}
+.directory-button.active, .directory-button:hover {
+  font-weight: bold;
+}
 .feature-button {
   font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
   background-color: #404040;
@@ -221,5 +237,13 @@ i.fa-angle-right, i.fa-angle-down {
   display: none;
 }
 .tags.active {
+  display: block;
+}
+ul {
+  list-style-type: none;
+  padding-left: 0.5em;
+  display: none;
+}
+ul.active {
   display: block;
 }
