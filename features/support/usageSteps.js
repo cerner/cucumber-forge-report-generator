@@ -6,15 +6,13 @@ const { expect } = require('chai');
 
 const Generator = require('../../src/Generator');
 
-Given('there is a report for the following feature files:', function (featureFilesTable) {
-  const getPath = fileName => path.resolve(__dirname, fileName[0]);
-  const filePaths = featureFilesTable.raw().map(getPath);
-  return new Generator().generate(filePaths).then(report => this.setOutput(report));
+Given('there is a report for the top-level directory', function () {
+  return new Generator().generate(path.resolve(__dirname)).then((report) => this.setOutput(report));
 });
 
-Given('there is a report for the feature file {string}', function (featureFile) {
-  const filePath = path.resolve(__dirname, featureFile);
-  return new Generator().generate([filePath]).then(report => this.setOutput(report));
+Given('there is a report for the {string} directory', function (fileDirectory) {
+  const filePath = path.resolve(__dirname, fileDirectory);
+  return new Generator().generate(filePath).then((report) => this.setOutput(report));
 });
 
 When('the second feature button is clicked', function () {
@@ -36,7 +34,7 @@ When(/^the (first|second) scenario button is clicked$/, function (scenarioIndex)
 When(/^the (first|second) scenario is scrolled into view$/, function (scenarioIndex) {
   const index = scenarioIndex === 'first' ? 0 : 1;
   const activeFeature = this.outputHTML.getElementsByClassName('feature-wrapper active')[0];
-  const scenarioAnchors = Array.from(activeFeature.getElementsByClassName('anchor')).filter(anchor => anchor.hasAttribute('scenario-button'));
+  const scenarioAnchors = Array.from(activeFeature.getElementsByClassName('anchor')).filter((anchor) => anchor.hasAttribute('scenario-button'));
   const scenarioAnchor = scenarioAnchors[index];
   // To simulate scrolling, set the active class on our desired anchor
   // and then trigger the scroll event.
@@ -110,14 +108,14 @@ Then(/^the (first|second) scenario button will be highlighted$/, function (scena
 Then(/^the (first|second) scenario will be scrolled into view$/, function (scenarioIndex) {
   const index = scenarioIndex === 'first' ? 0 : 1;
   const activeFeature = this.outputHTML.getElementsByClassName('feature-wrapper active')[0];
-  const scenarioAnchors = Array.from(activeFeature.getElementsByClassName('anchor')).filter(anchor => anchor.hasAttribute('scenario-button'));
+  const scenarioAnchors = Array.from(activeFeature.getElementsByClassName('anchor')).filter((anchor) => anchor.hasAttribute('scenario-button'));
   expect(this.scrolledIntoView).to.eql(scenarioAnchors[index]);
 });
 
 Then(/^the settings drawer will be (displayed|hidden)$/, function (visibility) {
   const settingsDrawer = this.outputHTML.getElementById('settingsDrawer');
   const visibilityStatus = settingsDrawer.classList.contains('active');
-  if('displayed' === visibility) {
+  if (visibility === 'displayed') {
     expect(visibilityStatus).to.be.true;
   } else {
     expect(visibilityStatus).to.be.false;
@@ -126,13 +124,13 @@ Then(/^the settings drawer will be (displayed|hidden)$/, function (visibility) {
 
 Then('the tags displayed for the feature will be {string}', function (expectedTagString) {
   const activeFeature = this.outputHTML.getElementsByClassName('feature-wrapper active')[0];
-  const actualTagString = activeFeature.getElementsByClassName('tags')[0].textContent;  
+  const actualTagString = activeFeature.getElementsByClassName('tags')[0].textContent;
   expect(actualTagString.trim()).to.eql(expectedTagString);
 });
 
 Then('the tags displayed for the {word} scenario will be {string}', function (scenarioIndex, expectedTagString) {
   const activeFeature = this.outputHTML.getElementsByClassName('feature-wrapper active')[0].getElementsByClassName('feature-body')[0];
   const index = scenarioIndex === 'first' ? 0 : 1;
-  const actualTagString = activeFeature.getElementsByClassName('tags')[index].textContent;  
+  const actualTagString = activeFeature.getElementsByClassName('tags')[index].textContent;
   expect(actualTagString.trim()).to.eql(expectedTagString);
 });

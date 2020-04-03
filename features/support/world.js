@@ -5,6 +5,7 @@ const fs = require('fs');
 class CustomWorld {
   constructor() {
     this.featureFiles = [];
+    this.featureDirs = [];
     this.output = null;
     this.window = null;
     this.outputHTML = null;
@@ -31,8 +32,9 @@ class CustomWorld {
 }
 
 After(function () {
-// Clean up any feature files that got written.
-  return this.featureFiles.forEach(filePath => fs.unlinkSync(filePath));
+  // Clean up any feature files that got written.
+  this.featureFiles.forEach((filePath) => fs.unlinkSync(filePath));
+  this.featureDirs.forEach((featureDir) => fs.rmdirSync(featureDir));
 });
 
 setWorldConstructor(CustomWorld);

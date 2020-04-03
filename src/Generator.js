@@ -1,14 +1,11 @@
+const dirTree = require('directory-tree');
 const fs = require('fs');
 const handlebars = require('handlebars');
 const i18n = require('i18next');
 const i18nBackend = require('i18next-node-fs-backend');
-const linereader = require('line-reader');
 const moment = require('moment');
 const os = require('os');
 const path = require('path');
-const util = require('util');
-
-const eachLine = util.promisify(linereader.eachLine);
 
 const FILE_ENCODING = 'utf-8';
 const LANGUAGE = 'en';
@@ -16,6 +13,7 @@ const TEMPLATESDIR = 'templates';
 const DEFAULT_REPORT_NAME = 'All Scenarios';
 
 let author;
+let sidenavButtonsTemplate;
 let docHbTemplate;
 let featureHbTemplate;
 let cssStyles;
@@ -26,6 +24,7 @@ let cog;
 let projectName = 'Feature documentation';
 let reportName = DEFAULT_REPORT_NAME;
 let tagFilter = null;
+let idSequence = 1;
 
 const lineStartsWithI18n = (line, i18nkey) => line.startsWith(i18n.t(i18nkey));
 
@@ -79,7 +78,7 @@ const getNewPhase = (line) => {
   return null;
 };
 
-const parseFeatureFile = async (featureFilename) => {
+const getFeatureFromFile = (featureFilename) => {
   const feature = {};
   feature.scenarios = [];
   feature.tags = [];
@@ -88,7 +87,9 @@ const parseFeatureFile = async (featureFilename) => {
   let tags = [];
 
   let currentPhase = null;
-  await eachLine(featureFilename, (nextLine) => {
+
+  const fileLines = fs.readFileSync(featureFilename, FILE_ENCODING).replace('\r\n', '\n').split('\n');
+  fileLines.forEach((nextLine) => {
     const line = nextLine.trim();
     const newPhase = getNewPhase(line);
     if (currentPhase === 'DOC_STRING_STARTED') {
@@ -167,48 +168,57 @@ const getFilteredScenarios = (scenarios) => scenarios.map((scenario) => {
   return undefined;
 }).filter((scenario) => scenario);
 
-const getFilteredFeatures = (features) => {
-  const filteredFeatures = [];
-  features.forEach((feature) => {
+const populateHtmlIdentifiers = (feature) => {
+  feature.featureId = idSequence;
+  idSequence += 1;
+  feature.featureWrapperId = idSequence;
+  idSequence += 1;
+  feature.scenarios.forEach((scenario) => {
+    scenario.scenarioId = idSequence;
+    idSequence += 1;
+    scenario.scenarioButtonId = idSequence;
+    idSequence += 1;
+  });
+};
+
+const populateTagStrings = (feature) => {
+  feature.tagString = '';
+  feature.tags.forEach((tag) => { feature.tagString += `${tag} `; });
+  feature.scenarios.forEach((scenario) => {
+    scenario.tagString = '';
+    scenario.tags.forEach((tag) => { scenario.tagString += `${tag} `; });
+  });
+};
+
+// eslint-disable-next-line no-unused-vars
+const parseFeatureFile = (item, nodePath, fsStats) => {
+  let feature = getFeatureFromFile(item.path);
+
+  if (tagFilter) {
     const filteredScenarios = getFilteredScenarios(feature.scenarios);
     if (filteredScenarios.length > 0) {
       feature.scenarios = filteredScenarios;
-      filteredFeatures.push(feature);
+    } else {
+      feature = undefined;
+    }
+  }
+  if (feature) {
+    item.feature = feature;
+    populateHtmlIdentifiers(feature);
+    populateTagStrings(feature);
+  }
+};
+
+const getFeaturesHtml = (featureFileTree) => {
+  let featuresHtml = '';
+  featureFileTree.children.forEach((child) => {
+    if (child.type === 'file') {
+      featuresHtml += featureHbTemplate(child.feature);
+    } else if (child.type === 'directory') {
+      featuresHtml += getFeaturesHtml(child);
     }
   });
-  return filteredFeatures;
-};
-
-const parseFeatures = async (files) => {
-  const featureFiles = files;
-  const sortedFeatureFiles = featureFiles.sort();
-  return Promise.all(sortedFeatureFiles.map(parseFeatureFile));
-};
-
-const populateHtmlIdentifiers = (features) => {
-  let featureCount = 0;
-  features.forEach((feature) => {
-    feature.featureId = `feature${featureCount}`;
-    feature.featureWrapperId = `featureWrapper${featureCount}`;
-    let scenarioCount = 0;
-    feature.scenarios.forEach((scenario) => {
-      scenario.scenarioId = `${feature.featureId}Scenario${scenarioCount}`;
-      scenario.scenarioButtonId = `${feature.featureId}ScenarioButton${scenarioCount}`;
-      scenarioCount += 1;
-    });
-    featureCount += 1;
-  });
-};
-
-const populateTagStrings = (features) => {
-  features.forEach((feature) => {
-    feature.tagString = '';
-    feature.tags.forEach((tag) => { feature.tagString += `${tag} `; });
-    feature.scenarios.forEach((scenario) => {
-      scenario.tagString = '';
-      scenario.tags.forEach((tag) => { scenario.tagString += `${tag} `; });
-    });
-  });
+  return featuresHtml;
 };
 
 const trimCucumberKeywords = (name, ...i18nkeys) => {
@@ -218,37 +228,62 @@ const trimCucumberKeywords = (name, ...i18nkeys) => {
   return name.slice(charsToTrim).trim();
 };
 
-const getFeatureButtons = (features) => {
+const getFeatureButtons = (featureFileTree) => {
   const featureButtons = [];
-
-  features.forEach((feature) => {
-    const featureButton = {};
-    featureButton.featureId = feature.featureId;
-    featureButton.featureWrapperId = feature.featureWrapperId;
-    featureButton.title = trimCucumberKeywords(feature.name, 'feature');
-    featureButton.scenarioButtons = [];
-    feature.scenarios.forEach((scenario) => {
-      const scenarioButton = {};
-      scenarioButton.id = scenario.scenarioButtonId;
-      scenarioButton.scenarioId = scenario.scenarioId;
-      scenarioButton.title = trimCucumberKeywords(scenario.name, 'scenario', 'scenario_outline');
-      featureButton.scenarioButtons.push(scenarioButton);
-    });
-    featureButtons.push(featureButton);
+  featureFileTree.children.forEach((child) => {
+    if (child.type === 'file') {
+      const { feature } = child;
+      const featureButton = {};
+      featureButton.featureId = feature.featureId;
+      featureButton.featureWrapperId = feature.featureWrapperId;
+      featureButton.title = trimCucumberKeywords(feature.name, 'feature');
+      featureButton.scenarioButtons = [];
+      feature.scenarios.forEach((scenario) => {
+        const scenarioButton = {};
+        scenarioButton.id = scenario.scenarioButtonId;
+        scenarioButton.scenarioId = scenario.scenarioId;
+        scenarioButton.title = trimCucumberKeywords(scenario.name, 'scenario', 'scenario_outline');
+        featureButton.scenarioButtons.push(scenarioButton);
+      });
+      featureButtons.push(featureButton);
+    }
   });
   return featureButtons;
 };
 
-const create = async (files) => {
-  const features = await parseFeatures(files);
-  const filteredFeatures = tagFilter ? getFilteredFeatures(features) : features;
-  populateHtmlIdentifiers(filteredFeatures);
-  populateTagStrings(filteredFeatures);
+const getDirectoryButtonHtml = (featureFileTree) => {
+  const sidenavData = {};
+  sidenavData.title = featureFileTree.name;
+  sidenavData.featureButtons = getFeatureButtons(featureFileTree);
+  sidenavData.sidenavButtonsHtml = '';
 
-  let featuresHtml = '';
-  filteredFeatures.forEach((filteredFeature) => {
-    featuresHtml += featureHbTemplate(filteredFeature);
+  featureFileTree.children.forEach((child) => {
+    if (child.type === 'directory') {
+      sidenavData.sidenavButtonsHtml += getDirectoryButtonHtml(child);
+    }
   });
+  return sidenavButtonsTemplate(sidenavData);
+};
+
+const getSidenavButtonsHtml = (featureFileTree) => {
+  // Reduce directories at the root of the tree if they only have a single child that is a directory
+  let sidenavButtonsHtml = '';
+  while (featureFileTree.children.length === 1 && featureFileTree.children[0].type === 'directory') {
+    // Only advance if new root has no feature children
+    const [newRoot] = featureFileTree.children;
+    if (newRoot.children.filter((child) => child.type === 'file').length === 0) {
+      featureFileTree = newRoot;
+    }
+  }
+
+  featureFileTree.children.forEach((child) => {
+    sidenavButtonsHtml += getDirectoryButtonHtml(child);
+  });
+  return sidenavButtonsHtml;
+};
+
+const create = (directoryPath) => {
+  const featureFileTree = dirTree(directoryPath, { extensions: /\.feature/ }, parseFeatureFile);
 
   const docData = {};
   docData.cssStyles = cssStyles;
@@ -259,8 +294,8 @@ const create = async (files) => {
   docData.author = author;
   docData.reportName = reportName;
   docData.projectName = projectName;
-  docData.featuresHtml = featuresHtml;
-  docData.featureButtons = getFeatureButtons(filteredFeatures);
+  docData.featuresHtml = getFeaturesHtml(featureFileTree);
+  docData.sidenavButtonsHtml = getSidenavButtonsHtml(featureFileTree);
   return docHbTemplate(docData);
 };
 
@@ -268,6 +303,8 @@ class Generator {
   constructor() {
     author = os.userInfo().username;
 
+    const sidenavButtonsTemplatePath = path.resolve(__dirname, TEMPLATESDIR, 'sidenav_buttons_template.html');
+    sidenavButtonsTemplate = handlebars.compile(fs.readFileSync(sidenavButtonsTemplatePath, FILE_ENCODING));
     const docTemplatePath = path.resolve(__dirname, TEMPLATESDIR, 'doc_template.html');
     docHbTemplate = handlebars.compile(fs.readFileSync(docTemplatePath, FILE_ENCODING));
     const featureTemplatePath = path.resolve(__dirname, TEMPLATESDIR, 'feature_template.html');
@@ -279,7 +316,10 @@ class Generator {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async generate(files = [], name = null, tag = null) {
+  async generate(directoryPath, name = null, tag = null) {
+    if (!directoryPath) {
+      throw new Error('U done messed up');
+    }
     if (name) {
       projectName = name.trim();
     }
@@ -300,7 +340,7 @@ class Generator {
         loadPath: `${__dirname}/locales/{{lng}}/{{ns}}.json`,
       },
     });
-    return create(files);
+    return create(directoryPath);
   }
 }
 

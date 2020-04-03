@@ -4,7 +4,7 @@ Feature: Report Generation
   <I want> to generate HTML reports directly from feature files
 
   Background:
-    Given there is a file named 'dog_care.feature' with the following contents:
+    Given there is a file named 'dog_care.feature' in the 'test' directory with the following contents:
       """
       @pet_care @dogs
       Feature: Dog Care
@@ -34,7 +34,7 @@ Feature: Report Generation
             | backwards  | lick my hand |
             | forwards   | growl        |
       """
-    And there is a file named 'cat_care.feature' with the following contents:
+    And there is a file named 'cat_care.feature' in the 'test1' directory with the following contents:
       """
       @pet_care @cats
       Feature: Cat Care
@@ -65,13 +65,14 @@ Feature: Report Generation
             | backwards  |
             | forwards   |
       """
-    And the variable 'dogCarePath' contains the path to 'dog_care.feature'
-    And the variable 'catCarePath' contains the path to 'cat_care.feature'
+    And the variable 'dogCarePath' contains the path to the 'test' directory
+    And the variable 'catCarePath' contains the path to the 'test1' directory
+    And the variable 'allFeaturesPath' contains the path to the top-level directory
 
   Scenario: Generating an HTML report for a feature file
     Given the current date is {current_date}
     And the username of the current user is {username}
-    When a report is generated with the code "new Generator().generate([this.dogCarePath])"
+    When a report is generated with the code "new Generator().generate(this.dogCarePath)"
     Then the title on the report will be "Feature documentation - {current_date}"
     And the report will inculude CSS styling
     And the report will include a favicon
@@ -86,7 +87,7 @@ Feature: Report Generation
     And the sidebar will contain 2 scenario buttons
 
   Scenario: Generating an HTML report for multiple feature files
-    When a report is generated with the code "new Generator().generate([this.dogCarePath, this.catCarePath])"
+    When a report is generated with the code "new Generator().generate(this.allFeaturesPath)"
     Then the report will contain 2 features
     And the report will contain 4 scenarios
     And the sidebar will contain 2 feature buttons
@@ -94,7 +95,7 @@ Feature: Report Generation
 
   Scenario: Generating an HTML report when the project name is provided
     Given the current date is {current_date}
-    When a report is generated with the code "new Generator().generate([this.dogCarePath], 'Pet Project')"
+    When a report is generated with the code "new Generator().generate(this.dogCarePath, 'Pet Project')"
     Then the title on the report will be "Pet Project - {current_date}"
     And the project title on the sidebar will be "Pet Project"
 
@@ -102,7 +103,7 @@ Feature: Report Generation
     The features and scenarios included in a report can be filtered based on their tags.
     The provided tag can optionally be prefixed with '@'.
 
-    When a report is generated with the code "new Generator().generate([this.dogCarePath, this.catCarePath], null, <tag:>)"
+    When a report is generated with the code "new Generator().generate(this.allFeaturesPath, null, <tag:>)"
     Then the report will contain 2 features
     And the report will contain 2 scenarios
     And the report name on the sidebar will be <tag:>
@@ -114,7 +115,7 @@ Feature: Report Generation
       | 'feeding'  |
       | '@feeding' |
 
-  Scenario: Generating a report when no feature files are provided
-    When a report is generated with the code "new Generator().generate()"
-    Then the report will contain 0 features
-    And the sidebar will contain 0 feature buttons
+  # Scenario: Generating a report when no feature files are provided
+  #   When a report is generated with the code "new Generator().generate()"
+  #   Then the report will contain 0 features
+  #   And the sidebar will contain 0 feature buttons

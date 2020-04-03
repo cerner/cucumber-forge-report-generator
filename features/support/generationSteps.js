@@ -12,14 +12,23 @@ const FILE_ENCODING = 'utf-8';
 // eslint-disable-next-line no-unused-vars
 const Generator = require('../../src/Generator');
 
-Given('there is a file named {string} with the following contents:', function (fileName, contents) {
-  const filePath = path.resolve(__dirname, fileName);
+Given('there is a file named {string} in the {string} directory with the following contents:', function (fileName, fileDirectory, contents) {
+  const dirPath = path.resolve(__dirname, fileDirectory);
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath);
+    this.featureDirs.push(dirPath);
+  }
+  const filePath = path.resolve(dirPath, fileName);
   this.featureFiles.push(filePath);
   fs.writeFileSync(filePath, contents, FILE_ENCODING);
 });
 
-Given('the variable {string} contains the path to {string}', function (variableName, fileName) {
+Given('the variable {string} contains the path to the {string} directory', function (variableName, fileName) {
   this[variableName] = path.resolve(__dirname, fileName);
+});
+
+Given('the variable {string} contains the path to the top-level directory', function (variableName) {
+  this[variableName] = path.resolve(__dirname);
 });
 
 Given(/^the current date is \{current_date\}$/, function () {
@@ -33,7 +42,7 @@ Given(/^the username of the current user is \{username\}$/, function () {
 When('a report is generated with the code {string}', function (generationFunction) {
   // eslint-disable-next-line no-eval
   return eval(generationFunction)
-    .then(output => this.setOutput(output));
+    .then((output) => this.setOutput(output));
 });
 
 Then('the title on the report will be {string}', function (reportTitle) {
@@ -88,7 +97,7 @@ Then('the report will contain {int} scenario(s)', function (scenarioCount) {
 Then('the report will not contain gherkin comments', function () {
   const commentPattern = new RegExp('^#.*');
   const comments = Array.from(this.outputHTML.getElementsByTagName('*'))
-    .filter(obj => commentPattern.test(obj.innerHTML));
+    .filter((obj) => commentPattern.test(obj.innerHTML));
   expect(comments.length).to.eql(0);
 });
 
