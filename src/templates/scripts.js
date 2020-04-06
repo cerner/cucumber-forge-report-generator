@@ -18,11 +18,11 @@ const toggleFunctionAccordion = (element) => {
   panel.classList.toggle('active');
 
   if (panel.classList.contains('active')) {
-    icon.classList.remove('fa-angle-down');
-    icon.classList.add('fa-angle-right');
-  } else {
     icon.classList.add('fa-angle-down');
     icon.classList.remove('fa-angle-right');
+  } else {
+    icon.classList.remove('fa-angle-down');
+    icon.classList.add('fa-angle-right');
   }
 };
 

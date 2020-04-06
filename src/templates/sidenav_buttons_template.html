@@ -1,6 +1,6 @@
 <li>
-    <button class="directory-button" title=" {{title}}">
-      <i class="far fa-folder"></i> {{title}}
+    <button class="directory-button" title="{{title}}">
+      <i class="far fa-folder"></i>&nbsp;&nbsp;{{title}}
     </button>
     <ul>
       {{{sidenavButtonsHtml}}}
@@ -12,7 +12,7 @@
           <ul>
             {{#each this.scenarioButtons}}
               <li>
-                <button id="{{this.id}}" scroll-to-id="{{this.scenarioId}}" class="scenario-button" title="{{this.title}}">
+                <button id="{{this.id}}" scroll-to-id="{{this.scenarioId}}" class="scenario-button{{#if @last}} last{{/if}}" title="{{this.title}}">
                   <span>- {{this.title}}</span>
                 </button>
               </li>

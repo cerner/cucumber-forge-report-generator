@@ -56,6 +56,7 @@ table, th, td {
     height: 0;
 }
 .sidenav-body {
+  background-color: #404040;
   min-height: 100%;
   margin-top: 7em;
   margin-bottom: 2em;
@@ -117,35 +118,46 @@ table, th, td {
   font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
   background-color: #404040;
   /* background-color: #272525; */
-  color: #d9d9d9;
+  /* color: #d9d9d9; */
+  color: #a9a9a9;
   cursor: pointer;
-  padding: 0.75em;
+  padding: 0.25em;
   width: 100%;
   text-align: left;
   border: none;
   outline: none;
   white-space: nowrap;
+  padding-left: 0em;
 }
 .directory-button.active, .directory-button:hover {
-  font-weight: bold;
+  color: white;
+  /* font-weight: bold; */
 }
 .feature-button {
   font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
   background-color: #404040;
-  color: #d9d9d9;
+  /* background-color: #272525; */
+  /* color: #d9d9d9; */
+  color: #a9a9a9;
   cursor: pointer;
-  padding: 0.75em;
+  padding: 0.25em;
   width: 100%;
   text-align: left;
   border: none;
   outline: none;
   white-space: nowrap;
+  border-top-left-radius: 0.25em;
+  border-bottom-left-radius: 0.85em;
 }
 .feature-button.active, .feature-button:hover {
   background-color: #fcfcfc;
   font-weight: bold;
   color: #404040;
   border-bottom: solid 1px #c9c9c9;
+  margin-bottom: -1px;
+}
+.feature-button:hover:not(.active) {  
+  border-bottom-left-radius: 0.25em;
 }
 i.fa-angle-right, i.fa-angle-down { 
   width: 0.6em; 
@@ -160,7 +172,7 @@ i.fa-angle-right, i.fa-angle-down {
   background-color: #e2e2e2;
   color: #404040;
   cursor: pointer;
-  padding: 0.5em;
+  padding: 0.25em;
   width: 100%;
   text-align: left;
   outline: none;
@@ -173,8 +185,11 @@ i.fa-angle-right, i.fa-angle-down {
 .scenario-button.active, .scenario-button:hover {
   background-color: #ccc;
 }
+.scenario-button.last {
+  border-bottom-left-radius: 0.85em;
+}
 .scenario-button span {
-  margin-left: 1em;
+  margin-left: 0.25em;
 }
 
 /* Main Content Window Style */
