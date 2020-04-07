@@ -287,12 +287,20 @@ const getDirectoryButtonHtml = (featureFileTree) => {
 
 const getSidenavButtonsHtml = (featureFileTree) => {
   let buttonsHtml = '';
-  featureFileTree.children.forEach((child) => { buttonsHtml += getDirectoryButtonHtml(child); });
+  // If the top level directory contains feature files, run on the top-level and not the children.
+  if (featureFileTree.children.filter((child) => child.type === 'file').length > 0) {
+    buttonsHtml = getDirectoryButtonHtml(featureFileTree);
+  } else {
+    featureFileTree.children.forEach((child) => { buttonsHtml += getDirectoryButtonHtml(child); });
+  }
   return buttonsHtml;
 };
 
 const create = (directoryPath) => {
   const featureFileTree = getFeatureFileTree(directoryPath);
+  if (featureFileTree.children.length === 0) {
+    throw new Error('No feature files were found in the given directory.');
+  }
   const docData = {};
   docData.cssStyles = cssStyles;
   docData.scripts = scripts;
@@ -311,8 +319,10 @@ class Generator {
   constructor() {
     author = os.userInfo().username;
 
-    const sidenavButtonsTemplatePath = path.resolve(__dirname, TEMPLATESDIR, 'sidenav_buttons_template.html');
-    sidenavButtonsTemplate = handlebars.compile(fs.readFileSync(sidenavButtonsTemplatePath, FILE_ENCODING));
+    const sidenavButtonsTemplatePath = path
+      .resolve(__dirname, TEMPLATESDIR, 'sidenav_buttons_template.html');
+    sidenavButtonsTemplate = handlebars
+      .compile(fs.readFileSync(sidenavButtonsTemplatePath, FILE_ENCODING));
     const docTemplatePath = path.resolve(__dirname, TEMPLATESDIR, 'doc_template.html');
     docHbTemplate = handlebars.compile(fs.readFileSync(docTemplatePath, FILE_ENCODING));
     const featureTemplatePath = path.resolve(__dirname, TEMPLATESDIR, 'feature_template.html');
@@ -326,7 +336,7 @@ class Generator {
   // eslint-disable-next-line class-methods-use-this
   async generate(directoryPath, name = null, tag = null) {
     if (!directoryPath) {
-      throw new Error('U done messed up');
+      throw new Error('A feature directory path must be provided.');
     }
     if (name) {
       projectName = name.trim();

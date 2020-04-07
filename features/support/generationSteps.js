@@ -13,10 +13,18 @@ const FILE_ENCODING = 'utf-8';
 const Generator = require('../../src/Generator');
 
 Given('there is a file named {string} in the {string} directory with the following contents:', function (fileName, fileDirectory, contents) {
-  const dirPath = path.resolve(__dirname, fileDirectory);
+  const dirPaths = fileDirectory.split('/');
+  let dirPath = path.resolve(__dirname, dirPaths[0]);
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath);
     this.featureDirs.push(dirPath);
+  }
+  if (dirPaths.length > 1) {
+    dirPath = path.resolve(dirPath, dirPaths[1]);
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath);
+      this.featureDirs.push(dirPath);
+    }
   }
   const filePath = path.resolve(dirPath, fileName);
   this.featureFiles.push(filePath);
@@ -24,11 +32,15 @@ Given('there is a file named {string} in the {string} directory with the followi
 });
 
 Given('the variable {string} contains the path to the {string} directory', function (variableName, fileName) {
-  this[variableName] = path.resolve(__dirname, fileName);
+  this[variableName] = path.resolve(__dirname, ...fileName.split('/'));
 });
 
-Given('the variable {string} contains the path to the top-level directory', function (variableName) {
-  this[variableName] = path.resolve(__dirname);
+Given('the variable {string} contains the path to a directory with no feature files', function (variableName) {
+  const dirPath = path.resolve(__dirname, 'noFeatures');
+  fs.mkdirSync(dirPath);
+  this.featureDirs.push(dirPath);
+
+  this[variableName] = dirPath;
 });
 
 Given(/^the current date is \{current_date\}$/, function () {
@@ -42,7 +54,17 @@ Given(/^the username of the current user is \{username\}$/, function () {
 When('a report is generated with the code {string}', function (generationFunction) {
   // eslint-disable-next-line no-eval
   return eval(generationFunction)
-    .then((output) => this.setOutput(output));
+    .then((output) => this.setOutput(output))
+    .catch((error) => {
+      if (!this.exceptionScenario) {
+        throw error;
+      }
+      this.setOutput(error);
+    });
+});
+
+Then('an error will be thrown with the message {string}', function (errMsg) {
+  expect(this.output.message).to.eq(errMsg);
 });
 
 Then('the title on the report will be {string}', function (reportTitle) {
@@ -50,7 +72,7 @@ Then('the title on the report will be {string}', function (reportTitle) {
   expect(this.outputHTML.title).to.eql(title);
 });
 
-Then('the report will inculude CSS styling', function () {
+Then('the report will include CSS styling', function () {
   const styles = this.outputHTML.getElementsByTagName('STYLE');
   expect(styles.length).to.eql(1);
   const style = styles.item(0);
@@ -99,6 +121,11 @@ Then('the report will not contain gherkin comments', function () {
   const comments = Array.from(this.outputHTML.getElementsByTagName('*'))
     .filter((obj) => commentPattern.test(obj.innerHTML));
   expect(comments.length).to.eql(0);
+});
+
+Then('the sidebar will contain {int} directory button(s)', function (directoryButtonCount) {
+  const directoryButtons = this.outputHTML.getElementsByClassName('directory-button');
+  expect(directoryButtons.length).to.eql(directoryButtonCount);
 });
 
 Then('the sidebar will contain {int} feature button(s)', function (featureButtonCount) {

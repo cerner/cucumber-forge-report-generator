@@ -4,7 +4,7 @@ Feature: Report Generation
   <I want> to generate HTML reports directly from feature files
 
   Background:
-    Given there is a file named 'dog_care.feature' in the 'test' directory with the following contents:
+    Given there is a file named 'dog_care.feature' in the 'feature/dog' directory with the following contents:
       """
       @pet_care @dogs
       Feature: Dog Care
@@ -34,7 +34,7 @@ Feature: Report Generation
             | backwards  | lick my hand |
             | forwards   | growl        |
       """
-    And there is a file named 'cat_care.feature' in the 'test1' directory with the following contents:
+    And there is a file named 'cat_care.feature' in the 'feature/cat' directory with the following contents:
       """
       @pet_care @cats
       Feature: Cat Care
@@ -65,16 +65,16 @@ Feature: Report Generation
             | backwards  |
             | forwards   |
       """
-    And the variable 'dogCarePath' contains the path to the 'test' directory
-    And the variable 'catCarePath' contains the path to the 'test1' directory
-    And the variable 'allFeaturesPath' contains the path to the top-level directory
+    And the variable 'dogCarePath' contains the path to the 'feature/dog' directory
+    And the variable 'catCarePath' contains the path to the 'feature/cat' directory
+    And the variable 'allFeaturesPath' contains the path to the 'feature' directory
 
   Scenario: Generating an HTML report for a feature file
     Given the current date is {current_date}
     And the username of the current user is {username}
     When a report is generated with the code "new Generator().generate(this.dogCarePath)"
     Then the title on the report will be "Feature documentation - {current_date}"
-    And the report will inculude CSS styling
+    And the report will include CSS styling
     And the report will include a favicon
     And the report will contain 1 feature
     And the report will contain 2 scenarios
@@ -83,13 +83,15 @@ Feature: Report Generation
     And the project title on the sidebar will be "Feature documentation"
     And the header on the sidebar will be "{username} - {current_date}"
     And the footer on the sidebar will be "Cucumber Forge"
+    And the sidebar will contain 1 directory button
     And the sidebar will contain 1 feature button
     And the sidebar will contain 2 scenario buttons
 
-  Scenario: Generating an HTML report for multiple feature files
+  Scenario: Generating an HTML report for multiple feature files in different directories
     When a report is generated with the code "new Generator().generate(this.allFeaturesPath)"
     Then the report will contain 2 features
     And the report will contain 4 scenarios
+    And the sidebar will contain 2 directory buttons
     And the sidebar will contain 2 feature buttons
     And the sidebar will contain 4 scenario buttons
 
@@ -115,7 +117,13 @@ Feature: Report Generation
       | 'feeding'  |
       | '@feeding' |
 
-  # Scenario: Generating a report when no feature files are provided
-  #   When a report is generated with the code "new Generator().generate()"
-  #   Then the report will contain 0 features
-  #   And the sidebar will contain 0 feature buttons
+  @exception
+  Scenario: Generating a report when no path is provided
+    When a report is generated with the code "new Generator().generate()"
+    Then an error will be thrown with the message "A feature directory path must be provided."
+
+  @exception
+  Scenario: Generating a report when no feature files are provided
+    Given the variable 'noFeaturesPath' contains the path to a directory with no feature files
+    When a report is generated with the code "new Generator().generate(this.noFeaturesPath)"
+    Then an error will be thrown with the message "No feature files were found in the given directory."

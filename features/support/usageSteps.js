@@ -6,17 +6,19 @@ const { expect } = require('chai');
 
 const Generator = require('../../src/Generator');
 
-Given('there is a report for the top-level directory', function () {
-  return new Generator().generate(path.resolve(__dirname)).then((report) => this.setOutput(report));
-});
-
 Given('there is a report for the {string} directory', function (fileDirectory) {
-  const filePath = path.resolve(__dirname, fileDirectory);
+  const filePath = path.resolve(__dirname, ...fileDirectory.split('/'));
   return new Generator().generate(filePath).then((report) => this.setOutput(report));
 });
 
-When('the second feature button is clicked', function () {
-  const featureButton = this.outputHTML.getElementsByClassName('feature-button')[1];
+When(/^the (first|second) directory button is clicked$/, function (directoryIndex) {
+  const index = directoryIndex === 'first' ? 0 : 1;
+  this.outputHTML.getElementsByClassName('directory-button')[index].click();
+});
+
+When(/^the (first|second) feature button is clicked$/, function (featureIndex) {
+  const index = featureIndex === 'first' ? 0 : 1;
+  const featureButton = this.outputHTML.getElementsByClassName('feature-button')[index];
   const scrolledElement = this.outputHTML.getElementById(featureButton.getAttribute('scroll-to-id'));
   scrolledElement.scrollIntoView = () => { this.scrolledIntoView = scrolledElement; };
   featureButton.click();
@@ -71,27 +73,55 @@ Then(/^the (first|second) feature (?:is|will be) displayed$/, function (featureI
   });
 });
 
+Then(/^the feature button for the (first|second) directory (?:is|will be) expanded in the sidebar/, function (directoryIndex) {
+  const index = directoryIndex === 'first' ? 0 : 1;
+  const selectedDirectoryButton = this.outputHTML.getElementsByClassName('directory-button')[index];
+  expect(selectedDirectoryButton.classList.contains('active')).to.be.true;
+
+  const featurePanel = selectedDirectoryButton.nextElementSibling;
+  expect(featurePanel.classList.contains('active')).to.be.true;
+
+  const selectedIcon = selectedDirectoryButton.getElementsByTagName('i')[0];
+  expect(selectedIcon.classList.contains('fa-folder-open')).to.be.true;
+  expect(selectedIcon.classList.contains('fa-folder')).to.be.false;
+});
+
+Then(/^the feature button for the (first|second) directory (?:is not|will not be) expanded in the sidebar/, function (directoryIndex) {
+  const index = directoryIndex === 'first' ? 0 : 1;
+  const selectedDirectoryButton = this.outputHTML.getElementsByClassName('directory-button')[index];
+  expect(selectedDirectoryButton.classList.contains('active')).to.be.false;
+
+  const featurePanel = selectedDirectoryButton.nextElementSibling;
+  expect(featurePanel.classList.contains('active')).to.be.false;
+
+  const selectedIcon = selectedDirectoryButton.getElementsByTagName('i')[0];
+  expect(selectedIcon.classList.contains('fa-folder-open')).to.be.false;
+  expect(selectedIcon.classList.contains('fa-folder')).to.be.true;
+});
+
 Then(/^the scenario buttons for the (first|second) feature (?:are|will be) expanded in the sidebar$/, function (featureIndex) {
   const index = featureIndex === 'first' ? 0 : 1;
-  const featureButtons = this.outputHTML.getElementsByClassName('feature-button');
-  const selectedFeatureButton = featureButtons[index];
+  const selectedFeatureButton = this.outputHTML.getElementsByClassName('feature-button')[index];
   expect(selectedFeatureButton.classList.contains('active')).to.be.true;
+
   const scenarioPanel = selectedFeatureButton.nextElementSibling;
-  expect(scenarioPanel.style.maxHeight).to.not.be.empty;
+  expect(scenarioPanel.classList.contains('active')).to.be.true;
+
   const selectedIcon = selectedFeatureButton.getElementsByTagName('i')[0];
   expect(selectedIcon.classList.contains('fa-angle-down')).to.be.true;
   expect(selectedIcon.classList.contains('fa-angle-right')).to.be.false;
+});
 
-  Array.from(featureButtons).forEach((featureButton) => {
-    if (selectedFeatureButton !== featureButton) {
-      expect(featureButton.classList.contains('active')).to.be.false;
-      const panel = featureButton.nextElementSibling;
-      expect(panel.style.maxHeight).to.be.empty;
-      const icon = featureButton.getElementsByTagName('i')[0];
-      expect(icon.classList.contains('fa-angle-down')).to.be.false;
-      expect(icon.classList.contains('fa-angle-right')).to.be.true;
-    }
-  });
+Then(/^the scenario buttons for the (first|second) feature (?:are not|will not be) expanded in the sidebar$/, function (featureIndex) {
+  const index = featureIndex === 'first' ? 0 : 1;
+  const featureButton = this.outputHTML.getElementsByClassName('feature-button')[index];
+
+  expect(featureButton.classList.contains('active')).to.be.false;
+  const panel = featureButton.nextElementSibling;
+  expect(panel.classList.contains('active')).to.be.false;
+  const icon = featureButton.getElementsByTagName('i')[0];
+  expect(icon.classList.contains('fa-angle-down')).to.be.false;
+  expect(icon.classList.contains('fa-angle-right')).to.be.true;
 });
 
 Then(/^the (first|second) scenario button will be highlighted$/, function (scenarioIndex) {
