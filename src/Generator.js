@@ -209,6 +209,30 @@ const parseFeatureFile = (item, nodePath, fsStats) => {
   }
 };
 
+const pruneFeatureFileTree = (featureFileTree) => {
+  featureFileTree.children = featureFileTree.children
+    .filter((child) => child.type === 'file' || pruneFeatureFileTree(child));
+  return featureFileTree.children.length > 0;
+};
+
+const getFeatureFileTree = (directoryPath) => {
+  let featureFileTree = dirTree(directoryPath, { extensions: /\.feature/ }, parseFeatureFile);
+  // Prune the tree so it only contains the feature files and the directories that contain them
+  pruneFeatureFileTree(featureFileTree);
+
+  // Reduce directories at the root of the tree if they only have a single child that is a directory
+  while (featureFileTree.children.length === 1 && featureFileTree.children[0].type === 'directory') {
+    // Only advance if new root has no feature children
+    // (top-level elements should only be directories)
+    const [newRoot] = featureFileTree.children;
+    if (newRoot.children.filter((child) => child.type === 'file').length === 0) {
+      featureFileTree = newRoot;
+    }
+  }
+
+  return featureFileTree;
+};
+
 const getFeaturesHtml = (featureFileTree) => {
   let featuresHtml = '';
   featureFileTree.children.forEach((child) => {
@@ -230,23 +254,21 @@ const trimCucumberKeywords = (name, ...i18nkeys) => {
 
 const getFeatureButtons = (featureFileTree) => {
   const featureButtons = [];
-  featureFileTree.children.forEach((child) => {
-    if (child.type === 'file') {
-      const { feature } = child;
-      const featureButton = {};
-      featureButton.featureId = feature.featureId;
-      featureButton.featureWrapperId = feature.featureWrapperId;
-      featureButton.title = trimCucumberKeywords(feature.name, 'feature');
-      featureButton.scenarioButtons = [];
-      feature.scenarios.forEach((scenario) => {
-        const scenarioButton = {};
-        scenarioButton.id = scenario.scenarioButtonId;
-        scenarioButton.scenarioId = scenario.scenarioId;
-        scenarioButton.title = trimCucumberKeywords(scenario.name, 'scenario', 'scenario_outline');
-        featureButton.scenarioButtons.push(scenarioButton);
-      });
-      featureButtons.push(featureButton);
-    }
+  featureFileTree.children.filter((child) => child.type === 'file').forEach((child) => {
+    const { feature } = child;
+    const featureButton = {};
+    featureButton.featureId = feature.featureId;
+    featureButton.featureWrapperId = feature.featureWrapperId;
+    featureButton.title = trimCucumberKeywords(feature.name, 'feature');
+    featureButton.scenarioButtons = [];
+    feature.scenarios.forEach((scenario) => {
+      const scenarioButton = {};
+      scenarioButton.id = scenario.scenarioButtonId;
+      scenarioButton.scenarioId = scenario.scenarioId;
+      scenarioButton.title = trimCucumberKeywords(scenario.name, 'scenario', 'scenario_outline');
+      featureButton.scenarioButtons.push(scenarioButton);
+    });
+    featureButtons.push(featureButton);
   });
   return featureButtons;
 };
@@ -257,34 +279,20 @@ const getDirectoryButtonHtml = (featureFileTree) => {
   sidenavData.featureButtons = getFeatureButtons(featureFileTree);
   sidenavData.sidenavButtonsHtml = '';
 
-  featureFileTree.children.forEach((child) => {
-    if (child.type === 'directory') {
-      sidenavData.sidenavButtonsHtml += getDirectoryButtonHtml(child);
-    }
-  });
+  featureFileTree.children.filter((child) => child.type === 'directory')
+    .forEach((child) => { sidenavData.sidenavButtonsHtml += getDirectoryButtonHtml(child); });
+
   return sidenavButtonsTemplate(sidenavData);
 };
 
 const getSidenavButtonsHtml = (featureFileTree) => {
-  // Reduce directories at the root of the tree if they only have a single child that is a directory
-  let sidenavButtonsHtml = '';
-  while (featureFileTree.children.length === 1 && featureFileTree.children[0].type === 'directory') {
-    // Only advance if new root has no feature children
-    const [newRoot] = featureFileTree.children;
-    if (newRoot.children.filter((child) => child.type === 'file').length === 0) {
-      featureFileTree = newRoot;
-    }
-  }
-
-  featureFileTree.children.forEach((child) => {
-    sidenavButtonsHtml += getDirectoryButtonHtml(child);
-  });
-  return sidenavButtonsHtml;
+  let buttonsHtml = '';
+  featureFileTree.children.forEach((child) => { buttonsHtml += getDirectoryButtonHtml(child); });
+  return buttonsHtml;
 };
 
 const create = (directoryPath) => {
-  const featureFileTree = dirTree(directoryPath, { extensions: /\.feature/ }, parseFeatureFile);
-
+  const featureFileTree = getFeatureFileTree(directoryPath);
   const docData = {};
   docData.cssStyles = cssStyles;
   docData.scripts = scripts;
