@@ -279,10 +279,11 @@ const getFeatureButtons = (featureFileTree) => {
 };
 
 const getDirectoryButtonHtml = (featureFileTree) => {
-  const sidenavData = {};
-  sidenavData.title = featureFileTree.name;
-  sidenavData.featureButtons = getFeatureButtons(featureFileTree);
-  sidenavData.sidenavButtonsHtml = '';
+  const sidenavData = {
+    title: featureFileTree.name,
+    featureButtons: getFeatureButtons(featureFileTree),
+    sidenavButtonsHtml: '',
+  };
 
   featureFileTree.children.filter((child) => child.type === 'directory')
     .forEach((child) => { sidenavData.sidenavButtonsHtml += getDirectoryButtonHtml(child); });
