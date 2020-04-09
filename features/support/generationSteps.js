@@ -52,15 +52,15 @@ Given(/^the username of the current user is \{username\}$/, function () {
 });
 
 When('a report is generated with the code {string}', function (generationFunction) {
-  // eslint-disable-next-line no-eval
-  return eval(generationFunction)
-    .then((output) => this.setOutput(output))
-    .catch((error) => {
-      if (!this.exceptionScenario) {
-        throw error;
-      }
-      this.setOutput(error);
-    });
+  try {
+    // eslint-disable-next-line no-eval
+    this.setOutput(eval(generationFunction));
+  } catch (error) {
+    if (!this.exceptionScenario) {
+      throw error;
+    }
+    this.setOutput(error);
+  }
 });
 
 Then('an error will be thrown with the message {string}', function (errMsg) {

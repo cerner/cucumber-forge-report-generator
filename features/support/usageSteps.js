@@ -8,7 +8,7 @@ const Generator = require('../../src/Generator');
 
 Given('there is a report for the {string} directory', function (fileDirectory) {
   const filePath = path.resolve(__dirname, ...fileDirectory.split('/'));
-  return new Generator().generate(filePath).then((report) => this.setOutput(report));
+  this.setOutput(new Generator().generate(filePath));
 });
 
 When(/^the (first|second) directory button is clicked$/, function (directoryIndex) {
