@@ -2,7 +2,7 @@ const dirTree = require('directory-tree');
 const fs = require('fs');
 const handlebars = require('handlebars');
 const i18n = require('i18next');
-const i18nBackend = require('i18next-node-fs-backend');
+const i18nBackend = require('i18next-sync-fs-backend');
 const moment = require('moment');
 const os = require('os');
 const path = require('path');
@@ -339,7 +339,7 @@ class Generator {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async generate(directoryPath, name = null, tag = null) {
+  generate(directoryPath, name = null, tag = null) {
     if (!directoryPath) {
       throw new Error('A feature directory path must be provided.');
     }
@@ -357,8 +357,9 @@ class Generator {
       reportName = DEFAULT_REPORT_NAME;
     }
     i18n.use(i18nBackend);
-    await i18n.init({
+    i18n.init({
       lng: LANGUAGE,
+      initImmediate: false,
       backend: {
         loadPath: `${__dirname}/locales/{{lng}}/{{ns}}.json`,
       },
