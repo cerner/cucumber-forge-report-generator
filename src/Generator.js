@@ -32,29 +32,23 @@ const stepStarting = (line) => lineStartsWithI18n(line, 'given') || lineStartsWi
     || lineStartsWithI18n(line, 'then') || lineStartsWithI18n(line, 'and')
     || lineStartsWithI18n(line, 'but') || line.trim().startsWith('*');
 
-const createScenario = (name, tags) => {
-  const scenario = {};
-  scenario.name = name;
-  scenario.description = '';
-  scenario.tags = tags;
-  scenario.steps = [];
-  return scenario;
-};
+const createScenario = (name, tags) => ({
+  name,
+  description: '',
+  tags,
+  steps: [],
+});
 
-const createExamples = (line) => {
-  const examples = {};
-  examples.name = line;
-  examples.table = [];
-  return examples;
-};
+const createExamples = (name) => ({
+  name,
+  table: [],
+});
 
-const createStep = (name) => {
-  const step = {};
-  step.name = name;
-  step.table = [];
-  step.docString = '';
-  return step;
-};
+const createStep = (name) => ({
+  name,
+  table: [],
+  docString: '',
+});
 
 const getNewPhase = (line) => {
   if (lineStartsWithI18n(line, 'feature')) {
@@ -79,16 +73,20 @@ const getNewPhase = (line) => {
 };
 
 const getFeatureFromFile = (featureFilename) => {
-  const feature = {};
-  feature.scenarios = [];
-  feature.tags = [];
-  feature.description = '';
+  const feature = {
+    scenarios: [],
+    tags: [],
+    description: '',
+  };
   let scenario = null;
   let tags = [];
 
   let currentPhase = null;
 
-  const fileLines = fs.readFileSync(featureFilename, FILE_ENCODING).replace('\r\n', '\n').split('\n');
+  const fileLines = fs
+    .readFileSync(featureFilename, FILE_ENCODING)
+    .replace('\r\n', '\n')
+    .split('\n');
   fileLines.forEach((nextLine) => {
     const line = nextLine.trim();
     const newPhase = getNewPhase(line);
@@ -134,7 +132,9 @@ const getFeatureFromFile = (featureFilename) => {
       // We want to skip any comment lines.
     } else if (line.startsWith('|')) {
       const step = scenario.steps[scenario.steps.length - 1];
-      const lines = line.split('|').filter((entry) => entry).map((entry) => entry.trim());
+      const lines = line
+        .split('|')
+        .filter((entry) => entry).map((entry) => entry.trim());
       switch (currentPhase) {
         case 'EXAMPLES_STARTED':
           scenario.examples.table.push(lines);
@@ -259,22 +259,25 @@ const trimCucumberKeywords = (name, ...i18nkeys) => {
 
 const getFeatureButtons = (featureFileTree) => {
   const featureButtons = [];
-  featureFileTree.children.filter((child) => child.type === 'file').forEach((child) => {
-    const { feature } = child;
-    const featureButton = {};
-    featureButton.featureId = feature.featureId;
-    featureButton.featureWrapperId = feature.featureWrapperId;
-    featureButton.title = trimCucumberKeywords(feature.name, 'feature');
-    featureButton.scenarioButtons = [];
-    feature.scenarios.forEach((scenario) => {
-      const scenarioButton = {};
-      scenarioButton.id = scenario.scenarioButtonId;
-      scenarioButton.scenarioId = scenario.scenarioId;
-      scenarioButton.title = trimCucumberKeywords(scenario.name, 'scenario', 'scenario_outline');
-      featureButton.scenarioButtons.push(scenarioButton);
+  featureFileTree.children
+    .filter((child) => child.type === 'file')
+    .forEach((child) => {
+      const { feature } = child;
+      const featureButton = {
+        featureId: feature.featureId,
+        featureWrapperId: feature.featureWrapperId,
+        title: trimCucumberKeywords(feature.name, 'feature'),
+        scenarioButtons: [],
+      };
+      feature.scenarios.forEach((scenario) => {
+        featureButton.scenarioButtons.push({
+          id: scenario.scenarioButtonId,
+          scenarioId: scenario.scenarioId,
+          title: trimCucumberKeywords(scenario.name, 'scenario', 'scenario_outline'),
+        });
+      });
+      featureButtons.push(featureButton);
     });
-    featureButtons.push(featureButton);
-  });
   return featureButtons;
 };
 
@@ -285,7 +288,8 @@ const getDirectoryButtonHtml = (featureFileTree) => {
     sidenavButtonsHtml: '',
   };
 
-  featureFileTree.children.filter((child) => child.type === 'directory')
+  featureFileTree.children
+    .filter((child) => child.type === 'directory')
     .forEach((child) => { sidenavData.sidenavButtonsHtml += getDirectoryButtonHtml(child); });
 
   return sidenavButtonsTemplate(sidenavData);
@@ -307,18 +311,18 @@ const create = (directoryPath) => {
   if (featureFileTree.children.length === 0) {
     throw new Error('No feature files were found in the given directory.');
   }
-  const docData = {};
-  docData.cssStyles = cssStyles;
-  docData.scripts = scripts;
-  docData.logo = logo;
-  docData.cog = cog;
-  docData.creationdate = moment().format('LL');
-  docData.author = author;
-  docData.reportName = reportName;
-  docData.projectName = projectName;
-  docData.featuresHtml = getFeaturesHtml(featureFileTree);
-  docData.sidenavButtonsHtml = getSidenavButtonsHtml(featureFileTree);
-  return docHbTemplate(docData);
+  return docHbTemplate({
+    cssStyles,
+    scripts,
+    logo,
+    cog,
+    creationdate: moment().format('LL'),
+    author,
+    reportName,
+    projectName,
+    featuresHtml: getFeaturesHtml(featureFileTree),
+    sidenavButtonsHtml: getSidenavButtonsHtml(featureFileTree),
+  });
 };
 
 class Generator {
