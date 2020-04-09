@@ -228,7 +228,7 @@ const getFeatureFileTree = (directoryPath) => {
     // Only advance if new root has no feature children
     // (top-level elements should only be directories)
     const [newRoot] = featureFileTree.children;
-    if (newRoot.children.filter((child) => child.type === 'file').length === 0) {
+    if (!newRoot.children.filter((child) => child.type === 'file').length) {
       featureFileTree = newRoot;
     } else {
       break;
