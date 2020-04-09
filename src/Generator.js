@@ -216,7 +216,10 @@ const pruneFeatureFileTree = (featureFileTree) => {
 };
 
 const getFeatureFileTree = (directoryPath) => {
-  let featureFileTree = dirTree(directoryPath, { extensions: /\.feature/ }, parseFeatureFile);
+  let featureFileTree = dirTree(directoryPath, {
+    extensions: /\.feature/,
+    exclude: /node_modules|target/,
+  }, parseFeatureFile);
   // Prune the tree so it only contains the feature files and the directories that contain them
   pruneFeatureFileTree(featureFileTree);
 
@@ -227,6 +230,8 @@ const getFeatureFileTree = (directoryPath) => {
     const [newRoot] = featureFileTree.children;
     if (newRoot.children.filter((child) => child.type === 'file').length === 0) {
       featureFileTree = newRoot;
+    } else {
+      break;
     }
   }
 
