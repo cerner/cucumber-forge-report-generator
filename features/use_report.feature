@@ -4,7 +4,7 @@ Feature: Report Usage
   <I want> to be able to navigate the report with the built-in functionality
 
   Background:
-    Given there is a file named 'dog_care.feature' with the following contents:
+    Given there is a file named 'dog_care.feature' in the 'feature/dog' directory with the following contents:
       """
       @pet_care @dogs
       Feature: Dog Care
@@ -34,7 +34,7 @@ Feature: Report Usage
             | backwards  | lick my hand |
             | forwards   | growl        |
       """
-    And there is a file named 'cat_care.feature' with the following contents:
+    And there is a file named 'cat_care.feature' in the 'feature/cat' directory with the following contents:
       """
       @pet_care @cats
       Feature: Cat Care
@@ -66,18 +66,33 @@ Feature: Report Usage
             | forwards   |
       """
 
+  Scenario: Clicking the directory buttons
+    Given there is a report for the 'feature' directory
+    And the feature button for the first directory is expanded in the sidebar
+    And the feature button for the second directory is not expanded in the sidebar
+    When the second directory button is clicked
+    Then the feature button for the second directory will be expanded in the sidebar
+    And the feature button for the first directory is expanded in the sidebar
+    When the first directory button is clicked
+    Then the feature button for the first directory will not be expanded in the sidebar
+    And the feature button for the second directory is expanded in the sidebar
+
   Scenario: Clicking the feature buttons
-    Given there is a report for the following feature files:
-      | dog_care.feature |
-      | cat_care.feature |
+    Given there is a report for the 'feature' directory
     And the first feature is displayed
     And the scenario buttons for the first feature are expanded in the sidebar
+    And the scenario buttons for the second feature are not expanded in the sidebar
     When the second feature button is clicked
     Then the second feature will be displayed
     And the scenario buttons for the second feature will be expanded in the sidebar
+    And the scenario buttons for the first feature are expanded in the sidebar
+    When the first feature button is clicked
+    Then the second feature will be displayed
+    And the scenario buttons for the first feature will not be expanded in the sidebar
+    And the scenario buttons for the second feature are expanded in the sidebar
 
   Scenario: Clicking the scenario buttons
-    Given there is a report for the feature file 'dog_care.feature'
+    Given there is a report for the 'feature/dog' directory
     And the report will contain 2 scenarios
     When the first scenario button is clicked
     Then the first scenario button will be highlighted
@@ -87,21 +102,21 @@ Feature: Report Usage
     And the second scenario will be scrolled into view
 
   Scenario: Scrolling through the scenarios in a feature
-    Given there is a report for the feature file 'dog_care.feature'
+    Given there is a report for the 'feature/dog' directory
     When the first scenario is scrolled into view
     Then the first scenario button will be highlighted
     When the second scenario is scrolled into view
     Then the second scenario button will be highlighted
 
   Scenario: Opening the settings drawer
-    Given there is a report for the feature file 'dog_care.feature'
+    Given there is a report for the 'feature/dog' directory
     When the settings button is clicked
     Then the settings drawer will be displayed
     When the settings button is clicked
     Then the settings drawer will be hidden
     
   Scenario: Showing the tags in the report
-    Given there is a report for the feature file 'dog_care.feature'
+    Given there is a report for the 'feature/dog' directory
     And the settings button is clicked
     When the box is checked to show tags
     Then the tags displayed for the feature will be '@pet_care @dogs'

@@ -17,19 +17,10 @@
           <div id="authorAside">{{author}} - {{creationdate}}</div>
         </div>
       </div>
-      <div class="sidenav-body">
-        {{#each featureButtons}}
-          <button id="{{this.id}}" scroll-to-id="{{this.featureId}}" feature-wrapper-id="{{this.featureWrapperId}}" class="feature-button" title="{{this.title}}">
-            <i class="fas fa-angle-right"></i> {{this.title}}
-          </button>
-          <div class="panel">
-            {{#each this.scenarioButtons}}
-              <button id="{{this.id}}" scroll-to-id="{{this.scenarioId}}" class="scenario-button" title="{{this.title}}">
-                <span>- {{this.title}}</span>
-              </button>
-            {{/each}}
-          </div>
-        {{/each}}
+      <div id="sidenav-body">
+        <ul>
+          {{{sidenavButtonsHtml}}}
+        </ul>
       </div>
       <div id="sidenavFooter">
         <div id="settingsDrawer">

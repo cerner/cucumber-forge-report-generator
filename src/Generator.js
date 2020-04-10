@@ -1,14 +1,11 @@
+const dirTree = require('directory-tree');
 const fs = require('fs');
 const handlebars = require('handlebars');
 const i18n = require('i18next');
-const i18nBackend = require('i18next-node-fs-backend');
-const linereader = require('line-reader');
+const i18nBackend = require('i18next-sync-fs-backend');
 const moment = require('moment');
 const os = require('os');
 const path = require('path');
-const util = require('util');
-
-const eachLine = util.promisify(linereader.eachLine);
 
 const FILE_ENCODING = 'utf-8';
 const LANGUAGE = 'en';
@@ -16,6 +13,7 @@ const TEMPLATESDIR = 'templates';
 const DEFAULT_REPORT_NAME = 'All Scenarios';
 
 let author;
+let sidenavButtonsTemplate;
 let docHbTemplate;
 let featureHbTemplate;
 let cssStyles;
@@ -26,6 +24,7 @@ let cog;
 let projectName = 'Feature documentation';
 let reportName = DEFAULT_REPORT_NAME;
 let tagFilter = null;
+let idSequence = 1;
 
 const lineStartsWithI18n = (line, i18nkey) => line.startsWith(i18n.t(i18nkey));
 
@@ -33,29 +32,23 @@ const stepStarting = (line) => lineStartsWithI18n(line, 'given') || lineStartsWi
     || lineStartsWithI18n(line, 'then') || lineStartsWithI18n(line, 'and')
     || lineStartsWithI18n(line, 'but') || line.trim().startsWith('*');
 
-const createScenario = (name, tags) => {
-  const scenario = {};
-  scenario.name = name;
-  scenario.description = '';
-  scenario.tags = tags;
-  scenario.steps = [];
-  return scenario;
-};
+const createScenario = (name, tags) => ({
+  name,
+  description: '',
+  tags,
+  steps: [],
+});
 
-const createExamples = (line) => {
-  const examples = {};
-  examples.name = line;
-  examples.table = [];
-  return examples;
-};
+const createExamples = (name) => ({
+  name,
+  table: [],
+});
 
-const createStep = (name) => {
-  const step = {};
-  step.name = name;
-  step.table = [];
-  step.docString = '';
-  return step;
-};
+const createStep = (name) => ({
+  name,
+  table: [],
+  docString: '',
+});
 
 const getNewPhase = (line) => {
   if (lineStartsWithI18n(line, 'feature')) {
@@ -79,16 +72,22 @@ const getNewPhase = (line) => {
   return null;
 };
 
-const parseFeatureFile = async (featureFilename) => {
-  const feature = {};
-  feature.scenarios = [];
-  feature.tags = [];
-  feature.description = '';
+const getFeatureFromFile = (featureFilename) => {
+  const feature = {
+    scenarios: [],
+    tags: [],
+    description: '',
+  };
   let scenario = null;
   let tags = [];
 
   let currentPhase = null;
-  await eachLine(featureFilename, (nextLine) => {
+
+  const fileLines = fs
+    .readFileSync(featureFilename, FILE_ENCODING)
+    .replace('\r\n', '\n')
+    .split('\n');
+  fileLines.forEach((nextLine) => {
     const line = nextLine.trim();
     const newPhase = getNewPhase(line);
     if (currentPhase === 'DOC_STRING_STARTED') {
@@ -133,7 +132,9 @@ const parseFeatureFile = async (featureFilename) => {
       // We want to skip any comment lines.
     } else if (line.startsWith('|')) {
       const step = scenario.steps[scenario.steps.length - 1];
-      const lines = line.split('|').filter((entry) => entry).map((entry) => entry.trim());
+      const lines = line
+        .split('|')
+        .filter((entry) => entry).map((entry) => entry.trim());
       switch (currentPhase) {
         case 'EXAMPLES_STARTED':
           scenario.examples.table.push(lines);
@@ -167,48 +168,86 @@ const getFilteredScenarios = (scenarios) => scenarios.map((scenario) => {
   return undefined;
 }).filter((scenario) => scenario);
 
-const getFilteredFeatures = (features) => {
-  const filteredFeatures = [];
-  features.forEach((feature) => {
+const populateHtmlIdentifiers = (feature) => {
+  feature.featureId = idSequence;
+  idSequence += 1;
+  feature.featureWrapperId = idSequence;
+  idSequence += 1;
+  feature.scenarios.forEach((scenario) => {
+    scenario.scenarioId = idSequence;
+    idSequence += 1;
+    scenario.scenarioButtonId = idSequence;
+    idSequence += 1;
+  });
+};
+
+const populateTagStrings = (feature) => {
+  feature.tagString = '';
+  feature.tags.forEach((tag) => { feature.tagString += `${tag} `; });
+  feature.scenarios.forEach((scenario) => {
+    scenario.tagString = '';
+    scenario.tags.forEach((tag) => { scenario.tagString += `${tag} `; });
+  });
+};
+
+// eslint-disable-next-line no-unused-vars
+const parseFeatureFile = (item, nodePath, fsStats) => {
+  let feature = getFeatureFromFile(item.path);
+
+  if (tagFilter) {
     const filteredScenarios = getFilteredScenarios(feature.scenarios);
     if (filteredScenarios.length > 0) {
       feature.scenarios = filteredScenarios;
-      filteredFeatures.push(feature);
+    } else {
+      feature = undefined;
+    }
+  }
+  if (feature) {
+    item.feature = feature;
+    populateHtmlIdentifiers(feature);
+    populateTagStrings(feature);
+  }
+};
+
+const pruneFeatureFileTree = (featureFileTree) => {
+  featureFileTree.children = featureFileTree.children
+    .filter((child) => child.type === 'file' || pruneFeatureFileTree(child));
+  return featureFileTree.children.length > 0;
+};
+
+const getFeatureFileTree = (directoryPath) => {
+  let featureFileTree = dirTree(directoryPath, {
+    extensions: /\.feature/,
+    exclude: /node_modules|target/,
+  }, parseFeatureFile);
+  // Prune the tree so it only contains the feature files and the directories that contain them
+  pruneFeatureFileTree(featureFileTree);
+
+  // Reduce directories at the root of the tree if they only have a single child that is a directory
+  while (featureFileTree.children.length === 1 && featureFileTree.children[0].type === 'directory') {
+    // Only advance if new root has no feature children
+    // (top-level elements should only be directories)
+    const [newRoot] = featureFileTree.children;
+    if (!newRoot.children.filter((child) => child.type === 'file').length) {
+      featureFileTree = newRoot;
+    } else {
+      break;
+    }
+  }
+
+  return featureFileTree;
+};
+
+const getFeaturesHtml = (featureFileTree) => {
+  let featuresHtml = '';
+  featureFileTree.children.forEach((child) => {
+    if (child.type === 'file') {
+      featuresHtml += featureHbTemplate(child.feature);
+    } else if (child.type === 'directory') {
+      featuresHtml += getFeaturesHtml(child);
     }
   });
-  return filteredFeatures;
-};
-
-const parseFeatures = async (files) => {
-  const featureFiles = files;
-  const sortedFeatureFiles = featureFiles.sort();
-  return Promise.all(sortedFeatureFiles.map(parseFeatureFile));
-};
-
-const populateHtmlIdentifiers = (features) => {
-  let featureCount = 0;
-  features.forEach((feature) => {
-    feature.featureId = `feature${featureCount}`;
-    feature.featureWrapperId = `featureWrapper${featureCount}`;
-    let scenarioCount = 0;
-    feature.scenarios.forEach((scenario) => {
-      scenario.scenarioId = `${feature.featureId}Scenario${scenarioCount}`;
-      scenario.scenarioButtonId = `${feature.featureId}ScenarioButton${scenarioCount}`;
-      scenarioCount += 1;
-    });
-    featureCount += 1;
-  });
-};
-
-const populateTagStrings = (features) => {
-  features.forEach((feature) => {
-    feature.tagString = '';
-    feature.tags.forEach((tag) => { feature.tagString += `${tag} `; });
-    feature.scenarios.forEach((scenario) => {
-      scenario.tagString = '';
-      scenario.tags.forEach((tag) => { scenario.tagString += `${tag} `; });
-    });
-  });
+  return featuresHtml;
 };
 
 const trimCucumberKeywords = (name, ...i18nkeys) => {
@@ -218,56 +257,82 @@ const trimCucumberKeywords = (name, ...i18nkeys) => {
   return name.slice(charsToTrim).trim();
 };
 
-const getFeatureButtons = (features) => {
+const getFeatureButtons = (featureFileTree) => {
   const featureButtons = [];
-
-  features.forEach((feature) => {
-    const featureButton = {};
-    featureButton.featureId = feature.featureId;
-    featureButton.featureWrapperId = feature.featureWrapperId;
-    featureButton.title = trimCucumberKeywords(feature.name, 'feature');
-    featureButton.scenarioButtons = [];
-    feature.scenarios.forEach((scenario) => {
-      const scenarioButton = {};
-      scenarioButton.id = scenario.scenarioButtonId;
-      scenarioButton.scenarioId = scenario.scenarioId;
-      scenarioButton.title = trimCucumberKeywords(scenario.name, 'scenario', 'scenario_outline');
-      featureButton.scenarioButtons.push(scenarioButton);
+  featureFileTree.children
+    .filter((child) => child.type === 'file')
+    .forEach((child) => {
+      const { feature } = child;
+      const featureButton = {
+        featureId: feature.featureId,
+        featureWrapperId: feature.featureWrapperId,
+        title: trimCucumberKeywords(feature.name, 'feature'),
+        scenarioButtons: [],
+      };
+      feature.scenarios.forEach((scenario) => {
+        featureButton.scenarioButtons.push({
+          id: scenario.scenarioButtonId,
+          scenarioId: scenario.scenarioId,
+          title: trimCucumberKeywords(scenario.name, 'scenario', 'scenario_outline'),
+        });
+      });
+      featureButtons.push(featureButton);
     });
-    featureButtons.push(featureButton);
-  });
   return featureButtons;
 };
 
-const create = async (files) => {
-  const features = await parseFeatures(files);
-  const filteredFeatures = tagFilter ? getFilteredFeatures(features) : features;
-  populateHtmlIdentifiers(filteredFeatures);
-  populateTagStrings(filteredFeatures);
+const getDirectoryButtonHtml = (featureFileTree) => {
+  const sidenavData = {
+    title: featureFileTree.name,
+    featureButtons: getFeatureButtons(featureFileTree),
+    sidenavButtonsHtml: '',
+  };
 
-  let featuresHtml = '';
-  filteredFeatures.forEach((filteredFeature) => {
-    featuresHtml += featureHbTemplate(filteredFeature);
+  featureFileTree.children
+    .filter((child) => child.type === 'directory')
+    .forEach((child) => { sidenavData.sidenavButtonsHtml += getDirectoryButtonHtml(child); });
+
+  return sidenavButtonsTemplate(sidenavData);
+};
+
+const getSidenavButtonsHtml = (featureFileTree) => {
+  let buttonsHtml = '';
+  // If the top level directory contains feature files, run on the top-level and not the children.
+  if (featureFileTree.children.filter((child) => child.type === 'file').length > 0) {
+    buttonsHtml = getDirectoryButtonHtml(featureFileTree);
+  } else {
+    featureFileTree.children.forEach((child) => { buttonsHtml += getDirectoryButtonHtml(child); });
+  }
+  return buttonsHtml;
+};
+
+const create = (directoryPath) => {
+  const featureFileTree = getFeatureFileTree(directoryPath);
+  if (featureFileTree.children.length === 0) {
+    throw new Error('No feature files were found in the given directory.');
+  }
+  return docHbTemplate({
+    cssStyles,
+    scripts,
+    logo,
+    cog,
+    creationdate: moment().format('LL'),
+    author,
+    reportName,
+    projectName,
+    featuresHtml: getFeaturesHtml(featureFileTree),
+    sidenavButtonsHtml: getSidenavButtonsHtml(featureFileTree),
   });
-
-  const docData = {};
-  docData.cssStyles = cssStyles;
-  docData.scripts = scripts;
-  docData.logo = logo;
-  docData.cog = cog;
-  docData.creationdate = moment().format('LL');
-  docData.author = author;
-  docData.reportName = reportName;
-  docData.projectName = projectName;
-  docData.featuresHtml = featuresHtml;
-  docData.featureButtons = getFeatureButtons(filteredFeatures);
-  return docHbTemplate(docData);
 };
 
 class Generator {
   constructor() {
     author = os.userInfo().username;
 
+    const sidenavButtonsTemplatePath = path
+      .resolve(__dirname, TEMPLATESDIR, 'sidenav_buttons_template.html');
+    sidenavButtonsTemplate = handlebars
+      .compile(fs.readFileSync(sidenavButtonsTemplatePath, FILE_ENCODING));
     const docTemplatePath = path.resolve(__dirname, TEMPLATESDIR, 'doc_template.html');
     docHbTemplate = handlebars.compile(fs.readFileSync(docTemplatePath, FILE_ENCODING));
     const featureTemplatePath = path.resolve(__dirname, TEMPLATESDIR, 'feature_template.html');
@@ -279,7 +344,10 @@ class Generator {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async generate(files = [], name = null, tag = null) {
+  generate(directoryPath, name = null, tag = null) {
+    if (!directoryPath) {
+      throw new Error('A feature directory path must be provided.');
+    }
     if (name) {
       projectName = name.trim();
     }
@@ -294,13 +362,14 @@ class Generator {
       reportName = DEFAULT_REPORT_NAME;
     }
     i18n.use(i18nBackend);
-    await i18n.init({
+    i18n.init({
       lng: LANGUAGE,
+      initImmediate: false,
       backend: {
         loadPath: `${__dirname}/locales/{{lng}}/{{ns}}.json`,
       },
     });
-    return create(files);
+    return create(directoryPath);
   }
 }
 

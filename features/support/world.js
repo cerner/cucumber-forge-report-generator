@@ -1,15 +1,17 @@
-const { setWorldConstructor, After } = require('cucumber');
+const { setWorldConstructor, After, Before } = require('cucumber');
 const { JSDOM } = require('jsdom');
 const fs = require('fs');
 
 class CustomWorld {
   constructor() {
     this.featureFiles = [];
+    this.featureDirs = [];
     this.output = null;
     this.window = null;
     this.outputHTML = null;
     this.tag = null;
     this.scrolledIntoView = null;
+    this.exceptionScenario = false;
   }
 
   setOutput(output) {
@@ -30,9 +32,14 @@ class CustomWorld {
   }
 }
 
+Before({ tags: '@exception' }, function () {
+  this.exceptionScenario = true;
+});
+
 After(function () {
-// Clean up any feature files that got written.
-  return this.featureFiles.forEach(filePath => fs.unlinkSync(filePath));
+  // Clean up any feature files that got written.
+  this.featureFiles.forEach((filePath) => fs.unlinkSync(filePath));
+  this.featureDirs.reverse().forEach((featureDir) => fs.rmdirSync(featureDir));
 });
 
 setWorldConstructor(CustomWorld);

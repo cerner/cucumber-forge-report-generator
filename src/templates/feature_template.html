@@ -17,7 +17,7 @@
               <p>{{this.name}}</p>
               {{#if this.table.length}}
                 <div class="table-wrapper">
-                  <table class="step-table">
+                  <table>
                     {{#each this.table}}
                       <tr>
                         {{#each this}}
@@ -51,7 +51,7 @@
                 <p>{{this.name}}</p>
                 {{#if this.table.length}}
                 <div class="table-wrapper">
-                  <table class="step-table">
+                  <table>
                     {{#each this.table}}
                       <tr>
                         {{#each this}}
@@ -70,7 +70,7 @@
                 <p>{{this.examples.name}}</p>
                 {{#if this.examples.table.length}}
                 <div class="table-wrapper">
-                  <table class="example-table">
+                  <table>
                     {{#each this.examples.table}}
                       {{#if @first}}
                       <tr>

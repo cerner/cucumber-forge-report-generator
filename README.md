@@ -11,6 +11,7 @@
 [![Build Status](https://travis-ci.com/cerner/cucumber-forge-report-generator.svg?branch=master)](https://travis-ci.com/cerner/cucumber-forge-report-generator)
 
 # _About_
+
 _Note: this repository contains the library for generating Cucumber reports. [Cucumber Forge Desktop](https://github.com/cerner/cucumber-forge-desktop) is a user-friendly desktop application for creating reports with cucumber-forge-report-generator._
 
 The cucumber-forge-report-generator can be used to create clean HTML reports without having to build the project or run the tests. Of course, no pass/fail information for the scenarios is included in the report since the tests are not executed.
@@ -19,12 +20,14 @@ Many other solutions exist for creating reports based on the output of Cucumber 
 
 # _Usage_
 
-Sample - Generates a report from two feature files with the scenarios filtered by a tag:
+Sample - Generates a report for the feature files in a given directory with the scenarios filtered by a tag:
+
 ```js
 const Generator = require('cucumber-forge-report-generator');
 const generator = new Generator();
-const htmlReportString = generator.generate([filePathString1, filePathString2], 'Project Name', 'TagFilter');
+const htmlReportString = generator.generate(featureDirectoryPath, 'Project Name', 'TagFilter');
 ```
+
 Detailed usage documentation can be found [here](https://engineering.cerner.com/cucumber-forge-report-generator/).
 
 # _Availability_
@@ -38,6 +41,7 @@ This project is built on [Travis](https://travis-ci.com/cerner/cucumber-forge-re
 # _Building_
 
 Development Environment:
+
 * [NPM](https://www.npmjs.com/) - ^6.4.1
 * [Node.Js](https://nodejs.org) - ^10.14.1
 

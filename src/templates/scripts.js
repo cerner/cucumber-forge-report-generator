@@ -15,24 +15,14 @@ const toggleFunctionAccordion = (element) => {
   element.classList.toggle('active');
   const icon = element.getElementsByTagName('i')[0];
   const panel = element.nextElementSibling;
-  if (panel.style.maxHeight) {
-    panel.style.maxHeight = null;
-    icon.classList.remove('fa-angle-down');
-    icon.classList.add('fa-angle-right');
-  } else {
-    panel.style.maxHeight = `${panel.scrollHeight}px`;
-    // Close all the other panels
-    Array.from(document.getElementsByClassName('feature-button')).forEach((featureButton) => {
-      if (element !== featureButton) {
-        featureButton.classList.remove('active');
-        featureButton.nextElementSibling.style.maxHeight = null;
-        const iconToClose = featureButton.getElementsByTagName('i')[0];
-        iconToClose.classList.remove('fa-angle-down');
-        iconToClose.classList.add('fa-angle-right');
-      }
-    });
+  panel.classList.toggle('active');
+
+  if (panel.classList.contains('active')) {
     icon.classList.add('fa-angle-down');
     icon.classList.remove('fa-angle-right');
+  } else {
+    icon.classList.remove('fa-angle-down');
+    icon.classList.add('fa-angle-right');
   }
 };
 
@@ -106,19 +96,62 @@ const toggleDisplayedFeature = (element) => {
   });
 };
 
+const toggleDirectoryButton = (element) => {
+  element.classList.toggle('active');
+  const icon = element.getElementsByTagName('i')[0];
+  const panel = element.nextElementSibling;
+  panel.classList.toggle('active');
+
+  if (panel.classList.contains('active')) {
+    icon.classList.remove('fa-folder');
+    icon.classList.add('fa-folder-open');
+  } else {
+    icon.classList.add('fa-folder');
+    icon.classList.remove('fa-folder-open');
+  }
+};
+
+const toggleParentDirectoryButtons = (element) => {
+  toggleDirectoryButton(element);
+
+  // Recuse on any directory buttons above
+  const parentDirectoryButton = element.parentNode.parentNode.previousElementSibling;
+  if (parentDirectoryButton && parentDirectoryButton.classList.contains('directory-button')) {
+    toggleParentDirectoryButtons(parentDirectoryButton);
+  }
+};
+
 const init = () => {
+  // Add listeners for directory buttons
+  Array.from(document.getElementsByClassName('directory-button')).forEach((directoryButton) => {
+    directoryButton.addEventListener('click', function click() {
+      toggleDirectoryButton(this);
+    });
+  });
+
   // Add listeners for feature buttons
   Array.from(document.getElementsByClassName('feature-button')).forEach((featureButton) => {
     featureButton.addEventListener('click', function click() {
       toggleFunctionAccordion(this);
-      toggleDisplayedFeature(this);
-      scrollTo(this);
+      if (this.classList.contains('active')) {
+        toggleDisplayedFeature(this);
+        scrollTo(this);
+
+        // Toggle the first scenario button of the feature
+        const scenarioButton = this.nextElementSibling.getElementsByTagName('button')[0];
+        toggleScenarioButton(scenarioButton);
+      }
     });
   });
 
   // Add listeners for scenario buttons
   Array.from(document.getElementsByClassName('scenario-button')).forEach((scenarioButton) => {
     scenarioButton.addEventListener('click', function click() {
+      // Make sure the scenario's feature is active
+      const featureButton = this.parentNode.parentNode.previousElementSibling;
+      if (!this.classList.contains('active')) {
+        toggleDisplayedFeature(featureButton);
+      }
       toggleScenarioButton(this);
       scrollTo(this);
     });
@@ -140,6 +173,10 @@ const init = () => {
   // Open the first feature.
   const firstFeatureButton = document.getElementsByClassName('feature-button')[0];
   if (firstFeatureButton) {
+    // Open any parent directory buttons
+    const directoryButton = firstFeatureButton.parentNode.parentNode.previousElementSibling;
+    toggleParentDirectoryButtons(directoryButton);
+
     toggleFunctionAccordion(firstFeatureButton);
     toggleDisplayedFeature(firstFeatureButton);
   }

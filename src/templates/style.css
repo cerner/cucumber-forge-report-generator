@@ -1,98 +1,143 @@
 @import url('https://fonts.googleapis.com/css?family=Lato|Roboto+Mono|Roboto+Slab');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css');
 
+/* Global style */
 html {
-  scroll-behavior: smooth;
   font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
-  font-weight: normal;
-  font-style: normal;
   font-size: medium;
+  font-style: normal;
+  font-weight: normal;
+  scroll-behavior: smooth;
 }
 body {
-  margin: 0px;
   background-color: #fcfcfc;
-}
-pre {
-  overflow-x: auto;
-}
-a.anchor {
-  display: block;
-  position: relative;
-  top: -1.5em;
-}
-
-.table-wrapper {
-  width: calc(70vw - 4em);
-  overflow-x: auto;
-}
-table {
-  border-collapse: collapse;
-  margin-left: 1em;
-  white-space: nowrap;
-}
-table, th, td {
-  border: 1px solid black;
-}
-.step-table td, .example-table td, .example-table th {
-  padding: 5px;
+  margin: 0px;
 }
 
 /* Sidebar Style */
 .sidenav {
-  width: 30vw;
-  height: 100%;
-  position: fixed;
-  z-index: 1;
   background-color: #272525;
-  overflow-x: hidden;
   color: #f1f1f1;
+  height: 100%;
+  overflow-x: hidden;
+  position: fixed;
   text-align: center;
+  width: 30vw;
+  z-index: 1;
   /* Disable the scroll bar */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none;  /* IE 10+ */
 }
+/* Disable the scroll bar */
 .sidenav::-webkit-scrollbar { /* WebKit */
     width: 0;
     height: 0;
 }
-.sidenav-body {
-  min-height: 100%;
-  margin-top: 7em;
-  margin-bottom: 2em;
-}
 #sidenav-header {
-  width: 30vw;
-  position: fixed;
   color: #3a7ca8;
   font-weight: bold;
   line-height: 1.5em;
+  position: fixed;
+  width: 30vw;
 }
 #sidenavTitle {
-  color: #f1f1f1;
   background-color: #2980B9;
+  color: #f1f1f1;
   padding: 1em 0.01em 1em 0.01em;
 }
 #sidenavTitle h1 {
   font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
-  font-weight: bold;
   font-size: xx-large;
+  font-weight: bold;
   margin: 0em;
 }
 #sidenav-subheader {
   background-color: #272525;  
   padding: 0.25em 0em 0.25em 0em;
 }
-#sidenavFooter {
-  position: fixed;
-  bottom: 0;
-  width: 30vw;
+#sidenav-body {
+  background-color: #404040;
+  margin-bottom: 2em;
+  margin-top: 7em;
+  min-height: 100%;
+}
+#sidenav-body ul {
+  display: none;
+  list-style-type: none;
+  padding-left: 0.5em;
+}
+#sidenav-body ul.active, #sidenav-body > ul {
+  display: block;
+}
+#sidenav-body button {
+  cursor: pointer;
+  font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
+  outline: none;
+  padding: 0.25em;
   text-align: left;
-  padding: 0.25em 0em 0.25em 0em;
+  white-space: nowrap;
+  width: 100%;
+}
+.directory-button {
+  background-color: #404040;
+  border: none;
+  color: #a9a9a9;
+  padding-left: 0em;
+}
+.directory-button.active, .directory-button:hover {
+  color: white;
+}
+i.fa-folder, i.fa-folder-open {
+  width: 1.5em; 
+}
+.feature-button {
+  background-color: #404040;
+  border-bottom-left-radius: 0.85em;
+  border-top-left-radius: 0.25em;
+  border: none;
+  color: #a9a9a9;
+}
+.feature-button.active, .feature-button:hover {
+  background-color: #fcfcfc;
+  border-bottom: solid 1px #c9c9c9;
+  color: #404040;
+  font-weight: bold;
+  margin-bottom: -1px;
+}
+.feature-button:hover:not(.active) {  
+  border-bottom-left-radius: 0.25em;
+}
+i.fa-angle-right, i.fa-angle-down { 
+  width: 0.6em; 
+}
+.scenario-button {
+  background-color: #e2e2e2;
+  border-bottom: none;
+  border-left: none;
+  border-right: solid 1px #c9c9c9;
+  border-top: none;
+  color: #404040;
+}
+.scenario-button.active, .scenario-button:hover {
+  background-color: #ccc;
+}
+.scenario-button.last {
+  border-bottom-left-radius: 0.85em;
+}
+.scenario-button span {
+  margin-left: 0.25em;
+}
+#sidenavFooter {
   background-color: #272525;
+  bottom: 0;
+  padding: 0.25em 0em 0.25em 0em;
+  position: fixed;
+  text-align: left;
+  width: 30vw;
 }
 #settingsDrawer {
-  padding: 0.5em 0.5em 0.5em 0.5em;
   display: none;
+  padding: 0.5em 0.5em 0.5em 0.5em;
 }
 #settingsDrawer.active {
   display: block;
@@ -104,92 +149,29 @@ table, th, td {
   color: grey;
 }
 #settingsButton {
-  padding: 0.25em;
-  margin-left: 0.25em;
   cursor: pointer;
+  margin-left: 0.25em;
+  padding: 0.25em;
   vertical-align: middle;
 }
 #footerTitle {
   color: #3a7ca8;
   margin-left: calc(15vw - 6.25em);
 }
-.feature-button {
-  font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
-  background-color: #404040;
-  color: #d9d9d9;
-  cursor: pointer;
-  padding: 0.75em;
-  width: 100%;
-  text-align: left;
-  border: none;
-  outline: none;
-  white-space: nowrap;
-}
-.feature-button.active, .feature-button:hover {
-  background-color: #fcfcfc;
-  font-weight: bold;
-  color: #404040;
-  border-bottom: solid 1px #c9c9c9;
-}
-i.fa-angle-right, i.fa-angle-down { 
-  width: 0.6em; 
-}
-.panel {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-}
-.scenario-button {
-  font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
-  background-color: #e2e2e2;
-  color: #404040;
-  cursor: pointer;
-  padding: 0.5em;
-  width: 100%;
-  text-align: left;
-  outline: none;
-  white-space: nowrap;
-  border-top: none;
-  border-left: none;
-  border-bottom: none;
-  border-right: solid 1px #c9c9c9;
-}
-.scenario-button.active, .scenario-button:hover {
-  background-color: #ccc;
-}
-.scenario-button span {
-  margin-left: 1em;
-}
 
 /* Main Content Window Style */
 .main {
-  margin-left: 30vw;
   margin-bottom: 75vh;
+  margin-left: 30vw;
   padding: 0px 10px;
 }
 .main h2 {
-  padding-top: 0.5em;
-  margin-top: 0em;
-  margin-bottom: 0.5em;
   font-family: 'Roboto Slab', sans-serif;
-  font-weight: bold;
   font-size: x-large;
-}
-.main h3 {
-  margin-top: 1em;
-  margin-bottom: 0em;
-  font-family: 'Roboto Slab', sans-serif;
   font-weight: bold;
-  font-size: large;
-}
-.main pre, .main p {
-  margin-top: 0.5em;
   margin-bottom: 0.5em;
-  font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
-  font-size: medium;
-}
-.scenario-description {
-  margin-bottom: 1.5em;
+  margin-top: 0em;
+  padding-top: 0.5em;
 }
 .feature-wrapper {
   display: none;
@@ -197,11 +179,43 @@ i.fa-angle-right, i.fa-angle-down {
 .feature-wrapper.active {
   display: block;
 }
+.feature-wrapper a.anchor {
+  display: block;
+  position: relative;
+  top: -1.5em;
+}
+.tags {
+  color: grey;
+  display: none;
+  margin-bottom: -1em;
+}
+.tags.active {
+  display: block;
+}
 .feature-body {
   margin-left: 1em;
 }
+.feature-body h3 {
+  font-family: 'Roboto Slab', sans-serif;
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 0em;
+  margin-top: 1em;
+}
+.feature-body pre, .feature-body p {
+  font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
+  font-size: medium;
+  margin-bottom: 0.5em;
+  margin-top: 0.5em;
+}
+.feature-body pre {
+  overflow-x: auto;
+}
 .scenario-body {
   margin-left: 1em;
+}
+.scenario-description {
+  margin-bottom: 1.5em;
 }
 .docstring {
   margin-left: 1em;
@@ -210,16 +224,21 @@ i.fa-angle-right, i.fa-angle-down {
   font-family: 'Roboto Mono', monospace;
   font-size: small;
 }
+.table-wrapper {
+  overflow-x: auto;
+  width: calc(70vw - 4em);
+}
+.table-wrapper table {
+  border-collapse: collapse;
+  margin-left: 1em;
+  white-space: nowrap;
+}
+.table-wrapper table, th, td {
+  padding: 5px;
+  border: 1px solid black;
+}
 .scenario-divider {
-  margin-top: 1em;
-  border: 0;
   border-bottom: 1px dashed #ccc;
-}
-.tags {
-  color: grey;
-  margin-bottom: -1em;
-  display: none;
-}
-.tags.active {
-  display: block;
+  border: 0;
+  margin-top: 1em;
 }
