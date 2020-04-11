@@ -190,19 +190,18 @@ const populateTagStrings = (feature) => {
   });
 };
 
+const includeFeature = (feature) => {
+  if (!tagFilter || feature.tags.includes(tagFilter)) {
+    return true;
+  }
+  feature.scenarios = getFilteredScenarios(feature.scenarios);
+  return feature.scenarios.length > 0;
+};
+
 // eslint-disable-next-line no-unused-vars
 const parseFeatureFile = (item, nodePath, fsStats) => {
-  let feature = getFeatureFromFile(item.path);
-
-  if (tagFilter) {
-    const filteredScenarios = getFilteredScenarios(feature.scenarios);
-    if (filteredScenarios.length > 0) {
-      feature.scenarios = filteredScenarios;
-    } else {
-      feature = undefined;
-    }
-  }
-  if (feature) {
+  const feature = getFeatureFromFile(item.path);
+  if (includeFeature(feature)) {
     item.feature = feature;
     populateHtmlIdentifiers(feature);
     populateTagStrings(feature);
@@ -211,7 +210,7 @@ const parseFeatureFile = (item, nodePath, fsStats) => {
 
 const pruneFeatureFileTree = (featureFileTree) => {
   featureFileTree.children = featureFileTree.children
-    .filter((child) => child.type === 'file' || pruneFeatureFileTree(child));
+    .filter((child) => (child.type === 'file' ? child.feature : pruneFeatureFileTree(child)));
   return featureFileTree.children.length > 0;
 };
 

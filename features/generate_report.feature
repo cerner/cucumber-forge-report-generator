@@ -101,7 +101,7 @@ Feature: Report Generation
     Then the title on the report will be "Pet Project - {current_date}"
     And the project title on the sidebar will be "Pet Project"
 
-  Scenario Outline: Generating an HTML report filtered by a tag
+  Scenario Outline: Generating an HTML report with scenarios filtered by a tag
     The features and scenarios included in a report can be filtered based on their tags.
     The provided tag can optionally be prefixed with '@'.
 
@@ -116,6 +116,16 @@ Feature: Report Generation
       | tag:       |
       | 'feeding'  |
       | '@feeding' |
+
+  Scenario: Generating an HTML report with features filtered by a tag
+    The features and scenarios included in a report can be filtered based on their tags.
+
+    When a report is generated with the code "new Generator().generate(this.allFeaturesPath, null, '@cats')"
+    Then the report will contain 1 feature
+    And the report will contain 2 scenarios
+    And the report name on the sidebar will be '@cats'
+    And the sidebar will contain 1 feature button
+    And the sidebar will contain 2 scenario buttons
 
   @exception
   Scenario: Generating a report when no path is provided
