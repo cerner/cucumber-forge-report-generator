@@ -127,6 +127,28 @@ Feature: Report Generation
     And the sidebar will contain 1 feature button
     And the sidebar will contain 2 scenario buttons
 
+  Scenario: Generating a report when the directory contains an empty feature file    
+    Given there is a file named 'empty.feature' in the 'feature/dog' directory with the following contents:
+      """
+      """
+    When a report is generated with the code "new Generator().generate(this.dogCarePath)"
+    Then the report will contain 2 features
+
+  Scenario: Generating a report when the directory contains a feature file without the feature header   
+    Given there is a file named 'invalid.feature' in the 'feature/dog' directory with the following contents:
+      """
+        Background:
+          Given I have a dog
+
+        @feeding
+        Scenario: Feeding the Dog
+          Given the dog is hungery
+          When I give dog food to the dog
+          Then the dog will eat it
+      """
+    When a report is generated with the code "new Generator().generate(this.dogCarePath)"
+    Then the report will contain 2 features
+
   @exception
   Scenario: Generating a report when no path is provided
     When a report is generated with the code "new Generator().generate()"
