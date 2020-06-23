@@ -77,6 +77,7 @@ const getFeatureFromFile = (featureFilename) => {
     scenarios: [],
     tags: [],
     description: '',
+    name: '',
   };
   let scenario = null;
   let tags = [];
