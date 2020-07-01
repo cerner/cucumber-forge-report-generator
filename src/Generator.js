@@ -6,15 +6,11 @@ const i18nBackend = require('i18next-fs-backend');
 const moment = require('moment');
 const os = require('os');
 const path = require('path');
+const SUPPORTED_LANGUAGES = require('./locales/supportedLocales.json');
 
 const FILE_ENCODING = 'utf-8';
 const TEMPLATESDIR = 'templates';
 const DEFAULT_REPORT_NAME = 'All Scenarios';
-const SUPPORTED_LANGUAGES = ['af', 'am', 'an', 'ar', 'ast', 'az', 'bg', 'bm', 'bs', 'ca', 'cs', 'cy-GB', 'da', 'de', 'el', 'em',
-  'en', 'en-au', 'en-lol', 'en-old', 'en-pirate', 'en-Scouse', 'eo', 'es', 'et', 'fa', 'fi', 'fr', 'ga', 'gj', 'gl', 'he', 'hi',
-  'hr', 'ht', 'hu', 'id', 'is', 'it', 'ja', 'jv', 'ka', 'kn', 'ko', 'lt', 'lu', 'lv', 'mk-Cyrl', 'mk-Latin', 'mn', 'nl', 'no',
-  'pa', 'pl', 'pt', 'ro', 'ru', 'sk', 'sl', 'sr-Cyrl', 'sr-Latn', 'sv', 'ta', 'th', 'tl', 'tlh', 'tr', 'tt', 'uk', 'ur', 'uz',
-  'vi', 'zh-CN', 'zh-TW'];
 
 let language;
 let author;
@@ -82,7 +78,7 @@ const getFeatureFileLanguage = (featureFilename, fileLines) => {
   if (fileLines.length === 0) {
     return language;
   }
-  const givenLang = /^\s*#\s*language:\s*(\w+)\s*$/.exec(fileLines[0]);
+  const givenLang = fileLines[0].match(/^\s*#\s*language:\s*(\w+)\s*$/);
   if (!givenLang || givenLang.length < 2) {
     return language;
   }
@@ -180,15 +176,10 @@ const getFeatureFromFile = (featureFilename) => {
         case 'BACKGROUND_STARTED':
           feature.background.description += feature.background.description ? `\n${line}` : line;
           break;
-        // case 'SCENARIO_STARTED':
-        // case 'SCENARIO_OUTLINE_STARTED':
         default:
           if (scenario) {
             scenario.description += scenario.description ? `\n${line}` : line;
           }
-          // break;
-        // default:
-          // throw new Error(`The feature file [${featureFilename}] could not be parsed.`);
       }
     }
   });
