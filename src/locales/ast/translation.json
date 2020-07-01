@@ -1,0 +1,12 @@
+{
+  "feature": ["Carauterística:"],
+  "background": ["Antecedentes:"],
+  "scenario": ["Casu:"],
+  "scenario_outline": ["Esbozu del casu:"],
+  "examples": ["Exemplos:"],
+  "given": ["Dáu", "Dada", "Daos", "Daes"],
+  "when": ["Cuando"],
+  "then": ["Entós"],
+  "and": ["Y", "Ya"],
+  "but": ["Peru"]
+}

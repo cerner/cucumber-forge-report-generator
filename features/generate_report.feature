@@ -134,7 +134,7 @@ Feature: Report Generation
     When a report is generated with the code "new Generator().generate(this.dogCarePath)"
     Then the report will contain 2 features
 
-  Scenario: Generating a report when the directory contains a feature file without the feature header   
+  Scenario: Generating a report when the directory contains a feature file without the feature header
     Given there is a file named 'invalid.feature' in the 'feature/dog' directory with the following contents:
       """
         Background:
@@ -149,6 +149,35 @@ Feature: Report Generation
     When a report is generated with the code "new Generator().generate(this.dogCarePath)"
     Then the report will contain 2 features
 
+  Scenario: Generating a report when the directory contains a feature file without a scenario header
+    Given there is a file named 'invalid.feature' in the 'feature/dog' directory with the following contents:
+      """
+      Feature: Dog Care
+          Given the dog is hungery
+          When I give dog food to the dog
+          Then the dog will eat it
+      """
+    When a report is generated with the code "new Generator().generate(this.dogCarePath)"
+    Then the report will contain 2 features
+
+  Scenario: Generating a report when the directory contains a feature file that has only Cucumber steps
+    Given there is a file named 'invalid.feature' in the 'feature/dog' directory with the following contents:
+      """
+          Given the dog is hungery
+          When I give dog food to the dog
+          Then the dog will eat it
+      """
+    When a report is generated with the code "new Generator().generate(this.dogCarePath)"
+    Then the report will contain 2 features
+    
+  Scenario: Generating a report when the directory contains a feature file without Cucumber keywords
+    Given there is a file named 'invalid.feature' in the 'feature/dog' directory with the following contents:
+      """
+      This is an invalid feature file
+      """
+    When a report is generated with the code "new Generator().generate(this.dogCarePath)"
+    Then the report will contain 2 features
+
   @exception
   Scenario: Generating a report when no path is provided
     When a report is generated with the code "new Generator().generate()"
@@ -159,3 +188,85 @@ Feature: Report Generation
     Given the variable 'noFeaturesPath' contains the path to a directory with no feature files
     When a report is generated with the code "new Generator().generate(this.noFeaturesPath)"
     Then an error will be thrown with the message "No feature files were found in the given directory."
+
+  Scenario: Generating an HTML report for a feature file with an alternative Gherkin dialect when the dialect is provided
+    Given there is a file named 'afrikaans.feature' in the 'feature/dialect' directory with the following contents:
+      """
+      Besigheid Behoefte: Hondsorg
+        Agtergrond:
+          Gegewe Ek het 'n hond
+
+        Situasie: Die hond voed
+          Gegewe die hond is honger
+          Wanneer I give dog food to the dog
+          Dan Ek gee hondekos vir die hond
+
+        Situasie Uiteensetting: Die hondjie klapper
+          Wanneer Ek troeteldier van die hond se hare <direction:>
+          Dan die hond sal <result>
+          Maar die hond sal my nie byt nie
+          En die hond sal kalmeer
+
+          Voorbeelde:
+            | direction:  | result      |
+            | agteruit    | lek my hand |
+            | voorspelers | grom        |
+      """
+    And the variable 'dialectPath' contains the path to the 'feature/dialect' directory
+    When a report is generated with the code "new Generator().generate(this.dialectPath, null, null, 'af')"
+    Then the report will contain 1 features
+    And the report will contain 2 scenarios
+    And the sidebar will contain 1 directory buttons
+    And the sidebar will contain 1 feature buttons
+    And the sidebar will contain 2 scenario buttons
+
+  Scenario: Generating an HTML report for a feature file with an alternative Gherkin dialect when the language header is present in the feature
+    Given there is a file named 'panjabi.feature' in the 'feature/dialect' directory with the following contents:
+      """
+      # language: pa
+      ਨਕਸ਼ ਨੁਹਾਰ: ਕੁੱਤੇ ਦੀ ਦੇਖਭਾਲ
+        ਪਿਛੋਕੜ:
+          ਜਿਵੇਂ ਕਿ ਮੇਰੇ ਕੋਲ ਇੱਕ ਕੁੱਤਾ ਹੈ
+
+        ਪਟਕਥਾ: ਕੁੱਤੇ ਨੂੰ ਖੁਆਉਣਾ
+          ਜੇਕਰ ਕੁੱਤਾ ਭੁੱਖਾ ਹੈ
+          ਜਦੋਂ ਮੈਂ ਕੁੱਤੇ ਨੂੰ ਖਾਣਾ ਦਿੰਦਾ ਹਾਂ
+          ਤਦ ਕੁੱਤਾ ਇਹ ਖਾਵੇਗਾ
+
+        ਪਟਕਥਾ ਰੂਪ ਰੇਖਾ: ਕੁੱਤਾ ਪਾਲ ਰਹੇ
+          ਜਦੋਂ ਮੈਂ ਕੁੱਤੇ ਦੇ ਵਾਲ ਪਾਲਤੂ ਹਾਂ <direction:>
+          ਤਦ ਕੁੱਤਾ ਕਰੇਗਾ <result>
+          ਪਰ ਕੁੱਤਾ ਮੈਨੂੰ ਨਹੀਂ ਡੰਗੇਗਾ
+          ਅਤੇ ਕੁੱਤਾ ਸ਼ਾਂਤ ਹੋ ਜਾਵੇਗਾ
+
+          ਉਦਾਹਰਨਾਂ:
+            | direction: | result     |
+            | ਪਿੱਛੇ ਵੱਲ     | ਮੇਰਾ ਹੱਥ ਚੱਟੋ |
+            | ਅੱਗੇ        | ਫੁੱਟ         |
+      """
+    And the variable 'dialectPath' contains the path to the 'feature/dialect' directory
+    When a report is generated with the code "new Generator().generate(this.allFeaturesPath)"
+    Then the report will contain 3 features
+    And the report will contain 6 scenarios
+    And the sidebar will contain 3 directory buttons
+    And the sidebar will contain 3 feature buttons
+    And the sidebar will contain 6 scenario buttons
+
+  @exception
+  Scenario: Generating an HTML report when the provided Gherkin dialect is not supported
+    When a report is generated with the code "new Generator().generate(this.allFeaturesPath, null, null, 'invalid')"
+    Then an error will be thrown with the message "The provided dialect [invalid] is not supported."
+
+  @exception
+  Scenario: Generating an HTML report for a feature file with an alternative Gherkin dialect when the language header in the feature is not supported
+    Given there is a file named 'american.feature' in the 'feature/dialect' directory with the following contents:
+      """
+      # language: american
+      Feature: Dog Care
+        Scenario: Feeding the Dog
+          Given the dog is hungery
+          When I give dog food to the dog
+          Then the dog will eat it
+      """
+    When a report is generated with the code "new Generator().generate(this.allFeaturesPath)"
+    Then an error will be thrown with a message that matches "The language \[american\] configured for the feature file \[(.*)american.feature\] is not supported."

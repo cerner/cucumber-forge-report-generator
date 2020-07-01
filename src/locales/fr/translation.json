@@ -1,0 +1,12 @@
+{
+  "feature": ["Fonctionnalité:"],
+  "background": ["Contexte:"],
+  "scenario": ["Scénario:"],
+  "scenario_outline": ["Plan du scénario:", "Plan du Scénario:"],
+  "examples": ["Exemples:"],
+  "given": ["Soit", "Etant donné que", "Etant donné qu'", "Etant donné", "Etant donnée", "Etant donnés", "Etant données", "Étant donné que", "Étant donné qu'", "Étant donné", "Étant donnée", "Étant donnés", "Étant données"],
+  "when": ["Quand","Lorsque", "Lorsqu'"],
+  "then": ["Alors"],
+  "and": ["Et que", "Et qu'", "Et"],
+  "but": ["Mais que", "Mais qu'", "Mais"]
+}

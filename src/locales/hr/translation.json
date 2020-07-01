@@ -1,0 +1,12 @@
+{
+  "feature": ["Osobina:", "Mogućnost:", "Mogucnost:"],
+  "background": ["Pozadina:"],
+  "scenario": ["Scenarij:"],
+  "scenario_outline": ["Skica:", "Koncept:"],
+  "examples": ["Primjeri:", "Scenariji:"],
+  "given": ["Zadan", "Zadani", "Zadano"],
+  "when": ["Kada", "Kad"],
+  "then": ["Onda"],
+  "and": ["I"],
+  "but": ["Ali"]
+}

@@ -1,0 +1,12 @@
+{
+  "feature": ["Tính năng:"],
+  "background": ["Bối cảnh:"],
+  "scenario": ["Tình huống:", "Kịch bản:"],
+  "scenario_outline": ["Khung tình huống:", "Khung kịch bản:"],
+  "examples": ["Dữ liệu:"],
+  "given": ["Biết", "Cho"],
+  "when": ["Khi"],
+  "then": ["Thì"],
+  "and": ["Và"],
+  "but": ["Nhưng"]
+}

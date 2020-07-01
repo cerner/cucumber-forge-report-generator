@@ -1,0 +1,12 @@
+{
+  "feature": ["Funksie:", "Besigheid Behoefte:", "Vermoë:"],
+  "background": ["Agtergrond"],
+  "scenario": ["Situasie:"],
+  "scenario_outline": ["Situasie Uiteensetting:"],
+  "examples": ["Voorbeelde:"],
+  "given": ["Gegewe"],
+  "when": ["Wanneer"],
+  "then": ["Dan"],
+  "and": ["En"],
+  "but": ["Maar"]
+}

@@ -1,0 +1,12 @@
+{
+  "feature": ["OH HAI:"],
+  "background": ["B4:"],
+  "scenario": ["MISHUN:"],
+  "scenario_outline": ["MISHUN SRSLY:"],
+  "examples": ["EXAMPLZ:"],
+  "given": ["I CAN HAZ"],
+  "when": ["WEN"],
+  "then": ["DEN"],
+  "and": ["AN"],
+  "but": ["BUT"]
+}

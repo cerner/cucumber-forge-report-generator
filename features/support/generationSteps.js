@@ -67,6 +67,10 @@ Then('an error will be thrown with the message {string}', function (errMsg) {
   expect(this.output.message).to.eq(errMsg);
 });
 
+Then('an error will be thrown with a message that matches {string}', function (errMsg) {
+  expect(this.output.message).to.match(new RegExp(errMsg));
+});
+
 Then('the title on the report will be {string}', function (reportTitle) {
   const title = reportTitle.replace('{current_date}', this.currentDate);
   expect(this.outputHTML.title).to.eql(title);

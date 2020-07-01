@@ -1,0 +1,12 @@
+{
+  "feature": ["📚:"],
+  "background": ["💤:"],
+  "scenario": ["📕:"],
+  "scenario_outline": ["📖:"],
+  "examples": ["📓:"],
+  "given": ["😐"],
+  "when": ["🎬"],
+  "then": ["🙏"],
+  "and": ["😂"],
+  "but": ["😔"]
+}

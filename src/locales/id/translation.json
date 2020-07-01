@@ -1,0 +1,12 @@
+{
+  "feature": ["Fitur:"],
+  "background": ["Dasar:"],
+  "scenario": ["Skenario:"],
+  "scenario_outline": ["Skenario konsep:"],
+  "examples": ["Contoh:"],
+  "given": ["Dengan"],
+  "when": ["Ketika"],
+  "then": ["Maka"],
+  "and": ["Dan"],
+  "but": ["Tapi"]
+}

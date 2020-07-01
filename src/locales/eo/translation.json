@@ -1,0 +1,12 @@
+{
+  "feature": ["Trajto:"],
+  "background": ["Fono:"],
+  "scenario": ["Scenaro:", "Kazo:"],
+  "scenario_outline": ["Konturo de la scenaro:", "Skizo:", "Kazo-skizo:"],
+  "examples": ["Ekzemploj:"],
+  "given": ["Donitaĵo", "Komence"],
+  "when": ["Se"],
+  "then": ["Do"],
+  "and": ["Kaj"],
+  "but": ["Sed"]
+}
