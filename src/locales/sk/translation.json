@@ -1,0 +1,12 @@
+{
+  "feature": ["Požiadavka:", "Funkcia:", "Vlastnosť:"],
+  "background": ["Pozadie:"],
+  "scenario": ["Scenár:"],
+  "scenario_outline": ["Náčrt Scenáru:", "Náčrt Scenára:", "Osnova Scenára:"],
+  "examples": ["Príklady:"],
+  "given": ["Pokiaľ", "Za predpokladu"],
+  "when": ["Keď", "Ak"],
+  "then": ["Tak", "Potom"],
+  "and": ["A", "A tiež", "A taktiež", "A zároveň"],
+  "but": ["Ale"]
+}

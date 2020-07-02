@@ -1,0 +1,12 @@
+{
+  "feature": ["Özellik:"],
+  "background": ["Geçmiş:"],
+  "scenario": ["Senaryo:"],
+  "scenario_outline": ["Senaryo taslağı:"],
+  "examples": ["Örnekler:"],
+  "given": ["Diyelim ki"],
+  "when": ["Eğer ki"],
+  "then": ["O zaman"],
+  "and": ["Ve"],
+  "but": ["Fakat", "Ama"]
+}

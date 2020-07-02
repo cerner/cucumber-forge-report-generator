@@ -27,8 +27,8 @@
   "dependencies": {
     "directory-tree": "^2.2.4",
     "handlebars": "^4.7.6",
-    "i18next": "^19.5.1",
-    "i18next-sync-fs-backend": "^1.1.1",
+    "i18next": "^19.5.2",
+    "i18next-fs-backend": "^1.0.7",
     "moment": "^2.27.0"
   },
   "devDependencies": {
@@ -36,7 +36,7 @@
     "cucumber": "^6.0.5",
     "eslint": "^7.3.1",
     "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-import": "^2.22.0",
     "jsdom": "^16.2.2"
   }
 }

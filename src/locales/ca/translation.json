@@ -1,0 +1,12 @@
+{
+  "feature": ["Característica:", "Funcionalitat:"],
+  "background": ["Rerefons:", "Antecedents:"],
+  "scenario": ["Escenari:"],
+  "scenario_outline": ["Esquema de l'escenari:"],
+  "examples": ["Exemples:"],
+  "given": ["Donat", "Donada", "Atès", "Atesa"],
+  "when": ["Quan"],
+  "then": ["Aleshores", "Cal"],
+  "and": ["I"],
+  "but": ["Però"]
+}

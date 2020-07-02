@@ -1,0 +1,12 @@
+{
+  "feature": ["Gné:"],
+  "background": ["Cúlra:"],
+  "scenario": ["Cás:"],
+  "scenario_outline": ["Cás Achomair:"],
+  "examples": ["Samplaí:"],
+  "given": ["Cuir i gcás go", "Cuir i gcás nach", "Cuir i gcás gur", "Cuir i gcás nár"],
+  "when": ["Nuair a", "Nuair nach", "Nuair ba", "Nuair nár"],
+  "then": ["Ansin"],
+  "and": ["Agus"],
+  "but": ["Ach"]
+}

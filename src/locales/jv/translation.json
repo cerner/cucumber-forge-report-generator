@@ -1,0 +1,12 @@
+{
+  "feature": ["Fitur:"],
+  "background": ["Dasar:"],
+  "scenario": ["Skenario:"],
+  "scenario_outline": ["Konsep skenario:"],
+  "examples": ["Conto:", "Contone:"],
+  "given": ["Nalika", "Nalikaning"],
+  "when": ["Manawa", "Menawa"],
+  "then": ["Njuk", "Banjur"],
+  "and": ["Lan"],
+  "but": ["Tapi", "Nanging", "Ananging"]
+}

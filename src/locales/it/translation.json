@@ -1,0 +1,12 @@
+{
+  "feature": ["Funzionalità:"],
+  "background": ["Contesto:"],
+  "scenario": ["Scenario:"],
+  "scenario_outline": ["Schema dello scenario:"],
+  "examples": ["Esempi:"],
+  "given": ["Dato", "Data", "Dati", "Date"],
+  "when": ["Quando"],
+  "then": ["Allora"],
+  "and": ["E"],
+  "but": ["Ma"]
+}

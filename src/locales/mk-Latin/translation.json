@@ -1,0 +1,12 @@
+{
+  "feature": ["Funkcionalnost:", "Biznis potreba:", "Mozhnost:"],
+  "background": ["Kontekst:", "Sodrzhina:"],
+  "scenario": ["Scenario:", "Na primer:"],
+  "scenario_outline": ["Pregled na scenarija:", "Skica:", "Koncept:"],
+  "examples": ["Primeri:", "Scenaria:"],
+  "given": ["Dadeno", "Dadena"],
+  "when": ["Koga"],
+  "then": ["Togash"],
+  "and": ["I"],
+  "but": ["No"]
+}

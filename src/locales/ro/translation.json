@@ -1,0 +1,12 @@
+{
+  "feature": ["Functionalitate:", "Funcționalitate:", "Funcţionalitate:"],
+  "background": ["Context:"],
+  "scenario": ["Scenariu:"],
+  "scenario_outline": ["Structura scenariu:", "Structură scenariu:"],
+  "examples": ["Exemple:"],
+  "given": ["Date fiind", "Dat fiind", "Dată fiind", "Dati fiind", "Dați fiind", "Daţi fiind"],
+  "when": ["Cand", "Când"],
+  "then": ["Atunci"],
+  "and": ["Si", "Și", "Şi"],
+  "but": ["Dar"]
+}

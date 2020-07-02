@@ -1,0 +1,12 @@
+{
+  "feature": ["Fungsi:"],
+  "background": ["Latar Belakang:"],
+  "scenario": ["Senario:", "Situasi:", "Keadaan:"],
+  "scenario_outline": ["Kerangka Senario:", "Kerangka Situasi:", "Kerangka Keadaan:", "Garis Panduan Senario:"],
+  "examples": ["Contoh:"],
+  "given": ["Diberi", "Bagi"],
+  "when": ["Apabila"],
+  "then": ["Maka", "Kemudian"],
+  "and": ["Dan"],
+  "but": ["Tetapi", "Tapi"]
+}

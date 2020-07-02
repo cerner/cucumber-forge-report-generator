@@ -1,0 +1,12 @@
+{
+  "feature": ["Egenskap:"],
+  "background": ["Bakgrund:"],
+  "scenario": ["Scenario:"],
+  "scenario_outline": ["Abstrakt Scenario:", "Scenariomall:"],
+  "examples": ["Exempel:"],
+  "given": ["Givet"],
+  "when": ["När"],
+  "then": ["Så"],
+  "and": ["Och"],
+  "but": ["Men"]
+}

@@ -1,0 +1,12 @@
+{
+  "feature": ["Właściwość:", "Funkcja:", "Aspekt:", "Potrzeba biznesowa:"],
+  "background": ["Założenia:"],
+  "scenario": ["Scenariusz:"],
+  "scenario_outline": ["Szablon scenariusza:"],
+  "examples": ["Przykłady:"],
+  "given": ["Zakładając", "Mając", "Zakładając, że"],
+  "when": ["Jeżeli", "Jeśli", "Gdy", "Kiedy"],
+  "then": ["Wtedy"],
+  "and": ["Oraz", "I"],
+  "but": ["Ale"]
+}
