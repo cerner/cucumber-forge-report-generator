@@ -1,0 +1,17 @@
+{
+  "inlcude": [
+    "src/**/*.js"
+  ],
+  "exclude": [
+    "features/**/*.*",
+    "docs/**/*.*"
+  ],
+  "compilerOptions": {
+    "outDir": "./types",
+    "declaration": true,
+    "noEmit": false,
+    "allowJs": true,
+    "emitDeclarationOnly": true,
+    "lib": ["es6"]
+  }
+}
