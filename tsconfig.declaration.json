@@ -4,7 +4,10 @@
   ],
   "exclude": [
     "features/**/*.*",
-    "docs/**/*.*"
+    "docs/**/*.*",
+    "types/**/*.*",
+    ".travis/**/*.*",
+    ".github/**/*.*"
   ],
   "compilerOptions": {
     "outDir": "./types",
