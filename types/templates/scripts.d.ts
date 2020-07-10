@@ -1,0 +1,13 @@
+declare let pauseScrollActions: boolean;
+declare function toggleSettingsDrawer(): void;
+declare function toggleTagDisplay(): void;
+declare function toggleFunctionAccordion(element: any): void;
+declare function toggleScenarioButton(element: any): void;
+declare function scrollTo(element: any): void;
+declare function checkVisible(elm: any): boolean;
+declare function getVisibleAnchor(): undefined;
+declare function updateActiveScenarioWhenScrolling(): void;
+declare function toggleDisplayedFeature(element: any): void;
+declare function toggleDirectoryButton(element: any): void;
+declare function toggleParentDirectoryButtons(element: any): void;
+declare function init(): void;

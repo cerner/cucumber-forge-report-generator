@@ -3,9 +3,12 @@
   "version": "0.0.0-development",
   "description": "NPM Library for Generating Static Cucumber Reports",
   "main": "src/Generator.js",
+  "types": "types/Generator.d.ts",
   "scripts": {
     "test": "./node_modules/.bin/cucumber-js features/*.feature",
-    "lint": "npx eslint src --color"
+    "lint": "npx eslint src --color",
+    "build:types": "npx -p typescript tsc -p tsconfig.declaration.json",
+    "prepublishOnly": "npm run build:types"
   },
   "repository": {
     "type": "git",
