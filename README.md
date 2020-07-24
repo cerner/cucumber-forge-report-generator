@@ -7,8 +7,8 @@
 </h1>
 
 [![Cerner OSS](https://badgen.net/badge/Cerner/OSS/blue)](http://engineering.cerner.com/2014/01/cerner-and-open-source/)
-[![License](https://badgen.net/badge/license/Apache-2.0/blue)](https://github.com/cerner/cucumber-forge-report-generator/blob/master/LICENSE)
-[![Build Status](https://travis-ci.com/cerner/cucumber-forge-report-generator.svg?branch=master)](https://travis-ci.com/cerner/cucumber-forge-report-generator)
+[![License](https://badgen.net/badge/license/Apache-2.0/blue)](https://github.com/cerner/cucumber-forge-report-generator/blob/main/LICENSE)
+[![Build Status](https://travis-ci.com/cerner/cucumber-forge-report-generator.svg?branch=main)](https://travis-ci.com/cerner/cucumber-forge-report-generator)
 
 # _About_
 

@@ -8,9 +8,9 @@ stages:
   - name: lint
   - name: test
   - name: publish
-    if: branch = master AND type != pull_request
+    if: branch = main AND type != pull_request
   - name: docs
-    if: branch = master AND type != pull_request
+    if: branch = main AND type != pull_request
 
 jobs:
   include:

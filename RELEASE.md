@@ -1,8 +1,8 @@
 # How to Release
 
-This project uses [semantic-release](https://github.com/semantic-release/semantic-release) to automatically release new versions when commits are merged to the master branch.  The semantic-release process is triggered as part of the [Travis build](https://travis-ci.com/cerner/cucumber-forge-report-generator).
+This project uses [semantic-release](https://github.com/semantic-release/semantic-release) to automatically release new versions when commits are merged to the main branch.  The semantic-release process is triggered as part of the [Travis build](https://travis-ci.com/cerner/cucumber-forge-report-generator).
 
-To ensure that releases are triggered properly, the [AngularJS commit message standards](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#) should be applied to commit messages for the master branch.
+To ensure that releases are triggered properly, the [AngularJS commit message standards](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#) should be applied to commit messages for the main branch.
 
 ## Format of the commit message
 
@@ -40,13 +40,13 @@ You can use * if there isn't a more fitting scope.
 
 This is a very short description of the change.
 
-- Use imperative, present tense: “change” not “changed” nor “changes”
+- Use imperative, present tense: "change" not "changed" nor "changes"
 - Don't capitalize first letter
 - No dot (.) at the end
 
 ## Message body
 
-- Just as in `<subject>` use imperative, present tense: “change” not “changed” nor “changes”
+- Just as in `<subject>` use imperative, present tense: "change" not "changed" nor "changes"
 - Includes motivation for the change and contrasts with previous behavior
 
 ## Message footer
