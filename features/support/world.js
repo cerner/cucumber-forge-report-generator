@@ -17,7 +17,7 @@ class CustomWorld {
   setOutput(output) {
     this.output = output;
     if (this.output.length > 0) {
-      this.window = new JSDOM(this.output, { runScripts: 'dangerously', pretendToBeVisual: true }).window;
+      this.window = new JSDOM(this.output, { url: 'https://localhost/', runScripts: 'dangerously', pretendToBeVisual: true }).window;
       this.outputHTML = this.window.document;
     } else {
       this.window = null;
