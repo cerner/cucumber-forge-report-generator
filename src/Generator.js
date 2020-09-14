@@ -351,6 +351,8 @@ const create = (directoryPath) => {
 };
 
 class Generator {
+  static SUPPORTED_DIALECTS = SUPPORTED_LANGUAGES;
+
   constructor() {
     author = os.userInfo().username;
 
