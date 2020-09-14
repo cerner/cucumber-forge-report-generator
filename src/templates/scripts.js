@@ -1,4 +1,5 @@
 /* globals window, document */
+const persistentSettingsEnabled = typeof (Storage) !== 'undefined';
 let pauseScrollActions = false;
 
 const toggleSettingsDrawer = () => {
@@ -121,6 +122,14 @@ const toggleParentDirectoryButtons = (element) => {
   }
 };
 
+const tagsCheckboxClicked = () => {
+  toggleTagDisplay();
+  if (persistentSettingsEnabled) {
+    const { localStorage } = window;
+    localStorage.cfDisplayTags = localStorage.cfDisplayTags != null && localStorage.cfDisplayTags === 'true' ? 'false' : 'true';
+  }
+};
+
 const init = () => {
   // Add listeners for directory buttons
   Array.from(document.getElementsByClassName('directory-button')).forEach((directoryButton) => {
@@ -167,7 +176,7 @@ const init = () => {
   }
   const tagsCheckbox = document.getElementById('tagsCheckbox');
   if (tagsCheckbox) {
-    tagsCheckbox.addEventListener('click', toggleTagDisplay);
+    tagsCheckbox.addEventListener('click', tagsCheckboxClicked);
   }
 
   // Open the first feature.
@@ -179,6 +188,18 @@ const init = () => {
 
     toggleFunctionAccordion(firstFeatureButton);
     toggleDisplayedFeature(firstFeatureButton);
+  }
+
+  // Initialize the settings
+  if (persistentSettingsEnabled) {
+    // Display the tags if necessary
+    const { localStorage } = window;
+    if (localStorage.cfDisplayTags != null && localStorage.cfDisplayTags === 'true') {
+      toggleTagDisplay();
+      if (tagsCheckbox) {
+        tagsCheckbox.checked = 'true';
+      }
+    }
   }
 };
 
