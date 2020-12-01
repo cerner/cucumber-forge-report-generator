@@ -5,6 +5,7 @@
 - Joshua Kuestersteffen [@jkuester]
 - Matej Voboril [@TobiTenno]
 - Nikita Prabhakar [@nikitaprabhakar]
+- Khoa Le [@lendkhoa]
 
 ## Community
 
@@ -14,3 +15,4 @@
 [@TobiTenno]: https://github.com/TobiTenno
 [@beersonthewall]: https://github.com/beersonthewall
 [@nikitaprabhakar]: https://github.com/nikitaprabhakar
+[@lendkhoa]: https://github.com/lendkhoa
