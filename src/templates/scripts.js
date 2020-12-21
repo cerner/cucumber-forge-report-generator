@@ -41,13 +41,11 @@ const scrollTo = (element) => {
   setTimeout(() => {
     pauseScrollActions = false;
   }, (1000));
-
-  // Scroll the target into view with a 20px offset
-  const bodyRect = document.body.getBoundingClientRect().top;
-  const targetRect = document.getElementById(element.getAttribute('scroll-to-id')).getBoundingClientRect().top;
-  window.scrollTo({
-    top: (targetRect - bodyRect) - 20,
+  const target = document.getElementById(element.getAttribute('scroll-to-id'));
+  target.scrollIntoView({
     behavior: 'smooth',
+    block: 'start',
+    inline: 'end',
   });
 };
 
