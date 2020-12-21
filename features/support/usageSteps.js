@@ -61,6 +61,24 @@ When('the box is checked to show tags', function () {
   this.outputHTML.getElementById('tagsCheckbox').click();
 });
 
+When(/^the report is opened with a link for the (first|second) feature title$/, function (featureIndex) {
+  const index = featureIndex === 'first' ? 0 : 1;
+  const featureWrappers = this.outputHTML.getElementsByClassName('feature-wrapper');
+  const featureAnchor = featureWrappers[index].getElementsByClassName('anchor')[0];
+
+  this.createWindow(`https://localhost/#${featureAnchor.id}`);
+});
+
+When(/^the report is opened with a link for the (first|second) scenario title in the (first|second) feature$/, function (scenarioIndex, featureIndex) {
+  const fIndex = featureIndex === 'first' ? 0 : 1;
+  const featureWrappers = this.outputHTML.getElementsByClassName('feature-wrapper');
+  const sIndex = scenarioIndex === 'first' ? 0 : 1;
+  const scenarioAnchors = Array.from(featureWrappers[fIndex].getElementsByClassName('anchor'))
+    .filter((anchor) => anchor.hasAttribute('scenario-button'));
+
+  this.createWindow(`https://localhost/#${scenarioAnchors[sIndex].id}`);
+});
+
 Then(/^the (first|second) feature (?:is|will be) displayed$/, function (featureIndex) {
   const index = featureIndex === 'first' ? 0 : 1;
   const featureWrappers = this.outputHTML.getElementsByClassName('feature-wrapper');

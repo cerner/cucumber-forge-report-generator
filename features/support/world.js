@@ -1,5 +1,5 @@
 const { setWorldConstructor, After, Before } = require('cucumber');
-const { JSDOM } = require('jsdom');
+const { JSDOM, VirtualConsole } = require('jsdom');
 const fs = require('fs');
 
 class CustomWorld {
@@ -14,11 +14,21 @@ class CustomWorld {
     this.exceptionScenario = false;
   }
 
+  createWindow(url, outputConsole) {
+    const virtualConsole = new VirtualConsole();
+    if (outputConsole) {
+      virtualConsole.sendTo(outputConsole);
+    }
+    this.window = new JSDOM(this.output, {
+      url, virtualConsole, runScripts: 'dangerously', pretendToBeVisual: true,
+    }).window;
+    this.outputHTML = this.window.document;
+  }
+
   setOutput(output) {
     this.output = output;
     if (this.output.length > 0) {
-      this.window = new JSDOM(this.output, { url: 'https://localhost/', runScripts: 'dangerously', pretendToBeVisual: true }).window;
-      this.outputHTML = this.window.document;
+      this.createWindow('https://localhost/', console);
     } else {
       this.window = null;
       this.outputHTML = null;
