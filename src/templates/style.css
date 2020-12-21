@@ -179,10 +179,11 @@ i.fa-angle-right, i.fa-angle-down {
 .feature-wrapper.active {
   display: block;
 }
-.feature-wrapper a.anchor {
-  display: block;
-  position: relative;
-  top: -1.5em;
+.anchor {
+  color: transparent;
+}
+.title:hover + .anchor, .anchor:hover {
+  color: -webkit-link;
 }
 .tags {
   color: grey;

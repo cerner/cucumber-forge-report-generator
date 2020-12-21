@@ -3,8 +3,12 @@
         {{#if tagString}}
           <div class="tags">{{tagString}}</div>
         {{/if}}
-        <a class="anchor" id="{{featureId}}"></a>
-        <h2>{{name}}</h2>
+        <h2>
+          <span class="title">{{name}}</span>
+          <a class="anchor" id="{{featureId}}" feature-button="{{featureButtonId}}" href="#{{featureId}}">
+            <i class="fas fa-link"></i>
+          </a>
+        </h2>
         <div class="feature-body">
           <div class="feature-description"><pre><i>{{description}}</i></pre></div>
 
@@ -41,8 +45,12 @@
             {{#if tagString}}
               <div class="tags">{{tagString}}</div>
             {{/if}}
-            <a class="anchor" id="{{scenarioId}}" scenario-button="{{scenarioButtonId}}"></a>
-            <h3>{{this.name}}</h3>
+            <h3>
+              <span class="title">{{this.name}}</span>
+              <a class="anchor" id="{{scenarioId}}" scenario-button="{{scenarioButtonId}}" href="#{{scenarioId}}">
+                <i class="fas fa-link"></i>
+              </a>
+            </h3>
             <div class="scenario-body">
               {{#if this.description}}
                 <div class="scenario-description"><pre><i>{{this.description}}</i></pre></div>

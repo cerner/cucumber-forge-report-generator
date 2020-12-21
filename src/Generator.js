@@ -198,6 +198,8 @@ const populateHtmlIdentifiers = (feature) => {
   idSequence += 1;
   feature.featureWrapperId = idSequence;
   idSequence += 1;
+  feature.featureButtonId = idSequence;
+  idSequence += 1;
   feature.scenarios.forEach((scenario) => {
     scenario.scenarioId = idSequence;
     idSequence += 1;
@@ -289,6 +291,7 @@ const getFeatureButtons = (featureFileTree) => {
       const { feature } = child;
       const translations = i18n.getFixedT(feature.language);
       const featureButton = {
+        id: feature.featureButtonId,
         featureId: feature.featureId,
         featureWrapperId: feature.featureWrapperId,
         title: trimCucumberKeywords(translations, feature.name, 'feature'),
