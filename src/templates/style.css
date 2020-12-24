@@ -182,6 +182,7 @@ i.fa-angle-right, i.fa-angle-down {
 .anchor {
   color: transparent;
   padding-top: 1em;
+  outline: none;
 }
 .title:hover + .anchor, .anchor:hover {
   color: -webkit-link;
