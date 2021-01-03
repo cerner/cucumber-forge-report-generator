@@ -179,15 +179,45 @@ const init = () => {
     tagsCheckbox.addEventListener('click', tagsCheckboxClicked);
   }
 
-  // Open the first feature.
-  const firstFeatureButton = document.getElementsByClassName('feature-button')[0];
-  if (firstFeatureButton) {
-    // Open any parent directory buttons
-    const directoryButton = firstFeatureButton.parentNode.parentNode.previousElementSibling;
-    toggleParentDirectoryButtons(directoryButton);
+  // Open the identified feature/scenario (if specified in the URL) else open the first feature
+  const { hash } = window.location;
+  let openDefaultFeature = true;
+  if (hash) {
+    const elementId = hash.substring(1, hash.length);
+    const element = document.getElementById(elementId);
+    if (element) {
+      const scenarioButtonId = element.getAttribute('scenario-button');
+      const featureButtonId = element.getAttribute('feature-button');
+      if (scenarioButtonId) {
+        // It is a scenario link
+        const scenarioButton = document.getElementById(scenarioButtonId);
+        const featureButton = scenarioButton.parentNode.parentNode.previousElementSibling;
+        const directoryButton = featureButton.parentNode.parentNode.previousElementSibling;
+        toggleParentDirectoryButtons(directoryButton);
+        featureButton.click();
+        scenarioButton.click();
+        openDefaultFeature = false;
+      } else if (featureButtonId) {
+        // It is a feature link
+        const featureButton = document.getElementById(featureButtonId);
+        const directoryButton = featureButton.parentNode.parentNode.previousElementSibling;
+        toggleParentDirectoryButtons(directoryButton);
+        featureButton.click();
+        openDefaultFeature = false;
+      }
+    }
+  }
+  if (openDefaultFeature) {
+    // Open the first feature.
+    const firstFeatureButton = document.getElementsByClassName('feature-button')[0];
+    if (firstFeatureButton) {
+      // Open any parent directory buttons
+      const directoryButton = firstFeatureButton.parentNode.parentNode.previousElementSibling;
+      toggleParentDirectoryButtons(directoryButton);
 
-    toggleFunctionAccordion(firstFeatureButton);
-    toggleDisplayedFeature(firstFeatureButton);
+      toggleFunctionAccordion(firstFeatureButton);
+      toggleDisplayedFeature(firstFeatureButton);
+    }
   }
 
   // Initialize the settings

@@ -122,3 +122,23 @@ Feature: Report Usage
     Then the tags displayed for the feature will be '@pet_care @dogs'
     Then the tags displayed for the first scenario will be '@feeding'
     Then the tags displayed for the second scenario will be '@petting'
+
+  Scenario: Opening a report with a feature title link
+    Given there is a report for the 'feature' directory
+    When the report is opened with a link for the second feature title
+    Then the second feature will be displayed
+    And the scenario buttons for the second feature will be expanded in the sidebar
+    When the report is opened with a link for the first feature title
+    Then the first feature will be displayed
+    And the scenario buttons for the first feature will be expanded in the sidebar
+
+  Scenario: Opening a report with a scenario title link
+    Given there is a report for the 'feature' directory
+    When the report is opened with a link for the second scenario title in the second feature
+    Then the second feature will be displayed
+    And the scenario buttons for the second feature will be expanded in the sidebar
+    And the second scenario button will be highlighted
+    When the report is opened with a link for the first scenario title in the first feature
+    Then the first feature will be displayed
+    And the scenario buttons for the first feature will be expanded in the sidebar
+    And the first scenario button will be highlighted
