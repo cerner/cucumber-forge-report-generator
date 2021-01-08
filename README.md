@@ -36,7 +36,7 @@ Artifacts can be downloaded from the [latest release](https://github.com/cerner/
 
 This library can be added as an [NPM dependency](https://www.npmjs.com/package/cucumber-forge-report-generator) via `npm i -S cucumber-forge-report-generator`
 
-This project is built on [Travis](https://travis-ci.com/cerner/cucumber-forge-report-generator/).
+This project is built on [GitHub Actions](https://github.com/cerner/cucumber-forge-report-generator/actions).
 
 # _Building_
 
@@ -53,13 +53,13 @@ To execute the automated tests, simply run `npm test` from the project directory
 
 # _Conventions_
 
-The project extends the `eslint-config-airbnb` [ESLint](https://eslint.org/) configuration. This provides formatting standards for breaks, line length, declarations, etc.
+The project extends the `eslint-config-airbnb-base` [ESLint](https://eslint.org/) configuration. This provides formatting standards for breaks, line length, declarations, etc.
 
 Tests for the project are written with [cucumber-js](https://github.com/cucumber/cucumber-js)
 
 # _Communication_
 
-If you have any issues or questions, please log a [Github issue](https://github.com/cerner/cucumber-forge-report-generator/issues) for this repository. See our [contribution guidelines](CONTRIBUTING.md) for tips on how to submit a helpful issue.
+If you have any issues or questions, please log a [GitHub issue](https://github.com/cerner/cucumber-forge-report-generator/issues) for this repository. See our [contribution guidelines](CONTRIBUTING.md) for tips on how to submit a helpful issue.
 
 # _Contributing_
 
