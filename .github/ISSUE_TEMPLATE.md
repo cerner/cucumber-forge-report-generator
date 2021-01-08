@@ -1,8 +1,8 @@
-Please fill out the below template as best you can.
---------------------------------------------------------
+<!-- Please fill out the below template as best you can.
+-------------------------------------------------------->
 
 ### Description of Issue
-Describe the issue as best you can. Screenshots, logs, and stack traces can be very helpful!
+<!-- Describe the issue as best you can. Screenshots, logs, and stack traces can be very helpful! -->
 
 ### System Configuration
 #### Project Version
@@ -14,5 +14,7 @@ Describe the issue as best you can. Screenshots, logs, and stack traces can be v
 1. Step 2
 
 ### Expected Outcomes
+<!--
 - Links can be styled as buttons
 - Disabled links behave the same as disabled buttons
+-->
