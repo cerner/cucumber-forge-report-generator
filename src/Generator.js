@@ -186,12 +186,24 @@ const getFeatureFromFile = (featureFilename) => {
   return feature;
 };
 
-const getFilteredScenarios = (scenarios) => scenarios.map((scenario) => {
-  if (scenario.tags && scenario.tags.includes(tagFilter)) {
-    return scenario;
+const filter = (scenario, tagFilter) => {
+  // empty filter: allow all
+  if (!tagFilter) return true;
+
+  let allow = false;
+  const wild = tagFilter.endsWith('*');
+  const strippedFilter = tagFilter.endsWith('*') ? tagFilter.slice(0, -1) : tagFilter;
+  if (scenario.tags) {
+    scenario.tags.forEach((tag) => {
+      if ((wild && tag.startsWith(strippedFilter)) ||  tag === strippedFilter) {
+        allow = true;
+      }
+    });
   }
-  return undefined;
-}).filter((scenario) => scenario);
+  return allow;
+}
+
+const getFilteredScenarios = (scenarios) => scenarios.filter(scenario => filter(scenario, tagFilter));
 
 const populateHtmlIdentifiers = (feature) => {
   feature.featureId = idSequence;
