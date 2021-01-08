@@ -186,7 +186,7 @@ const getFeatureFromFile = (featureFilename) => {
   return feature;
 };
 
-const filter = (scenario, tagFilter) => {
+const filter = (scenario) => {
   // empty filter: allow all
   if (!tagFilter) return true;
 
@@ -195,15 +195,15 @@ const filter = (scenario, tagFilter) => {
   const strippedFilter = tagFilter.endsWith('*') ? tagFilter.slice(0, -1) : tagFilter;
   if (scenario.tags) {
     scenario.tags.forEach((tag) => {
-      if ((wild && tag.startsWith(strippedFilter)) ||  tag === strippedFilter) {
+      if ((wild && tag.startsWith(strippedFilter)) || tag === strippedFilter) {
         allow = true;
       }
     });
   }
   return allow;
-}
+};
 
-const getFilteredScenarios = (scenarios) => scenarios.filter(scenario => filter(scenario, tagFilter));
+const getFilteredScenarios = (scenarios) => scenarios.filter(filter);
 
 const populateHtmlIdentifiers = (feature) => {
   feature.featureId = idSequence;
