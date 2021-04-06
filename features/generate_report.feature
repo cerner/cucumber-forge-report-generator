@@ -15,9 +15,9 @@ Feature: Report Generation
         Background:
           Given I have a dog
 
-        @feeding
+        @feeding @feed_dog
         Scenario: Feeding the Dog
-          Given the dog is hungery
+          Given the dog is hungry
           When I give dog food to the dog
           Then the dog will eat it
 
@@ -45,9 +45,9 @@ Feature: Report Generation
         Background:
           Given I have a cat
 
-        @feeding
+        @feeding @feed_cat
         Scenario: Feeding the Cat
-          Given the cat is hungery
+          Given the cat is hungry
           When I give the following food to the cat:
             | fish  |
             | steak |
@@ -117,6 +117,24 @@ Feature: Report Generation
       | 'feeding'  |
       | '@feeding' |
 
+  Scenario Outline: Generating an HTML report with scenarios filtered by a tag ending with a wildcard
+    If the provided tag ends with a wildcard (`*`), the features and scenarios are filtered to the ones with 
+    tags that begin with the given tag value.
+
+    When a report is generated with the code "new Generator().generate(this.allFeaturesPath, null, <tag:>)"
+    Then the report will contain 2 features
+    And the report will contain 2 scenarios
+    And the report name on the sidebar will be <tag:>
+    And the sidebar will contain 2 feature buttons
+    And the sidebar will contain 2 scenario buttons
+
+    Examples:
+      | tag:       |
+      | '@feeding*'|
+      | 'feeding*' |
+      | 'feed_*'   |
+      | '@feed_*'  |
+
   Scenario: Generating an HTML report with features filtered by a tag
     The features and scenarios included in a report can be filtered based on their tags.
 
@@ -142,7 +160,7 @@ Feature: Report Generation
 
         @feeding
         Scenario: Feeding the Dog
-          Given the dog is hungery
+          Given the dog is hungry
           When I give dog food to the dog
           Then the dog will eat it
       """
@@ -153,7 +171,7 @@ Feature: Report Generation
     Given there is a file named 'invalid.feature' in the 'feature/dog' directory with the following contents:
       """
       Feature: Dog Care
-          Given the dog is hungery
+          Given the dog is hungry
           When I give dog food to the dog
           Then the dog will eat it
       """
@@ -163,7 +181,7 @@ Feature: Report Generation
   Scenario: Generating a report when the directory contains a feature file that has only Cucumber steps
     Given there is a file named 'invalid.feature' in the 'feature/dog' directory with the following contents:
       """
-          Given the dog is hungery
+          Given the dog is hungry
           When I give dog food to the dog
           Then the dog will eat it
       """
@@ -264,7 +282,7 @@ Feature: Report Generation
       # language: american
       Feature: Dog Care
         Scenario: Feeding the Dog
-          Given the dog is hungery
+          Given the dog is hungry
           When I give dog food to the dog
           Then the dog will eat it
       """

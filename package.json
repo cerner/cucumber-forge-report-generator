@@ -5,9 +5,10 @@
   "main": "src/Generator.js",
   "types": "types/Generator.d.ts",
   "scripts": {
-    "test": "./node_modules/.bin/cucumber-js features/*.feature",
-    "lint": "npx eslint src --color",
-    "build:types": "npx -p typescript tsc -p tsconfig.declaration.json",
+    "test": "cucumber-js features/*.feature",
+    "lint": "eslint src --color",
+    "lint:fix": "eslint src --color --fix",
+    "build:types": "tsc -p tsconfig.declaration.json",
     "prepublishOnly": "npm run build:types"
   },
   "repository": {
@@ -24,7 +25,9 @@
   "author": "Cerner Corporation",
   "license": "Apache-2.0",
   "release": {
-    "branches": ["main"],
+    "branches": [
+      "main"
+    ],
     "repositoryUrl": "https://github.com/cerner/cucumber-forge-report-generator.git"
   },
   "dependencies": {
@@ -41,6 +44,7 @@
     "eslint": "^7.9.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
-    "jsdom": "^16.4.0"
+    "jsdom": "^16.4.0",
+    "typescript": "^4.1.3"
   }
 }
