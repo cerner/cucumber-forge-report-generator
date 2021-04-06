@@ -15,7 +15,7 @@ Feature: Report Generation
         Background:
           Given I have a dog
 
-        @feeding
+        @feeding @feed_dog
         Scenario: Feeding the Dog
           Given the dog is hungry
           When I give dog food to the dog
@@ -45,7 +45,7 @@ Feature: Report Generation
         Background:
           Given I have a cat
 
-        @feeding
+        @feeding @feed_cat
         Scenario: Feeding the Cat
           Given the cat is hungry
           When I give the following food to the cat:
@@ -116,10 +116,24 @@ Feature: Report Generation
       | tag:       |
       | 'feeding'  |
       | '@feeding' |
-      | '@feed*'   |
+
+  Scenario Outline: Generating an HTML report with scenarios filtered by a tag ending with a wildcard
+    If the provided tag ends with a wildcard (`*`), the features and scenarios are filtered to the ones with 
+    tags that begin with the given tag value.
+
+    When a report is generated with the code "new Generator().generate(this.allFeaturesPath, null, <tag:>)"
+    Then the report will contain 2 features
+    And the report will contain 2 scenarios
+    And the report name on the sidebar will be <tag:>
+    And the sidebar will contain 2 feature buttons
+    And the sidebar will contain 2 scenario buttons
+
+    Examples:
+      | tag:       |
       | '@feeding*'|
-      | 'feed*'    |
       | 'feeding*' |
+      | 'feed_*'   |
+      | '@feed_*'  |
 
   Scenario: Generating an HTML report with features filtered by a tag
     The features and scenarios included in a report can be filtered based on their tags.

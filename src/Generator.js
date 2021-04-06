@@ -186,7 +186,7 @@ const getFeatureFromFile = (featureFilename) => {
   return feature;
 };
 
-const filter = (scenario) => {
+const filterScenarioByTag = (scenario) => {
   // empty filter: allow all
   if (!tagFilter) return true;
 
@@ -203,7 +203,7 @@ const filter = (scenario) => {
   return allow;
 };
 
-const getFilteredScenarios = (scenarios) => scenarios.filter(filter);
+const getFilteredScenarios = (scenarios) => scenarios.filter(filterScenarioByTag);
 
 const populateHtmlIdentifiers = (feature) => {
   feature.featureId = idSequence;
