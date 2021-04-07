@@ -245,3 +245,32 @@ i.fa-angle-right, i.fa-angle-down {
   border: 0;
   margin-top: 1em;
 }
+
+/* Dark mode support */
+body.dark {
+  background-color: #272525;
+}
+
+.dark .main {
+  color: white;
+}
+
+.dark .feature-button, .dark .scenario-button {
+  color: #ccc;
+  background-color: #23272A;
+}
+
+.dark .feature-button.active, .dark .feature-button:hover,
+.dark .scenario-button.active, .dark .scenario-button:hover {
+  color: #fff;
+  background-color: #2C2F33;
+  font-weight: normal;
+}
+
+body.dark .feature-button.active, body.dark .feature-button:hover {
+  border-bottom-color: #23272A;
+}
+
+body.dark .scenario-button {
+  border-right-color: #23272A;
+}
