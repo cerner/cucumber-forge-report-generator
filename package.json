@@ -9,7 +9,8 @@
     "lint": "eslint src --color",
     "lint:fix": "eslint src --color --fix",
     "build:types": "tsc -p tsconfig.declaration.json",
-    "prepublishOnly": "npm run build:types"
+    "prepublishOnly": "npm run build:types",
+    "build:docs": "node ./.github/workflows/regenerateDocsReport.js"
   },
   "repository": {
     "type": "git",
