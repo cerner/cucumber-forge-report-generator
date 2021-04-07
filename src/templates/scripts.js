@@ -130,6 +130,23 @@ const tagsCheckboxClicked = () => {
   }
 };
 
+const toggleDarkModeDisplay = () => {
+  if (document.body.classList.contains('dark')) {
+    document.body.classList.remove('dark');
+  } else {
+    document.body.classList.add('dark');
+  }
+};
+
+const darkModeClicked = () => {
+  toggleDarkModeDisplay();
+  if (persistentSettingsEnabled) {
+    const { localStorage } = window;
+    const currentState = localStorage.getItem('darkMode') || 'false';
+    localStorage.setItem('darkMode', currentState === 'false' ? 'true' : 'false');
+  }
+};
+
 const init = () => {
   // Add listeners for directory buttons
   Array.from(document.getElementsByClassName('directory-button')).forEach((directoryButton) => {
@@ -177,6 +194,10 @@ const init = () => {
   const tagsCheckbox = document.getElementById('tagsCheckbox');
   if (tagsCheckbox) {
     tagsCheckbox.addEventListener('click', tagsCheckboxClicked);
+  }
+  const darkModeCheckbox = document.getElementById('darkModeCheckbox');
+  if (darkModeCheckbox) {
+    darkModeCheckbox.addEventListener('click', darkModeClicked);
   }
 
   // Open the identified feature/scenario (if specified in the URL) else open the first feature
@@ -228,6 +249,12 @@ const init = () => {
       toggleTagDisplay();
       if (tagsCheckbox) {
         tagsCheckbox.checked = 'true';
+      }
+    }
+    if (localStorage.getItem('darkMode') !== null && localStorage.getItem('darkMode') === 'true') {
+      toggleDarkModeDisplay();
+      if (darkModeCheckbox) {
+        darkModeCheckbox.checked = 'true';
       }
     }
   }
