@@ -126,7 +126,8 @@ const tagsCheckboxClicked = () => {
   toggleTagDisplay();
   if (persistentSettingsEnabled) {
     const { localStorage } = window;
-    localStorage.cfDisplayTags = localStorage.cfDisplayTags != null && localStorage.cfDisplayTags === 'true' ? 'false' : 'true';
+    const currentState = localStorage.getItem('cfDisplayTags');
+    localStorage.setItem('cfDisplayTags', currentState != null && currentState === 'true' ? 'false' : 'true');
   }
 };
 
@@ -245,7 +246,7 @@ const init = () => {
   if (persistentSettingsEnabled) {
     // Display the tags if necessary
     const { localStorage } = window;
-    if (localStorage.cfDisplayTags != null && localStorage.cfDisplayTags === 'true') {
+    if (localStorage.getItem('cfDisplayTags') != null && localStorage.getItem('cfDisplayTags') === 'true') {
       toggleTagDisplay();
       if (tagsCheckbox) {
         tagsCheckbox.checked = 'true';

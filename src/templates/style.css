@@ -260,10 +260,16 @@ body.dark {
   background-color: #23272A;
 }
 
-.dark .feature-button.active, .dark .feature-button:hover,
+.dark .feature-button.active, .dark .feature-button:hover {
+  background-color: #272525;
+  border-bottom-color: #23272A;
+  color: #fff;
+  font-weight: normal;
+}
+
 .dark .scenario-button.active, .dark .scenario-button:hover {
   color: #fff;
-  background-color: #2C2F33;
+  background-color: #3c3d41;
   font-weight: normal;
 }
 
