@@ -126,7 +126,25 @@ const tagsCheckboxClicked = () => {
   toggleTagDisplay();
   if (persistentSettingsEnabled) {
     const { localStorage } = window;
-    localStorage.cfDisplayTags = localStorage.cfDisplayTags != null && localStorage.cfDisplayTags === 'true' ? 'false' : 'true';
+    const currentState = localStorage.getItem('cfDisplayTags');
+    localStorage.setItem('cfDisplayTags', currentState != null && currentState === 'true' ? 'false' : 'true');
+  }
+};
+
+const toggleDarkModeDisplay = () => {
+  if (document.body.classList.contains('dark')) {
+    document.body.classList.remove('dark');
+  } else {
+    document.body.classList.add('dark');
+  }
+};
+
+const darkModeClicked = () => {
+  toggleDarkModeDisplay();
+  if (persistentSettingsEnabled) {
+    const { localStorage } = window;
+    const currentState = localStorage.getItem('darkMode') || 'false';
+    localStorage.setItem('darkMode', currentState === 'false' ? 'true' : 'false');
   }
 };
 
@@ -178,6 +196,10 @@ const init = () => {
   if (tagsCheckbox) {
     tagsCheckbox.addEventListener('click', tagsCheckboxClicked);
   }
+  const darkModeCheckbox = document.getElementById('darkModeCheckbox');
+  if (darkModeCheckbox) {
+    darkModeCheckbox.addEventListener('click', darkModeClicked);
+  }
 
   // Open the identified feature/scenario (if specified in the URL) else open the first feature
   const { hash } = window.location;
@@ -224,10 +246,16 @@ const init = () => {
   if (persistentSettingsEnabled) {
     // Display the tags if necessary
     const { localStorage } = window;
-    if (localStorage.cfDisplayTags != null && localStorage.cfDisplayTags === 'true') {
+    if (localStorage.getItem('cfDisplayTags') != null && localStorage.getItem('cfDisplayTags') === 'true') {
       toggleTagDisplay();
       if (tagsCheckbox) {
         tagsCheckbox.checked = 'true';
+      }
+    }
+    if (localStorage.getItem('darkMode') !== null && localStorage.getItem('darkMode') === 'true') {
+      toggleDarkModeDisplay();
+      if (darkModeCheckbox) {
+        darkModeCheckbox.checked = 'true';
       }
     }
   }
