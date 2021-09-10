@@ -108,79 +108,85 @@ const getFeatureFromFile = (featureFilename) => {
   feature.language = getFeatureFileLanguage(featureFilename, fileLines);
   const translations = i18n.getFixedT(feature.language);
 
-  fileLines.forEach((nextLine) => {
-    const line = nextLine.trim();
-    const newPhase = getNewPhase(translations, line);
-    if (currentPhase === 'DOC_STRING_STARTED') {
-      if (newPhase === 'DOC_STRING_STARTED') {
-        // Reached the end of the doc string
-        currentPhase = null;
-      } else {
+  fileLines.forEach((nextLine, index) => {
+    try {
+      const line = nextLine.trim();
+      const newPhase = getNewPhase(translations, line);
+      if (currentPhase === 'DOC_STRING_STARTED') {
+        if (newPhase === 'DOC_STRING_STARTED') {
+          // Reached the end of the doc string
+          currentPhase = null;
+        } else {
+          const step = scenario.steps[scenario.steps.length - 1];
+          // Use untrimmed nextLine to preserve whitespace
+          step.docString += step.docString ? `\n${nextLine}` : nextLine;
+        }
+      } else if (newPhase) {
+        currentPhase = newPhase;
+        switch (newPhase) {
+          case 'FEATURE_STARTED':
+            feature.name = line;
+            break;
+          case 'BACKGROUND_STARTED':
+            scenario = createScenario(line, tags);
+            feature.background = scenario;
+            tags = [];
+            break;
+          case 'SCENARIO_STARTED':
+          case 'SCENARIO_OUTLINE_STARTED':
+            scenario = createScenario(line, tags);
+            feature.scenarios.push(scenario);
+            tags = [];
+            break;
+          case 'EXAMPLES_STARTED':
+            scenario.examples = createExamples(line);
+            break;
+          default:
+        }
+      } else if (line.startsWith('@')) {
+        tags = line.split(' ');
+        if (!currentPhase) {
+          // Feature tags
+          feature.tags = tags;
+        }
+      } else if (line.startsWith('#')) {
+        // Gherkin comments start with '#' and are required to take an entire line.
+        // We want to skip any comment lines.
+      } else if (line.startsWith('|')) {
         const step = scenario.steps[scenario.steps.length - 1];
-        // Use untrimmed nextLine to preserve whitespace
-        step.docString += step.docString ? `\n${nextLine}` : nextLine;
+        const lines = line
+          .split('|')
+          .filter((entry) => entry).map((entry) => entry.trim());
+        switch (currentPhase) {
+          case 'EXAMPLES_STARTED':
+            scenario.examples.table.push(lines);
+            break;
+          default:
+            step.table.push(lines);
+        }
+      } else if (stepStarting(translations, line)) {
+        if (scenario) {
+          scenario.steps.push(createStep(line));
+        }
+      } else if (line.length > 0) {
+        // Nothing new is starting. Must be part of a description
+        switch (currentPhase) {
+          case 'FEATURE_STARTED':
+            feature.description += feature.description ? `\n${line}` : line;
+            break;
+          case 'BACKGROUND_STARTED':
+            feature.background.description += feature.background.description ? `\n${line}` : line;
+            break;
+          default:
+            if (scenario) {
+              scenario.description += scenario.description ? `\n${line}` : line;
+            }
+        }
       }
-    } else if (newPhase) {
-      currentPhase = newPhase;
-      switch (newPhase) {
-        case 'FEATURE_STARTED':
-          feature.name = line;
-          break;
-        case 'BACKGROUND_STARTED':
-          scenario = createScenario(line, tags);
-          feature.background = scenario;
-          tags = [];
-          break;
-        case 'SCENARIO_STARTED':
-        case 'SCENARIO_OUTLINE_STARTED':
-          scenario = createScenario(line, tags);
-          feature.scenarios.push(scenario);
-          tags = [];
-          break;
-        case 'EXAMPLES_STARTED':
-          scenario.examples = createExamples(line);
-          break;
-        default:
-      }
-    } else if (line.startsWith('@')) {
-      tags = line.split(' ');
-      if (!currentPhase) {
-        // Feature tags
-        feature.tags = tags;
-      }
-    } else if (line.startsWith('#')) {
-      // Gherkin comments start with '#' and are required to take an entire line.
-      // We want to skip any comment lines.
-    } else if (line.startsWith('|')) {
-      const step = scenario.steps[scenario.steps.length - 1];
-      const lines = line
-        .split('|')
-        .filter((entry) => entry).map((entry) => entry.trim());
-      switch (currentPhase) {
-        case 'EXAMPLES_STARTED':
-          scenario.examples.table.push(lines);
-          break;
-        default:
-          step.table.push(lines);
-      }
-    } else if (stepStarting(translations, line)) {
-      if (scenario) {
-        scenario.steps.push(createStep(line));
-      }
-    } else if (line.length > 0) {
-      // Nothing new is starting. Must be part of a description
-      switch (currentPhase) {
-        case 'FEATURE_STARTED':
-          feature.description += feature.description ? `\n${line}` : line;
-          break;
-        case 'BACKGROUND_STARTED':
-          feature.background.description += feature.background.description ? `\n${line}` : line;
-          break;
-        default:
-          if (scenario) {
-            scenario.description += scenario.description ? `\n${line}` : line;
-          }
-      }
+    } catch (e) {
+      if (featureFilename) e.featurefile = featureFilename;
+      if (typeof index !== 'undefined') e.featureline = index + 1;
+      throw e;
     }
   });
   return feature;
